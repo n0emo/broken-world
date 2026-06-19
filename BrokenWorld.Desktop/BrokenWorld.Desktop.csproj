@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Raylib-cs" Version="7.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BrokenWorld.Core\BrokenWorld.Core.csproj" />
+  </ItemGroup>
+
+  <Choose>
+    <When Condition="$(Configuration) == 'Release'">
+      <PropertyGroup>
+        <PublishAot>true</PublishAot>
+        <EnableAggressiveTrimming>true</EnableAggressiveTrimming>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>full</TrimMode>
+        <RunAOTCompilation>true</RunAOTCompilation>
+      </PropertyGroup>
+
+      <ItemGroup>
+        <DirectPInvoke Include="raylib" />
+      </ItemGroup>
+
+      <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('linux'))" >
+        <NativeLibrary Include="$(MSBuildProjectDirectory)/../Lib/linux-x86/libraylib.a" />
+        <LinkerArg Include="-lX11" />
+        <LinkerArg Include="-lXrandr" />
+        <LinkerArg Include="-lXi" />
+        <LinkerArg Include="-lXinerama" />
+        <LinkerArg Include="-lXcursor" />
+        <LinkerArg Include="-lGL" />
+        <LinkerArg Include="-lm" />
+        <LinkerArg Include="-ldl" />
+        <LinkerArg Include="-lpthread" />
+      </ItemGroup>
+
+      <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('osx'))" >
+        <NativeLibrary Include="$(MSBuildProjectDirectory)/../Lib/osx-arm/libraylib.a" />
+        <LinkerArg Include="-framework CoreVideo" />
+        <LinkerArg Include="-framework IOKit" />
+        <LinkerArg Include="-framework Cocoa" />
+        <LinkerArg Include="-framework GLUT" />
+        <LinkerArg Include="-framework OpenGL" />
+      </ItemGroup>
+
+      <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('win'))" >
+        <NativeLibrary Include="$(MSBuildProjectDirectory)/../Lib/windows-x86/raylib.lib" />
+        <LinkerArg Include="gdi32.lib" />
+        <LinkerArg Include="winmm.lib" />
+        <LinkerArg Include="user32.lib" />
+        <LinkerArg Include="shell32.lib" />
+        <LinkerArg Include="msvcrt.lib" />
+        <LinkerArg Include="/NODEFAULTLIB:libcmt" />
+        <LinkerArg Include="/NODEFAULTLIB:msvcrtd" />
+        <LinkerArg Include="/FORCE:MULTIPLE" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+</Project>

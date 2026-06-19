@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="BrokenWorld.Core/BrokenWorld.Core.csproj" />
+  <Project Path="BrokenWorld.Desktop/BrokenWorld.Desktop.csproj" />
+  <Project Path="BrokenWorld.Web/BrokenWorld.Web.csproj" />
+</Solution>
