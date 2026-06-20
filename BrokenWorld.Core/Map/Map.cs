@@ -1,3 +1,5 @@
+using BrokenWorld.Core.Buildings;
+
 namespace BrokenWorld.Core.Map;
 
 internal sealed class Map(int width, int height)
@@ -7,6 +9,14 @@ internal sealed class Map(int width, int height)
     public Tile[,] Tiles { get; init; } = new Tile[width, height];
     public List<Building> Buildings { get; init; } = [];
     public (int X, int Y)? Selected { get; set; } = null;
+
+    public Rectangle Rec => new()
+    {
+        X = 0,
+        Y = 0,
+        Width = Width * Constants.TileSize,
+        Height = Height * Constants.TileSize,
+    };
 
     public bool TrySelect(Vector2 position)
     {
@@ -22,27 +32,50 @@ internal sealed class Map(int width, int height)
         return true;
     }
 
-    public bool TryPlaceBuilding()
+    public bool TryPlaceBuilding(BuildingKind kind, (int x, int y) position)
     {
-        if (Selected is null) return false;
-        (int x, int y) = Selected.Value;
-        // if (!Tiles[x, y].CanBuild) return false;
-        if (Tiles[x, y].Building is not null) return false;
-
-        var building = new Building();
-        Tiles[x, y].Building = building;
+        (int x, int y) = position;
+        (int width, int height) = kind.GetSize();
+        if (!RectangleIsFree(x, y, width, height)) return false;
+        var building = new Building(kind, position);
         Buildings.Add(building);
+
+        for (int row = 0; row < building.Size.Height; row++)
+        {
+            for (int col = 0; col < building.Size.Width; col++)
+            {
+                Tiles[x + col, y + row].Occupied = true;
+            }
+        }
+
         return true;
     }
 
-    public bool TryRemoveBuilding()
+    public Building? TryGetBuildingOnPoint(Vector2 point)
     {
-        if (Selected is null) return false;
-        (int x, int y) = Selected.Value;
-        if (Tiles[x, y].Building is null) return false;
-        Building building = Tiles[x, y].Building!;
-        Tiles[x, y].Building = null;
-        Buildings.RemoveAll(b => ReferenceEquals(b, building));
+        foreach (var b in Buildings)
+        {
+            if (Raylib.CheckCollisionPointRec(point, b.Rec)) return b;
+        }
+
+        return null;
+    }
+
+    public bool TryRemoveBuilding(int id)
+    {
+        var toRemove = Buildings.Where(b => b.Id == id).ToArray();
+        if (toRemove.Length == 0) return false;
+        if (toRemove.Length > 1) throw new InvalidOperationException("Two building were placed on the same tile");
+        var b = toRemove[0];
+        Buildings.Remove(b);
+        for (int i = 0; i < b.Size.Width; i++)
+        {
+            for (int j = 0; j < b.Size.Height; j++)
+            {
+                Tiles[b.Position.X + i, b.Position.Y + j].Occupied = false;
+            }
+        }
+
         return true;
     }
 
@@ -52,6 +85,28 @@ internal sealed class Map(int width, int height)
         DrawGrid();
         DrawBuildings();
         DrawSelected();
+    }
+
+    public bool TileIsFree(int x, int y)
+    {
+        if (x < 0 || x >= Width) return false;
+        if (y < 0 || y >= Height) return false;
+        if (Tiles[x, y].Occupied) return false;
+        return true;
+    }
+
+    public bool RectangleIsFree(int x, int y, int width, int height)
+    {
+        if (x < 0 || x + width >= Width) return false;
+        if (y < 0 || y + height >= Height) return false;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (Tiles[x + i, y + j].Occupied) return false;
+            }
+        }
+        return true;
     }
 
     private void DrawGrid()
@@ -72,19 +127,16 @@ internal sealed class Map(int width, int height)
 
     private void DrawBuildings()
     {
-        for (int col = 0; col < Width; col++)
+        foreach (var b in Buildings)
         {
-            for (int row = 0; row < Height; row++)
+            var rec = new Rectangle
             {
-                if (Tiles[col, row].Building is null) continue;
-
-                int x = col * Constants.TileSize;
-                int y = row * Constants.TileSize;
-                int size = Constants.TileSize;
-                Color color = Constants.BuildingColor;
-
-                Raylib.DrawRectangle(x, y, size, size, color);
-            }
+                X = b.Position.X * Constants.TileSize,
+                Y = b.Position.Y * Constants.TileSize,
+                Width = b.Size.Width * Constants.TileSize,
+                Height = b.Size.Height * Constants.TileSize,
+            };
+            Raylib.DrawRectangleRec(rec, b.Color);
         }
     }
 

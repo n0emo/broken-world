@@ -18,6 +18,10 @@
     <RunWasmOpt>false</RunWasmOpt>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+    <DefineConstants>$(DefineConstants);BROWSER</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Raylib-cs" Version="7.0.2" />
   </ItemGroup>
@@ -42,7 +46,7 @@
     </When>
     <When Condition=" $(Configuration) == 'Release' ">
       <PropertyGroup>
-        <EmccFlags>-s USE_GLFW=3 -O3 -lexports.js</EmccFlags>
+        <EmccFlags>-sUSE_GLFW=3 -O3 -lexports.js</EmccFlags>
       </PropertyGroup>
     </When>
   </Choose>

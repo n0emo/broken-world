@@ -7,7 +7,12 @@
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+    <DefineConstants>$(DefineConstants);BROWSER</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta21" />
     <PackageReference Include="Raylib-cs" Version="7.0.2" />
   </ItemGroup>
 </Project>

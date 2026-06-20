@@ -1,4 +1,5 @@
 ﻿using BrokenWorld.Core;
+using Raylib_cs;
 
 namespace BrokenWorld.Desktop;
 
@@ -8,7 +9,7 @@ internal static class Program
     internal static void Main()
     {
         using var game = new Game();
-        while (game.Running)
+        while (!Raylib.WindowShouldClose() && game.Running)
         {
             game.Frame();
         }

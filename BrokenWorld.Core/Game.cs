@@ -9,6 +9,7 @@ public sealed class Game : IDisposable
     public Game()
     {
         Raylib.InitWindow(800, 480, "Hello World");
+        Raylib.SetExitKey(KeyboardKey.Null);
         Raylib.SetAudioStreamBufferSizeDefault(2048);
         Raylib.InitAudioDevice();
     }
@@ -21,14 +22,6 @@ public sealed class Game : IDisposable
 
     public void Frame()
     {
-#if !BROWSER
-        if (Raylib.WindowShouldClose())
-        {
-            Running = false;
-            return;
-        }
-#endif
-
         _state ??= new State.MainMenu();
         _state = _state.Frame();
     }
