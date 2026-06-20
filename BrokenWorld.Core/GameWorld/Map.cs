@@ -7,15 +7,21 @@ internal readonly struct BuildingEventArgs
     public readonly Building Building { get; init; }
 }
 
-internal sealed class Map(int width, int height)
+internal sealed class Map
 {
     public event EventHandler<BuildingEventArgs>? BuildingEvent = null;
 
-    public int Width { get; init; } = width;
-    public int Height { get; init; } = height;
-    public Tile[,] Tiles { get; init; } = new Tile[width, height];
+    public int Width { get; init; } = Constants.MapWidth;
+    public int Height { get; init; } = Constants.MapHeight;
+    public Tile[,] Tiles { get; init; }
     public List<Building> Buildings { get; init; } = [];
     public (int X, int Y)? Selected { get; set; } = null;
+
+    public Map()
+    {
+        Tiles = GenerateTiles();
+        TryPlaceBuilding(BuildingKind.TownHall, (Width / 2 - 1, Height / 2 - 1));
+    }
 
     public Rectangle Rec => new()
     {
@@ -102,7 +108,7 @@ internal sealed class Map(int width, int height)
 
     public void Draw()
     {
-        DrawGrid();
+        DrawTiles();
         DrawBuildings();
         DrawSelected();
     }
@@ -112,6 +118,7 @@ internal sealed class Map(int width, int height)
         if (x < 0 || x >= Width) return false;
         if (y < 0 || y >= Height) return false;
         if (Tiles[x, y].Occupied) return false;
+        if (!Tiles[x, y].CanBuild) return false;
         return true;
     }
 
@@ -123,13 +130,31 @@ internal sealed class Map(int width, int height)
         {
             for (int j = 0; j < height; j++)
             {
-                if (Tiles[x + i, y + j].Occupied) return false;
+                if (!TileIsFree(x + i, y + j)) return false;
             }
         }
         return true;
     }
 
-    private void DrawGrid()
+    public void DrawPlacementGrid()
+    {
+        for (int col = 0; col < Width; col++)
+        {
+            for (int row = 0; row < Height; row++)
+            {
+                if (!TileIsFree(col, row)) continue;
+
+                int x = col * Constants.TileSize;
+                int y = row * Constants.TileSize;
+                int size = Constants.TileSize;
+                Color color = Constants.GridColor;
+
+                Raylib.DrawRectangleLines(x, y, size, size, color);
+            }
+        }
+    }
+
+    private void DrawTiles()
     {
         for (int col = 0; col < Width; col++)
         {
@@ -138,9 +163,8 @@ internal sealed class Map(int width, int height)
                 int x = col * Constants.TileSize;
                 int y = row * Constants.TileSize;
                 int size = Constants.TileSize;
-                Color color = Constants.GridColor;
 
-                Raylib.DrawRectangleLines(x, y, size, size, color);
+                Raylib.DrawRectangle(x, y, size, size, Tiles[col, row].Color);
             }
         }
     }
@@ -162,5 +186,87 @@ internal sealed class Map(int width, int height)
         int y = Selected.Value.Y * Constants.TileSize + radius;
         Color color = Constants.SelectedColor;
         Raylib.DrawCircle(x, y, radius, color);
+    }
+
+    private static Tile[,] GenerateTiles()
+    {
+        var width = Constants.MapWidth;
+        var height = Constants.MapHeight;
+
+        var tiles = new Tile[width, height];
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                tiles[x, y] = TileKind.Sky.IntoTile();
+            }
+        }
+
+        var centerX = width / 2;
+        var centerY = width / 2;
+
+        for (int x = 0; x < width; x++)
+        {
+            tiles[x, centerY] = TileKind.Bridge.IntoTile();
+            tiles[x, centerY + 1] = TileKind.Bridge.IntoTile();
+        }
+
+        for (int y = 0; y < height; y++)
+        {
+            tiles[centerX, y] = TileKind.Bridge.IntoTile();
+            tiles[centerX + 1, y] = TileKind.Bridge.IntoTile();
+        }
+
+        var radius = 8;
+        PlaceCircle(tiles, (centerX + 1, centerY + 1), radius, TileKind.Grass);
+        PlaceCircle(tiles, (centerX, centerY + 1), radius, TileKind.Grass);
+        PlaceCircle(tiles, (centerX, centerY), radius, TileKind.Grass);
+        PlaceCircle(tiles, (centerX + 1, centerY), radius, TileKind.Grass);
+
+        var holyRadius = 4;
+        var holyOffset = 10;
+        PlaceCircle(tiles, (centerX, holyOffset), holyRadius, TileKind.HolyGrass);
+        PlaceCircle(tiles, (centerX + 1, holyOffset), holyRadius, TileKind.HolyGrass);
+
+        PlaceCircle(tiles, (centerX, height - holyOffset), holyRadius, TileKind.HolyGrass);
+        PlaceCircle(tiles, (centerX + 1, height - holyOffset), holyRadius, TileKind.HolyGrass);
+
+        PlaceCircle(tiles, (holyOffset, centerY), holyRadius, TileKind.HolyGrass);
+        PlaceCircle(tiles, (holyOffset, centerY + 1), holyRadius, TileKind.HolyGrass);
+
+        PlaceCircle(tiles, (width - holyOffset, centerY), holyRadius, TileKind.HolyGrass);
+        PlaceCircle(tiles, (width - holyOffset, centerY + 1), holyRadius, TileKind.HolyGrass);
+
+        for (int x = 0; x < width - 1; x++)
+        {
+            for (int y = 0; y < height - 1; y++)
+            {
+                if (tiles[x, y + 1].Kind != TileKind.Sky) continue;
+                var kind = tiles[x, y].Kind;
+                if (kind != TileKind.Grass && kind != TileKind.HolyGrass) continue;
+                tiles[x, y + 1] = TileKind.RockBottom.IntoTile();
+            }
+        }
+
+        return tiles;
+    }
+
+    private static void PlaceCircle(Tile[,] tiles, (int X, int Y) center, int radius, TileKind kind)
+    {
+        (var centerX, var centerY) = center;
+        for (int x = centerX - radius; x <= centerX + radius; x++)
+        {
+            for (int y = centerY - radius; y <= centerY + radius; y++)
+            {
+                if (x < 0 || x >= tiles.GetLength(0)) continue;
+                if (y < 0 || y >= tiles.GetLength(1)) continue;
+
+                var circleX = x - centerX;
+                var circleY = y - centerY;
+
+                if (circleX * circleX + circleY * circleY > radius * radius) continue;
+                tiles[x, y] = kind.IntoTile();
+            }
+        }
     }
 }

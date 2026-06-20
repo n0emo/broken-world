@@ -6,7 +6,7 @@ namespace BrokenWorld.Core.GameWorld;
 
 internal sealed class World
 {
-    public readonly Map Map = new(40, 40);
+    public readonly Map Map = new();
 
     public List<Enemy> Enemies { get; init; } = [];
     private readonly List<Bullet> _bullets = [];

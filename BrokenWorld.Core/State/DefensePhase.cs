@@ -40,6 +40,7 @@ internal sealed class DefensePhase(GameState gameState, EnemyWave wave) : IState
         };
         ui.Interact();
 
+        _s.MoveCamera();
         _s.World.Update();
         UpdateSpawn(_enemiesToSpawnLeft, ref _leftSpawnTimer);
         UpdateSpawn(_enemiesToSpawnRight, ref _rightSpawnTimer);

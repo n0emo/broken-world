@@ -2,6 +2,11 @@ namespace BrokenWorld.Core;
 
 internal static class Constants
 {
+    #region Map
+    public static int MapWidth => 80;
+    public static int MapHeight => 80;
+    #endregion
+
     #region Grid
     public static int TileSize => 32;
     public static Color GridColor => Raylib.GetColor(0x11ff11ff);
@@ -20,7 +25,7 @@ internal static class Constants
     public static float WheelZoomFactor => 0.1f;
     public static float WheelScrollFactor => 4.0f;
     public static float MaxZoom => 3.0f;
-    public static float MinZoom => 1.0f;
+    public static float MinZoom => 0.5f;
     public static float ScreenEdgeMoveRadius => 10.0f;
     public static float ScreenEdgeMoveFactor => 500.0f;
     #endregion

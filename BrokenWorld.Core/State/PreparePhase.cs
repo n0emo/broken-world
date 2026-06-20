@@ -14,12 +14,13 @@ internal sealed class PreparePhase(GameState gameState) : IState
     private BuildingKind? _placingNewBuilding = null;
     private BuildingSelection? _selectedBuilding = null;
 
-    private Vector2 MouseWorldPosition => (Raylib.GetMousePosition() / _s.Camera.Zoom) + _s.Camera.Target + _s.Camera.Offset;
+    private Vector2 MouseWorldPosition => (Raylib.GetMousePosition() / _s.Camera.Zoom) + _s.Camera.Target - _s.Camera.Offset / _s.Camera.Zoom;
 
     public PreparePhase() : this(new()) { }
 
     public IState Frame()
     {
+
         var ui = new PrepareUi(_selectedBuilding.HasValue);
 
         var uiResult = ui.Interact();
@@ -42,6 +43,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
             _selectedBuilding = null;
         }
 
+        _s.MoveCamera();
         _s.World.Update();
         UpdateBuildingSelection();
 
@@ -57,6 +59,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
         ui.Present();
         Raylib.EndDrawing();
 
+        if (Raylib.IsKeyPressed(KeyboardKey.Backspace)) return new PreparePhase();
         return this;
     }
 
@@ -89,6 +92,8 @@ internal sealed class PreparePhase(GameState gameState) : IState
     private void NewBuildingPlacement()
     {
         if (!_placingNewBuilding.HasValue) return;
+        _s.World.Map.DrawPlacementGrid();
+
         var kind = _placingNewBuilding.Value;
 
         var size = new Vector2(kind.GetSize().Width * Constants.TileSize, kind.GetSize().Height * Constants.TileSize);
