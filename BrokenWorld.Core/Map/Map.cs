@@ -142,14 +142,7 @@ internal sealed class Map(int width, int height)
     {
         foreach (var b in Buildings)
         {
-            var rec = new Rectangle
-            {
-                X = b.Position.X * Constants.TileSize,
-                Y = b.Position.Y * Constants.TileSize,
-                Width = b.Size.Width * Constants.TileSize,
-                Height = b.Size.Height * Constants.TileSize,
-            };
-            Raylib.DrawRectangleRec(rec, b.Color);
+            b.Draw();
         }
     }
 

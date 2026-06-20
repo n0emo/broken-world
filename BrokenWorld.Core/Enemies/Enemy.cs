@@ -10,15 +10,39 @@ internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appeara
     public Vector2 Position { get; set; } = position;
     public float Hp { get; set; } = stats.MaxHp;
     public Building? Target { get; set; } = null;
+    public float AttackCooldown { get; set; } = 0.0f;
 
     public bool IsAlive => Hp > 0;
+    public bool CanAttack => AttackCooldown == 0.0f;
 
     public void Update()
     {
+        float dt = Raylib.GetFrameTime();
+
+        AttackCooldown -= dt;
+        if (AttackCooldown < 0) AttackCooldown = 0;
+
+        MoveTowardsTarget();
+        AttackTarget();
+
+    }
+
+    public void Draw()
+    {
+        Appearance.Draw(Position);
+        Raylib.DrawCircleLinesV(Position, Stats.AttackRange, Color.Green);
+    }
+
+    private void MoveTowardsTarget()
+    {
         if (Target is null) return;
-        var angle = Vector2.Normalize(Position - Target.Value.WorldPosition);
-        var distance = Vector2.Distance(Position, Target.Value.WorldPosition);
-        var speed = stats.MoveSpeed * Raylib.GetFrameTime();
+        float dt = Raylib.GetFrameTime();
+
+        var angle = Vector2.Normalize(Position - Target.WorldPosition);
+        var distance = Vector2.Distance(Position, Target.WorldPosition);
+        distance -= Stats.AttackRange;
+        if (distance < 0) distance = 0;
+        var speed = stats.MoveSpeed * dt;
         if (distance >= speed)
         {
             Position -= angle * speed;
@@ -29,8 +53,15 @@ internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appeara
         }
     }
 
-    public void Draw()
+    private void AttackTarget()
     {
-        Appearance.Draw(Position);
+        if (Target is null) return;
+        if (!CanAttack) return;
+        if (!Raylib.CheckCollisionCircleRec(Position, Stats.AttackRange, Target.Rec)) return;
+
+        AttackCooldown = 1 / Stats.AttackSpeed;
+        Target.Hp -= Stats.Damage;
+
+        if (!Target.IsIntact) Target = null;
     }
 }

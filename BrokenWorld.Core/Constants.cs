@@ -3,7 +3,7 @@ namespace BrokenWorld.Core;
 internal static class Constants
 {
     #region Grid
-    public static int TileSize => 16;
+    public static int TileSize => 32;
     public static Color GridColor => Raylib.GetColor(0x11ff11ff);
     public static Color SelectedColor => Raylib.GetColor(0xdd4444ff);
     #endregion
@@ -12,6 +12,8 @@ internal static class Constants
     public static Color BuildingColor => Raylib.GetColor(0x695c46ff);
     public static Color SelectedBuildingColor => Raylib.GetColor(0xff000055);
     public static Color SelectedBuildingBorderColor => Raylib.GetColor(0x00ff55cc);
+    public static float BuildingHpBarFactor => 5f;
+    public static float BuildingHpBarHeight => 5.0f;
     #endregion
 
     #region Camera

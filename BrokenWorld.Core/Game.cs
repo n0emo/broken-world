@@ -8,6 +8,7 @@ public sealed class Game : IDisposable
 
     public Game()
     {
+        Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
         Raylib.InitWindow(800, 480, "Hello World");
         Raylib.SetExitKey(KeyboardKey.Null);
         Raylib.SetAudioStreamBufferSizeDefault(2048);

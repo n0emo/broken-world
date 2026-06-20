@@ -30,4 +30,13 @@ internal static partial class BuildingKindExtensions
         BuildingKind.Wall => (1, 1),
         _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
     };
+
+    public static float GetHp(this BuildingKind kind) => kind switch
+    {
+        BuildingKind.TownHall => 1000.0f,
+        BuildingKind.Tower => 100.0f,
+        BuildingKind.Arsenal => 200.0f,
+        BuildingKind.Wall => 250.0f,
+        _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
+    };
 }

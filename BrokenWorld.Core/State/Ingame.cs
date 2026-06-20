@@ -66,21 +66,9 @@ internal sealed class Ingame : IState
 
     private void ResetEnemyTargets()
     {
-
-        if (_map.Buildings.Count > 0)
+        foreach (var enemy in _enemies)
         {
-            foreach (var enemy in _enemies)
-            {
-                var building = _map.Buildings.MinBy(b => Vector2.Distance(b.WorldPosition, enemy.Position));
-                enemy.Target = building;
-            }
-        }
-        else
-        {
-            foreach (var enemy in _enemies)
-            {
-                enemy.Target = null;
-            }
+            enemy.Target = FindClosestTargetBuilding(enemy.Position);
         }
     }
 
@@ -88,9 +76,19 @@ internal sealed class Ingame : IState
     {
         if (enemy.Target is null && _map.Buildings.Count > 0)
         {
-            var building = _map.Buildings.MinBy(b => Vector2.Distance(b.WorldPosition, enemy.Position));
-            enemy.Target = building;
+            enemy.Target = FindClosestTargetBuilding(enemy.Position);
         }
+    }
+
+    private Building? FindClosestTargetBuilding(Vector2 position)
+    {
+        var buildings = _map.Buildings.Where(b => b.IsIntact).ToArray();
+        if (buildings.Length > 0)
+        {
+            var building = buildings.MinBy(b => Vector2.Distance(b.WorldPosition, position));
+            return building;
+        }
+        return null;
     }
 
     private void UpdateEnemies()
@@ -146,6 +144,10 @@ internal sealed class Ingame : IState
         foreach (var enemy in _enemies)
         {
             enemy.Draw();
+        }
+        foreach (var b in _map.Buildings)
+        {
+            b.DrawHpBar();
         }
         NewBuildingPlacement();
         DrawBuildingSelection();
