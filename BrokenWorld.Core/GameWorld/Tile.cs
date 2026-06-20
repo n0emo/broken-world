@@ -1,4 +1,4 @@
-namespace BrokenWorld.Core.Map;
+namespace BrokenWorld.Core.GameWorld;
 
 internal record struct Tile(
     bool CanBuild = true,

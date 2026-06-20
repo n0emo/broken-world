@@ -6,7 +6,7 @@ internal sealed class MainMenu : IState
     {
         if (Raylib.IsKeyPressed(KeyboardKey.Space))
         {
-            return new Ingame();
+            return new OpeningCutscene();
         }
 
         Raylib.BeginDrawing();

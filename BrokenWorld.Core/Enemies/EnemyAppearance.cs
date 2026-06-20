@@ -1,13 +1,19 @@
 namespace BrokenWorld.Core.Enemies;
 
 internal readonly record struct EnemyAppearance(
-    Rectangle Rec,
+    (float Width, float Height) Size,
     Color Color
 )
 {
     public readonly void Draw(Vector2 position)
     {
-        var rec = Rec with { X = Rec.X + position.X - Rec.Width / 2, Y = Rec.Y + position.Y - Rec.Height / 2 };
+        var rec = new Rectangle
+        {
+            X = position.X - Size.Width / 2,
+            Y = position.Y - Size.Height / 2,
+            Width = Size.Width,
+            Height = Size.Height,
+        };
         Raylib.DrawRectangleRec(rec, Color);
     }
 }

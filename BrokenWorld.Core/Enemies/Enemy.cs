@@ -14,9 +14,18 @@ internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appeara
 
     public bool IsAlive => Hp > 0;
     public bool CanAttack => AttackCooldown == 0.0f;
+    public Rectangle Rec => new()
+    {
+        X = Position.X - Appearance.Size.Width / 2,
+        Y = Position.Y - Appearance.Size.Height / 2,
+        Width = Appearance.Size.Width,
+        Height = Appearance.Size.Height,
+    };
 
     public void Update()
     {
+        if (!IsAlive) return;
+
         float dt = Raylib.GetFrameTime();
 
         AttackCooldown -= dt;

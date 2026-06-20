@@ -23,6 +23,7 @@ public sealed class Game : IDisposable
 
     public void Frame()
     {
+        Input.Update();
         _state ??= new State.MainMenu();
         _state = _state.Frame();
     }

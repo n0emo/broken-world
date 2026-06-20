@@ -1,6 +1,8 @@
+using BrokenWorld.Core.GameWorld;
+
 namespace BrokenWorld.Core.Buildings;
 
-internal class Building(BuildingKind kind, (int X, int Y) position)
+internal abstract class Building(BuildingKind kind, (int X, int Y) position)
 {
     static int IdCounter = 0;
     static int NextId() => Interlocked.Increment(ref IdCounter);
@@ -41,7 +43,6 @@ internal class Building(BuildingKind kind, (int X, int Y) position)
     {
         Color color = Color;
         Raylib.DrawRectangleRec(Rec, color);
-
     }
 
     public void DrawHpBar()
@@ -57,7 +58,5 @@ internal class Building(BuildingKind kind, (int X, int Y) position)
         Raylib.DrawRectangleRec(hpRec, Color.Green);
     }
 
-    public void Update()
-    {
-    }
+    public virtual void Update(World world) { }
 }

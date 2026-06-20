@@ -1,6 +1,6 @@
 using BrokenWorld.Core.Buildings;
 
-namespace BrokenWorld.Core.Map;
+namespace BrokenWorld.Core.GameWorld;
 
 internal readonly struct BuildingEventArgs
 {
@@ -44,7 +44,14 @@ internal sealed class Map(int width, int height)
         (int x, int y) = position;
         (int width, int height) = kind.GetSize();
         if (!RectangleIsFree(x, y, width, height)) return false;
-        var building = new Building(kind, position);
+        Building building = kind switch
+        {
+            BuildingKind.Arsenal => new ArsenalBuilding(kind, position),
+            BuildingKind.Tower => new TowerBuilding(kind, position, new TowerStats(Damage: 1, 100, 1)),
+            BuildingKind.TownHall => new TownHallBuilding(kind, position),
+            BuildingKind.Wall => new WallBuilding(kind, position),
+            _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
+        };
         Buildings.Add(building);
 
         for (int row = 0; row < building.Size.Height; row++)
