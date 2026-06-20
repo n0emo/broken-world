@@ -2,7 +2,7 @@ using BrokenWorld.Core.Buildings;
 
 namespace BrokenWorld.Core.Enemies;
 
-internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appearance)
+internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appearance, Vector2 spawnTarget)
 {
     public EnemyStats Stats { get; init; } = stats;
     public EnemyAppearance Appearance { get; init; } = appearance;
@@ -11,6 +11,7 @@ internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appeara
     public float Hp { get; set; } = stats.MaxHp;
     public Building? Target { get; set; } = null;
     public float AttackCooldown { get; set; } = 0.0f;
+    public Vector2? SpawnTarget { get; set; } = spawnTarget;
 
     public bool IsAlive => Hp > 0;
     public bool CanAttack => AttackCooldown == 0.0f;
@@ -31,9 +32,10 @@ internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appeara
         AttackCooldown -= dt;
         if (AttackCooldown < 0) AttackCooldown = 0;
 
-        MoveTowardsTarget();
-        AttackTarget();
+        if (SpawnTarget is null) MoveTowardsTarget();
+        else MoveTowardsSpawnTarget();
 
+        AttackTarget();
     }
 
     public void Draw()
@@ -60,6 +62,23 @@ internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appeara
         {
             // Position -= angle * distance;
         }
+    }
+
+    private void MoveTowardsSpawnTarget()
+    {
+        if (SpawnTarget is null) return;
+
+        float dt = Raylib.GetFrameTime();
+        var speed = stats.MoveSpeed * dt;
+        var distance = Vector2.Distance(Position, SpawnTarget.Value);
+        if (speed > distance) speed = distance;
+        if (SpawnTarget.Value == Position)
+        {
+            SpawnTarget = null;
+            return;
+        }
+        var direction = Vector2.Normalize(SpawnTarget.Value - Position) * speed;
+        Position += direction;
     }
 
     private void AttackTarget()

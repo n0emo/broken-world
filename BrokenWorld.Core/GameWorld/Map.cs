@@ -15,7 +15,6 @@ internal sealed class Map
     public int Height { get; init; } = Constants.MapHeight;
     public Tile[,] Tiles { get; init; }
     public List<Building> Buildings { get; init; } = [];
-    public (int X, int Y)? Selected { get; set; } = null;
 
     public Map()
     {
@@ -31,20 +30,6 @@ internal sealed class Map
         Height = Height * Constants.TileSize,
     };
 
-    public bool TrySelect(Vector2 position)
-    {
-        Selected = null;
-
-        int tileX = (int)position.X / Constants.TileSize;
-        int tileY = (int)position.Y / Constants.TileSize;
-
-        if (tileX < 0 || tileX >= Width) return false;
-        if (tileY < 0 || tileY >= Height) return false;
-
-        Selected = (tileX, tileY);
-        return true;
-    }
-
     public bool TryPlaceBuilding(BuildingKind kind, (int x, int y) position)
     {
         (int x, int y) = position;
@@ -53,7 +38,7 @@ internal sealed class Map
         Building building = kind switch
         {
             BuildingKind.Arsenal => new ArsenalBuilding(kind, position),
-            BuildingKind.Tower => new TowerBuilding(kind, position, new TowerStats(Damage: 1, 100, 1)),
+            BuildingKind.Tower => new TowerBuilding(kind, position, new TowerStats(Damage: 2, 500, 2)),
             BuildingKind.TownHall => new TownHallBuilding(kind, position),
             BuildingKind.Wall => new WallBuilding(kind, position),
             _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
@@ -110,7 +95,7 @@ internal sealed class Map
     {
         DrawTiles();
         DrawBuildings();
-        DrawSelected();
+        DrawSpawnPoints();
     }
 
     public bool TileIsFree(int x, int y)
@@ -154,6 +139,28 @@ internal sealed class Map
         }
     }
 
+    public Vector2 GetClosestGrass(Vector2 position)
+    {
+        var minDistance = float.MaxValue;
+        var minVector = new Vector2();
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (Tiles[x, y].Kind != TileKind.Grass) continue;
+                var center = new Vector2(x, y) * Constants.TileSize + Vector2.One * Constants.TileSize * 0.5f;
+                var distance = Vector2.Distance(center, position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    minVector = center;
+                }
+            }
+        }
+
+        return minVector;
+    }
+
     private void DrawTiles()
     {
         for (int col = 0; col < Width; col++)
@@ -177,15 +184,17 @@ internal sealed class Map
         }
     }
 
-    private void DrawSelected()
+    private void DrawSpawnPoints()
     {
-        if (Selected is null) return;
+        DrawSingleSpawnPoint(Constants.LeftSpawnPoint, Constants.MaxSpawnRadius);
+        DrawSingleSpawnPoint(Constants.RightSpawnPoint, Constants.MaxSpawnRadius);
+        DrawSingleSpawnPoint(Constants.TopSpawnPoint, Constants.MaxSpawnRadius);
+        DrawSingleSpawnPoint(Constants.BottomSpawnPoint, Constants.MaxSpawnRadius);
+    }
 
-        int radius = Constants.TileSize / 2;
-        int x = Selected.Value.X * Constants.TileSize + radius;
-        int y = Selected.Value.Y * Constants.TileSize + radius;
-        Color color = Constants.SelectedColor;
-        Raylib.DrawCircle(x, y, radius, color);
+    private void DrawSingleSpawnPoint(Vector2 position, float radius)
+    {
+        Raylib.DrawCircleV(position, radius, Color.Gold);
     }
 
     private static Tile[,] GenerateTiles()
@@ -217,14 +226,14 @@ internal sealed class Map
             tiles[centerX + 1, y] = TileKind.Bridge.IntoTile();
         }
 
-        var radius = 8;
+        var radius = Constants.MapIslandRadius;
         PlaceCircle(tiles, (centerX + 1, centerY + 1), radius, TileKind.Grass);
         PlaceCircle(tiles, (centerX, centerY + 1), radius, TileKind.Grass);
         PlaceCircle(tiles, (centerX, centerY), radius, TileKind.Grass);
         PlaceCircle(tiles, (centerX + 1, centerY), radius, TileKind.Grass);
 
-        var holyRadius = 4;
-        var holyOffset = 10;
+        var holyRadius = Constants.MapHolyRadius;
+        var holyOffset = Constants.MapHolyOffset;
         PlaceCircle(tiles, (centerX, holyOffset), holyRadius, TileKind.HolyGrass);
         PlaceCircle(tiles, (centerX + 1, holyOffset), holyRadius, TileKind.HolyGrass);
 

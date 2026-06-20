@@ -26,7 +26,7 @@ internal sealed class TowerBuilding(BuildingKind kind, (int X, int Y) position, 
             AttackCooldown = Stats.AttackSpeed;
             var direction = Vector2.Normalize(Target.Position - WorldPosition);
             var velocity = direction * Stats.ProjectileSpeed;
-            var bullet = new ProjectileBullet(BulletTag.Friend, WorldPosition, velocity);
+            var bullet = new ProjectileBullet(BulletTag.Friend, WorldPosition, velocity, Stats.Damage);
             world.SpawnBullet(bullet);
         }
     }

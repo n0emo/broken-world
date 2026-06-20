@@ -27,12 +27,32 @@ internal sealed class PreparePhase(GameState gameState) : IState
 
         if (uiResult.StartWaveRequested)
         {
-            return new DefensePhase(_s, new EnemyWave([
-                EnemyKind.Paladin,
-                EnemyKind.Paladin,
-                EnemyKind.Paladin,
-                EnemyKind.Paladin,
-            ], [], [], []));
+            return new DefensePhase(_s, new EnemyWave(
+                [
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                ],
+                [
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                ],
+                [
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                ],
+                [
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                ]
+            ));
         }
 
         if (uiResult.PlaceNewBuilding is BuildingKind kind) _placingNewBuilding = kind;

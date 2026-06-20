@@ -5,6 +5,16 @@ internal static class Constants
     #region Map
     public static int MapWidth => 80;
     public static int MapHeight => 80;
+    public static (int X, int Y) MapCenter => (MapWidth / 2, MapHeight / 2);
+    public static Vector2 WorldMapCenter => new Vector2(MapWidth, MapHeight) * TileSize * 0.5f;
+    public static Vector2 LeftSpawnPoint => new Vector2(MapHolyOffset + 1, MapCenter.Y + 1) * TileSize;
+    public static Vector2 RightSpawnPoint => new Vector2(MapWidth - MapHolyOffset, MapCenter.Y + 1) * TileSize;
+    public static Vector2 TopSpawnPoint => new Vector2(MapCenter.X + 1, MapHolyOffset + 1) * TileSize;
+    public static Vector2 BottomSpawnPoint => new Vector2(MapCenter.X + 1, MapHeight - MapHolyOffset) * TileSize;
+    public static float MaxSpawnRadius => TileSize * 0.7f;
+    public static int MapIslandRadius => 8;
+    public static int MapHolyRadius => 4;
+    public static int MapHolyOffset => 10;
     #endregion
 
     #region Grid
@@ -37,3 +47,4 @@ internal static class Constants
     public static Color TopPanelHoverColor => Raylib.GetColor(0xb3ccf2ff);
     #endregion
 }
+

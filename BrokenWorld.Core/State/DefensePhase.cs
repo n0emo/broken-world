@@ -42,10 +42,11 @@ internal sealed class DefensePhase(GameState gameState, EnemyWave wave) : IState
 
         _s.MoveCamera();
         _s.World.Update();
-        UpdateSpawn(_enemiesToSpawnLeft, ref _leftSpawnTimer);
-        UpdateSpawn(_enemiesToSpawnRight, ref _rightSpawnTimer);
-        UpdateSpawn(_enemiesToSpawnTop, ref _topSpawnTimer);
-        UpdateSpawn(_enemiesToSpawnBottom, ref _bottomSpawnTimer);
+
+        UpdateSpawn(_enemiesToSpawnLeft, ref _leftSpawnTimer, Constants.LeftSpawnPoint, Constants.MaxSpawnRadius);
+        UpdateSpawn(_enemiesToSpawnRight, ref _rightSpawnTimer, Constants.RightSpawnPoint, Constants.MaxSpawnRadius);
+        UpdateSpawn(_enemiesToSpawnTop, ref _topSpawnTimer, Constants.TopSpawnPoint, Constants.MaxSpawnRadius);
+        UpdateSpawn(_enemiesToSpawnBottom, ref _bottomSpawnTimer, Constants.BottomSpawnPoint, Constants.MaxSpawnRadius);
 
         if (EnemiesLeft == 0)
         {
@@ -78,7 +79,12 @@ internal sealed class DefensePhase(GameState gameState, EnemyWave wave) : IState
         return this;
     }
 
-    private void UpdateSpawn(Queue<EnemyKind> enemies, ref float timer)
+    private void UpdateSpawn(
+        Queue<EnemyKind> enemies,
+        ref float timer,
+        Vector2 spawnPoint,
+        float maxSpawnRadius
+    )
     {
         if (enemies.Count == 0) return;
         timer -= Raylib.GetFrameTime();
@@ -86,7 +92,12 @@ internal sealed class DefensePhase(GameState gameState, EnemyWave wave) : IState
         // TODO: better random time
         timer = Random.Shared.NextSingle() + 1;
         var kind = enemies.Dequeue();
-        var enemy = new Enemy(Vector2.Zero, kind.GetStats(), kind.GetAppearance());
+        var angle = Random.Shared.NextSingle() * (float)Math.PI * 2;
+        var length = Random.Shared.NextSingle() * maxSpawnRadius;
+        var randomPosition = new Vector2((float)Math.Cos(angle) * (float)Math.Sin(angle)) * length;
+        var position = spawnPoint + randomPosition;
+        var spawnTarget = _s.World.Map.GetClosestGrass(position);
+        var enemy = new Enemy(position, kind.GetStats(), kind.GetAppearance(), spawnTarget);
         _s.World.Enemies.Add(enemy);
     }
 }
