@@ -1,4 +1,6 @@
 using BrokenWorld.Core.Buildings;
+using BrokenWorld.Core.Enemies;
+using BrokenWorld.Core.Ui;
 
 namespace BrokenWorld.Core.State;
 
@@ -6,10 +8,16 @@ internal record struct BuildingSelection(int Id, Rectangle Bounds);
 
 internal sealed class Ingame : IState
 {
-    private readonly Map.Map _map = new(20, 20);
+    private readonly Map.Map _map = new(40, 40);
+    private readonly List<Enemy> _enemies = [EnemyExtensions.CreateBasic(Vector2.Zero)];
     private Camera2D _camera = new() { Zoom = 1.0f };
     private BuildingKind? _placingNewBuilding = null;
     private BuildingSelection? _selectedBuilding = null;
+
+    public Ingame()
+    {
+        _map.BuildingEvent += (_, args) => OnBuildingChanged(args.Building);
+    }
 
     public IState Frame()
     {
@@ -43,6 +51,8 @@ internal sealed class Ingame : IState
             _selectedBuilding = null;
         }
 
+        UpdateEnemies();
+
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.DarkBlue);
         Raylib.BeginMode2D(_camera);
@@ -52,6 +62,44 @@ internal sealed class Ingame : IState
         Raylib.EndDrawing();
 
         return this;
+    }
+
+    private void ResetEnemyTargets()
+    {
+
+        if (_map.Buildings.Count > 0)
+        {
+            foreach (var enemy in _enemies)
+            {
+                var building = _map.Buildings.MinBy(b => Vector2.Distance(b.WorldPosition, enemy.Position));
+                enemy.Target = building;
+            }
+        }
+        else
+        {
+            foreach (var enemy in _enemies)
+            {
+                enemy.Target = null;
+            }
+        }
+    }
+
+    private void SetEnemyTarget(Enemy enemy)
+    {
+        if (enemy.Target is null && _map.Buildings.Count > 0)
+        {
+            var building = _map.Buildings.MinBy(b => Vector2.Distance(b.WorldPosition, enemy.Position));
+            enemy.Target = building;
+        }
+    }
+
+    private void UpdateEnemies()
+    {
+        foreach (var enemy in _enemies)
+        {
+            enemy.Update();
+            SetEnemyTarget(enemy);
+        }
     }
 
     private void MoveCamera()
@@ -95,6 +143,10 @@ internal sealed class Ingame : IState
     private void DrawWorld()
     {
         _map.Draw();
+        foreach (var enemy in _enemies)
+        {
+            enemy.Draw();
+        }
         NewBuildingPlacement();
         DrawBuildingSelection();
     }
@@ -167,26 +219,21 @@ internal sealed class Ingame : IState
         for (int i = 0; i < buildingCount; i++)
         {
             var x = panelX + (i * size) + i * Constants.TopPanelBorderSize;
-            var rec = new Rectangle
+            var button = new Button
             {
-                X = x,
-                Y = panelY,
-                Width = size + Constants.TopPanelBorderSize * 2,
-                Height = height,
-            };
-
-            if (Raylib.CheckCollisionPointRec(mousePosition, rec))
-            {
-                Raylib.DrawRectangleRec(rec, Constants.TopPanelHoverColor);
-
-                if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+                Bounds = new Rectangle
                 {
-                    _placingNewBuilding = kinds[i];
-                }
+                    X = x,
+                    Y = panelY,
+                    Width = size + Constants.TopPanelBorderSize * 2,
+                    Height = height,
+                },
+                Text = names[i],
+            };
+            if (button.Interact())
+            {
+                _placingNewBuilding = kinds[i];
             }
-
-            Raylib.DrawRectangleLinesEx(rec, Constants.TopPanelBorderSize, Color.Black);
-            Raylib.DrawText(names[i], x + 2, panelY + 2, 6, Color.Black);
         }
 
         if (_selectedBuilding is BuildingSelection sel)
@@ -207,9 +254,18 @@ internal sealed class Ingame : IState
 
     private bool BuildingDeleteButton(Rectangle bounds)
     {
-        Raylib.DrawRectangleRec(bounds, Color.Red);
-        return Raylib.IsMouseButtonReleased(MouseButton.Left) && Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), bounds);
+        Button button = new()
+        {
+            Bounds = bounds,
+            Text = "Remove",
+        };
+        return button.Interact();
     }
 
     private Vector2 MouseWorldPosition => (Raylib.GetMousePosition() / _camera.Zoom) + _camera.Target + _camera.Offset;
+
+    private void OnBuildingChanged(Building _)
+    {
+        ResetEnemyTargets();
+    }
 }

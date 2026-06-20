@@ -13,6 +13,11 @@ internal struct Building(BuildingKind kind, (int X, int Y) position)
 
     public readonly Color Color => Kind.GetColor();
     public readonly (int Width, int Height) Size => Kind.GetSize();
+    public readonly Vector2 WorldPosition => new()
+    {
+        X = (float)Position.X * Constants.TileSize + (float)Size.Width * Constants.TileSize / 2,
+        Y = (float)Position.Y * Constants.TileSize + (float)Size.Height * Constants.TileSize / 2,
+    };
     public readonly Rectangle Rec => new()
     {
         X = Position.X * Constants.TileSize,

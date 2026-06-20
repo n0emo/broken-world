@@ -1,5 +1,3 @@
-using BrokenWorld.Core.Buildings;
-
 namespace BrokenWorld.Core.Map;
 
 internal record struct Tile(

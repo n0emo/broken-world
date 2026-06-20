@@ -2,8 +2,15 @@ using BrokenWorld.Core.Buildings;
 
 namespace BrokenWorld.Core.Map;
 
+internal readonly struct BuildingEventArgs
+{
+    public readonly Building Building { get; init; }
+}
+
 internal sealed class Map(int width, int height)
 {
+    public event EventHandler<BuildingEventArgs>? BuildingEvent = null;
+
     public int Width { get; init; } = width;
     public int Height { get; init; } = height;
     public Tile[,] Tiles { get; init; } = new Tile[width, height];
@@ -48,6 +55,8 @@ internal sealed class Map(int width, int height)
             }
         }
 
+        BuildingEvent?.Invoke(this, new() { Building = building });
+
         return true;
     }
 
@@ -66,15 +75,19 @@ internal sealed class Map(int width, int height)
         var toRemove = Buildings.Where(b => b.Id == id).ToArray();
         if (toRemove.Length == 0) return false;
         if (toRemove.Length > 1) throw new InvalidOperationException("Two building were placed on the same tile");
-        var b = toRemove[0];
-        Buildings.Remove(b);
-        for (int i = 0; i < b.Size.Width; i++)
+        var building = toRemove[0];
+
+        Buildings.Remove(building);
+
+        for (int i = 0; i < building.Size.Width; i++)
         {
-            for (int j = 0; j < b.Size.Height; j++)
+            for (int j = 0; j < building.Size.Height; j++)
             {
-                Tiles[b.Position.X + i, b.Position.Y + j].Occupied = false;
+                Tiles[building.Position.X + i, building.Position.Y + j].Occupied = false;
             }
         }
+
+        BuildingEvent?.Invoke(this, new() { Building = building });
 
         return true;
     }
