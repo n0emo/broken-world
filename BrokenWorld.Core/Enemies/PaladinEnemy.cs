@@ -32,6 +32,10 @@ internal sealed class PaladinEnemy : Enemy
         base.Update(world);
         _weapon.Position = Position;
         _weapon.Update();
-        if (_target is not null) _weapon.AttackBuilidng(_target);
+        if (_target is not null)
+        {
+            _weapon.AttackBuilidng(_target);
+            if (!_target.IsIntact) _target = null;
+        }
     }
 }
