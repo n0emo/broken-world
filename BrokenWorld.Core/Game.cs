@@ -10,7 +10,6 @@
 // TODO: Выскакивающие цифры урона
 // TODO: Графические ассеты
 // TODO: Звуковые ассеты
-// TODO: Исправить HTML
 
 namespace BrokenWorld.Core;
 
