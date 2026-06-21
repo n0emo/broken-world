@@ -5,15 +5,13 @@
 // TODO: Адекватно выглядящий UI подготовки
 // TODO: Адекватно выглядящий UI защиты
 // TODO: Главное меню
-// TODO: Починка зданий
 // TODO: Дебаг интерфейс
-// TODO: Полоски здоровья врагов и зданий (они куда-то провали)
+// TODO: Полоски здоровья врагов
 // TODO: Полоска здоровья босса
 // TODO: Выскакивающие цифры урона
 // TODO: Графические ассеты
 // TODO: Звуковые ассеты
 // TODO: Исправить HTML
-// TODO: Прокачка зданий
 
 namespace BrokenWorld.Core;
 
@@ -27,6 +25,7 @@ public sealed class Game : IDisposable
     {
         Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
         Raylib.InitWindow(800, 480, "Hello World");
+        Raylib.SetWindowMinSize(Constants.WindowMinWidth, Constants.WindowMinHeight);
         Raylib.SetExitKey(KeyboardKey.Null);
         Raylib.SetAudioStreamBufferSizeDefault(2048);
         Raylib.InitAudioDevice();

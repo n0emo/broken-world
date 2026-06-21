@@ -5,5 +5,14 @@ namespace BrokenWorld.Core.Buildings;
 // TODO: Прокачка увеличивает радиус действия баффа и его процентное усиление
 internal sealed class AltarOfIceBuilding : Building
 {
-    public AltarOfIceBuilding(BuildingKind kind, (int X, int Y) position) : base(kind, position) { }
+    public AltarOfIceBuilding((int X, int Y) position) : base(
+        kind: BuildingKind.AltarOfIce,
+        position: position,
+        size: (2, 2),
+        sprite: new()
+    )
+    { }
+
+    public override Money[] UpgradeCost => Constants.AltarOfIceCost;
+    public override float[] MaxHpScaling => Constants.AltarOfIceHp;
 }

@@ -12,7 +12,7 @@ internal sealed class Balance
 
         var font = Raylib.GetFontDefault();
         var text = $"Magistones: {Money.Magistones}\nEmblems: {Money.Emblems}";
-        var fontSize = 16.0f;
+        var fontSize = Constants.RegularFontSize;
         var spacing = 1.0f;
         var size = Raylib.MeasureTextEx(font, text, fontSize, spacing);
         var position = Bounds.Center - size * 0.5f;

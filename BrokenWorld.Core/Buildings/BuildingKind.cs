@@ -7,7 +7,7 @@ internal enum BuildingKind
 {
     TawnHall,
     MageTower,
-    Crusible,
+    Crucible,
     TowerOfFire,
     TowerOfIce,
     TowerOfDarkness,
@@ -26,22 +26,29 @@ internal static partial class BuildingKindExtensions
         BuildingKind.TawnHall => Raylib.GetColor(0xe3c268ff),
         BuildingKind.MageTower => Raylib.GetColor(0x7155d9ff),
         BuildingKind.Wall => Raylib.GetColor(0x404040ff),
-        _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
+        _ => Color.Maroon,
     };
 
     public static (int Width, int Height) GetSize(this BuildingKind kind) => kind switch
     {
         BuildingKind.TawnHall => (4, 4),
         BuildingKind.MageTower => (2, 2),
+        BuildingKind.Crucible => (2, 2),
+        BuildingKind.TowerOfFire => (2, 2),
+        BuildingKind.TowerOfIce => (2, 2),
+        BuildingKind.TowerOfDarkness => (2, 2),
+        BuildingKind.TowerOfEarth => (2, 2),
+        BuildingKind.AltarOfFire => (2, 2),
+        BuildingKind.AltarOfIce => (2, 2),
+        BuildingKind.AltarOfDarkness => (2, 2),
+        BuildingKind.AltarOfEarth => (2, 2),
         BuildingKind.Wall => (1, 1),
         _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
     };
 
     public static float GetHp(this BuildingKind kind) => kind switch
     {
-        BuildingKind.TawnHall => 1000.0f,
-        BuildingKind.MageTower => 100.0f,
-        BuildingKind.Wall => 250.0f,
-        _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
+        // TODO: buildings HP
+        _ => 100.0f,
     };
 }

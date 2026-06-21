@@ -6,5 +6,14 @@ namespace BrokenWorld.Core.Buildings;
 //       (эффекты нескольких алтарей стакаются)
 internal sealed class AltarOfFireBuilding : Building
 {
-    public AltarOfFireBuilding(BuildingKind kind, (int X, int Y) position) : base(kind, position) { }
+    public AltarOfFireBuilding((int X, int Y) position) : base(
+        kind: BuildingKind.AltarOfFire,
+        position: position,
+        size: (2, 2),
+        sprite: new()
+    )
+    { }
+
+    public override Money[] UpgradeCost => Constants.AltarOfFireCost;
+    public override float[] MaxHpScaling => Constants.AltarOfFireHp;
 }

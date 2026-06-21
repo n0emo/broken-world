@@ -7,7 +7,6 @@ internal sealed class Button
     public string Text { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
     public bool IsVisible { get; set; } = true;
-    public ButtonStyle Style { get; init; } = new();
 
     public bool Interact()
     {
@@ -28,31 +27,34 @@ internal sealed class Button
 
         if (!IsActive)
         {
-            Raylib.DrawRectangleRec(Bounds, Style.InactiveColor);
+            Raylib.DrawRectangleRec(Bounds, Constants.ButtonInactiveColor);
         }
         else
         {
-            Color color = Style.FillColor;
+            Color color = Constants.ButtonFillColor;
             if (mouseInside && Input.MouseLeftDown)
             {
-                color = Style.PressedColor;
+                color = Constants.ButtonPressedColor;
             }
             else if (mouseInside)
             {
-                color = Style.HoverColor;
+                color = Constants.ButtonHoverColor;
             }
 
             Raylib.DrawRectangleRec(Bounds, color);
         }
 
-        var textWidth = Raylib.MeasureText(Text, Style.FontSize);
-        Raylib.DrawText(
-            Text,
-            (int)Bounds.X + ((int)Bounds.Width - textWidth) / 2,
-            (int)Bounds.Y + ((int)Bounds.Height - Style.FontSize) / 2,
-            Style.FontSize,
-            Color.Black
+        var font = Raylib.GetFontDefault();
+        var textSize = Raylib.MeasureTextEx(font, Text, Constants.RegularFontSize, Constants.TextSpacing);
+        var position = Bounds.Position + (Bounds.Size - textSize) * 0.5f;
+        Raylib.DrawTextEx(
+            font: font,
+            text: Text,
+            position: position,
+            fontSize: Constants.RegularFontSize,
+            spacing: Constants.TextSpacing,
+            tint: Color.Black
         );
-        Raylib.DrawRectangleLinesEx(Bounds, 1, Style.BorderColor);
+        Raylib.DrawRectangleLinesEx(Bounds, Constants.BorderSize, Constants.BorderColor);
     }
 }

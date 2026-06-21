@@ -16,12 +16,141 @@ internal sealed class PreparePhase(GameState gameState) : IState
 
     public PreparePhase() : this(new()) { }
 
+    private bool CanBuildCrucible
+        => Money.CanAfford(_s.Balance, Constants.CrucibleCost[0]);
+
+    private bool CanBuildWall
+        => Money.CanAfford(_s.Balance, Constants.WallCost[0]);
+
+    private bool CanBuildMageTower
+        => Money.CanAfford(_s.Balance, Constants.MageTowerCost[0]);
+
+    private bool CanBuildTowerOfFire
+        => Money.CanAfford(_s.Balance, Constants.TowerOfFireCost[0])
+        && _s.World.Map.Buildings.Any(b => b.Kind == BuildingKind.AltarOfFire);
+
+    private bool CanBuildTowerOfIce
+        => Money.CanAfford(_s.Balance, Constants.TowerOfIceCost[0])
+        && _s.World.Map.Buildings.Any(b => b.Kind == BuildingKind.AltarOfIce);
+
+    private bool CanBuildTowerOfDarkness
+        => Money.CanAfford(_s.Balance, Constants.TowerOfDarknessCost[0])
+        && _s.World.Map.Buildings.Any(b => b.Kind == BuildingKind.AltarOfDarkness);
+
+    private bool CanBuildTowerOfEarth
+        => Money.CanAfford(_s.Balance, Constants.TowerOfEarthCost[0])
+        && _s.World.Map.Buildings.Any(b => b.Kind == BuildingKind.AltarOfEarth);
+
+    private bool CanBuildAltarOfFire
+        => Money.CanAfford(_s.Balance, Constants.AltarOfFireCost[0]);
+
+    private bool CanBuildAltarOfIce
+        => Money.CanAfford(_s.Balance, Constants.AltarOfIceCost[0]);
+
+    private bool CanBuildAltarOfDarkness
+        => Money.CanAfford(_s.Balance, Constants.AltarOfDarknessCost[0]);
+
+    private bool CanBuildAltarOfEarth
+        => Money.CanAfford(_s.Balance, Constants.AltarOfEarthCost[0]);
+
     public IState Frame()
     {
+        foreach (var b in _s.World.Map.Buildings)
+        {
+            b.Hp = b.MaxHp;
+        }
 
-        var ui = new PrepareUi(_selectedBuilding, _s.Balance);
+        var ui = new PrepareUi(
+            _selectedBuilding,
+            _s.Balance,
+            [
+                new(
+                    Kind: BuildingKind.Crucible,
+                    CanBuild: CanBuildCrucible,
+                    Tooltip: "Build Crucible.\n\nIncreases magistones income.",
+                    Icon: new(),
+                    Cost: Constants.CrucibleCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.Wall,
+                    CanBuild: CanBuildWall,
+                    Tooltip: "Build Wall.\n\nProtects your base.",
+                    Icon: new(),
+                    Cost: Constants.WallCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.MageTower,
+                    CanBuild: CanBuildMageTower,
+                    Tooltip: "Build Mage Tower.\n\nShoots magic projectiles.",
+                    Icon: new(),
+                    Cost: Constants.MageTowerCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.TowerOfFire,
+                    CanBuild: CanBuildTowerOfFire,
+                    Tooltip: "Build Tower of Fire.\n\nShoots fire missiles\nsetting enemies on fire.\n\nRequires Altar of Fire",
+                    Icon: new(),
+                    Cost: Constants.TowerOfFireCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.TowerOfIce,
+                    CanBuild: CanBuildTowerOfIce,
+                    Tooltip: "Build Tower of Ice.\n\nShoots ice missiles\nslowing enemies down.\n\nRequires Altar of Ice",
+                    Icon: new(),
+                    Cost: Constants.TowerOfIceCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.TowerOfDarkness,
+                    CanBuild: CanBuildTowerOfDarkness,
+                    Tooltip: "Build Tower of Darkness.\n\nShoots dark lasers\nwhich pierce through.\n\nRequires Altar of Darkness",
+                    Icon: new(),
+                    Cost: Constants.TowerOfDarknessCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.TowerOfEarth,
+                    CanBuild: CanBuildTowerOfEarth,
+                    Tooltip: "Build Tower of Earth.\n\nHeals other buildings.\n\nRequires Altar of Earth",
+                    Icon: new(),
+                    Cost: Constants.TowerOfEarthCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.AltarOfFire,
+                    CanBuild: CanBuildAltarOfFire,
+                    Tooltip: "Build Altar of Fire.\n\nAllows building tower of fire\nand aplifies their's power",
+                    Icon: new(),
+                    Cost: Constants.AltarOfFireCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.AltarOfIce,
+                    CanBuild: CanBuildAltarOfIce,
+                    Tooltip: "Build Altar of Ice.\n\nAllows building tower of ice\nand aplifies their's power",
+                    Icon: new(),
+                    Cost: Constants.AltarOfIceCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.AltarOfDarkness,
+                    CanBuild: CanBuildAltarOfDarkness,
+                    Tooltip: "Build Altar of Darkness.\n\nAllows building tower of darkness\nand aplifies their's power",
+                    Icon: new(),
+                    Cost: Constants.AltarOfDarknessCost[0]
+                ),
+                new(
+                    Kind: BuildingKind.AltarOfEarth,
+                    CanBuild: CanBuildAltarOfEarth,
+                    Tooltip: "Build Altar of Earth.\n\nAllows building tower of earth\nand aplifies their's power",
+                    Icon: new(),
+                    Cost: Constants.AltarOfEarthCost[0]
+                ),
+            ]
+        );
 
         var uiResult = ui.Interact();
+
+        if (uiResult.UpgradeRequested && (_selectedBuilding?.CanUpgrade(_s.Balance) ?? false))
+        {
+            _s.Balance -= _selectedBuilding.UpgradeCost[_selectedBuilding.CurrentLevel];
+            _selectedBuilding.CurrentLevel += 1;
+        }
 
         if (uiResult.StartWaveRequested)
         {
@@ -32,7 +161,10 @@ internal sealed class PreparePhase(GameState gameState) : IState
 
         if (uiResult.DemolishRequested && _selectedBuilding is not null)
         {
-            _s.World.Map.TryRemoveBuilding(_selectedBuilding.Id);
+            if (_s.World.Map.TryRemoveBuilding(_selectedBuilding.Id))
+            {
+                _s.Balance += _selectedBuilding.CumulativeCost * Constants.BuildingSellFactor;
+            }
             _selectedBuilding = null;
         }
 
@@ -115,9 +247,13 @@ internal sealed class PreparePhase(GameState gameState) : IState
 
         if (Input.MouseLeftPressed)
         {
-            if (_s.World.Map.TryPlaceBuilding(kind, (tileX, tileY)) && !Raylib.IsKeyDown(KeyboardKey.LeftShift))
+            var result = _s.World.Map.TryPlaceBuilding(kind, (tileX, tileY));
+            if (result is not null)
             {
-                _placingNewBuilding = null;
+                var cost = result.CumulativeCost;
+                _s.Balance -= cost;
+                if (!Money.CanAfford(_s.Balance, cost) || !Raylib.IsKeyDown(KeyboardKey.LeftShift))
+                    _placingNewBuilding = null;
             }
         }
     }

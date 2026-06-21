@@ -8,21 +8,59 @@ internal abstract class Building
 
     private static int NextId() => Interlocked.Increment(ref IdCounter);
 
-    public Building(BuildingKind kind, (int X, int Y) position)
+    public Building(
+        BuildingKind kind,
+        (int X, int Y) position,
+        (int Width, int Height) size,
+        Sprite sprite
+    )
     {
-        Position = position;
+        Id = NextId();
         Kind = kind;
-        MaxHp = kind.GetHp();
-        Hp = kind.GetHp();
+        Position = position;
+        Size = size;
+        Sprite = sprite;
+        Hp = MaxHpScaling[0];
     }
 
-
-    public int Id { get; init; } = NextId();
-    public Sprite Sprite { get; init; }
-    public (int X, int Y) Position { get; init; }
+    public int Id { get; init; }
     public BuildingKind Kind { get; init; }
+    public (int X, int Y) Position { get; init; }
+    public (int Width, int Height) Size { get; init; }
+    public Sprite Sprite { get; init; }
+
+    public int CurrentLevel
+    {
+        get;
+        set
+        {
+            field = value;
+            Hp = MaxHpScaling[value - 1];
+        }
+    } = 1;
     public bool IsSelected { get; set; } = false;
-    public float MaxHp { get; init; }
+
+    public abstract Money[] UpgradeCost { get; }
+    public abstract float[] MaxHpScaling { get; }
+
+    public Money CumulativeCost
+    {
+        get
+        {
+            Money cost = new();
+            for (int i = 0; i < CurrentLevel; i++)
+            {
+                cost += UpgradeCost[i];
+            }
+            return cost;
+        }
+    }
+
+    public bool CanUpgrade(Money balance)
+        => CurrentLevel < UpgradeCost.Length
+        && Money.CanAfford(balance, UpgradeCost[CurrentLevel]);
+
+    public float MaxHp => MaxHpScaling[CurrentLevel - 1];
 
     public float Hp
     {
@@ -34,12 +72,13 @@ internal abstract class Building
     }
 
     public Color Color => Kind.GetColor();
-    public (int Width, int Height) Size => Kind.GetSize();
+
     public Vector2 WorldPosition => new()
     {
         X = (float)Position.X * Constants.TileSize + (float)Size.Width * Constants.TileSize / 2,
         Y = (float)Position.Y * Constants.TileSize + (float)Size.Height * Constants.TileSize / 2,
     };
+
     public Rectangle Rec => new()
     {
         X = Position.X * Constants.TileSize,
@@ -47,6 +86,7 @@ internal abstract class Building
         Width = Size.Width * Constants.TileSize,
         Height = Size.Height * Constants.TileSize,
     };
+
     public bool IsIntact => Hp > 0;
 
     public void Draw()

@@ -30,16 +30,25 @@ internal sealed class Map
         Height = Height * Constants.TileSize,
     };
 
-    public bool TryPlaceBuilding(BuildingKind kind, (int x, int y) position)
+    public Building? TryPlaceBuilding(BuildingKind kind, (int x, int y) position)
     {
         (int x, int y) = position;
         (int width, int height) = kind.GetSize();
-        if (!RectangleIsFree(x, y, width, height)) return false;
+        if (!RectangleIsFree(x, y, width, height)) return null;
         Building building = kind switch
         {
-            BuildingKind.MageTower => new TowerBuilding(kind, position, new TowerStats(Damage: 2, 500, 2)),
-            BuildingKind.TawnHall => new TawnHallBuilding(kind, position),
-            BuildingKind.Wall => new WallBuilding(kind, position),
+            BuildingKind.TawnHall => new TawnHallBuilding(position),
+            BuildingKind.MageTower => new MageTowerBuilding(position),
+            BuildingKind.Wall => new WallBuilding(position),
+            BuildingKind.Crucible => new CrucibleBuilding(position),
+            BuildingKind.TowerOfFire => new TowerOfFireBuilding(position),
+            BuildingKind.TowerOfIce => new TowerOfIceBuilding(position),
+            BuildingKind.TowerOfDarkness => new TowerOfDarknessBuilding(position),
+            BuildingKind.TowerOfEarth => new TowerOfEarthBuilding(position),
+            BuildingKind.AltarOfFire => new AltarOfFireBuilding(position),
+            BuildingKind.AltarOfIce => new AltarOfIceBuilding(position),
+            BuildingKind.AltarOfDarkness => new AltarOfDarknessBuilding(position),
+            BuildingKind.AltarOfEarth => new AltarOfEarthBuilding(position),
             _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
         };
         Buildings.Add(building);
@@ -54,7 +63,7 @@ internal sealed class Map
 
         BuildingEvent?.Invoke(this, new() { Building = building });
 
-        return true;
+        return building;
     }
 
     public Building? TryGetBuildingOnPoint(Vector2 point)

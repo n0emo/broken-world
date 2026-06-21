@@ -5,5 +5,14 @@ namespace BrokenWorld.Core.Buildings;
 // TODO: Прокачка: увеличение количества камней в конце раунда
 internal sealed class CrucibleBuilding : Building
 {
-    public CrucibleBuilding(BuildingKind kind, (int X, int Y) position) : base(kind, position) { }
+    public CrucibleBuilding((int X, int Y) position) : base(
+        kind: BuildingKind.Crucible,
+        position: position,
+        size: (2, 2),
+        sprite: new()
+    )
+    { }
+
+    public override Money[] UpgradeCost => Constants.CrucibleCost;
+    public override float[] MaxHpScaling => Constants.CrucibleHp;
 }

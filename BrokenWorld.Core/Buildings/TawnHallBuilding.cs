@@ -5,7 +5,14 @@ namespace BrokenWorld.Core.Buildings;
 //       открывает новые здания для постройки (алтари на 2-м уровне)
 internal sealed class TawnHallBuilding : Building
 {
-    public TawnHallBuilding(BuildingKind kind, (int X, int Y) position) : base(kind, position)
-    {
-    }
+    public TawnHallBuilding((int X, int Y) position) : base(
+        kind: BuildingKind.TawnHall,
+        position: position,
+        size: (4, 4),
+        sprite: new()
+    )
+    { }
+
+    public override Money[] UpgradeCost => Constants.TawnHallCost;
+    public override float[] MaxHpScaling => Constants.TawnHallHp;
 }

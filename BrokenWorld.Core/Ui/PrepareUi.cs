@@ -4,108 +4,53 @@ namespace BrokenWorld.Core.Ui;
 
 internal sealed class PrepareUi
 {
-    private record NewBuildingButton(Button Button, BuildingKind Kind);
+    public record NewBuildingDesc(BuildingKind Kind, bool CanBuild, string Tooltip, Sprite Icon, Money Cost);
 
-    private Rectangle _topPanelRec;
-    private readonly List<NewBuildingButton> _buildingButtons = [];
+    private readonly BuildingButton[] _buildingButtons = [];
+    private readonly Button _upgradeButton;
     private readonly Button _demolishButton;
     private readonly Button _startWaveButton;
     private readonly Balance _balance;
+    private readonly Money? _upgradeCost;
 
-    public PrepareUi(Building? selectedBuilding, Money balance)
+    public PrepareUi(Building? selectedBuilding, Money balance, NewBuildingDesc[] buildings)
     {
-        (string Text, BuildingKind Kind)[] buildings = [
-            ("Mage\nTower", BuildingKind.MageTower),
-            ("Wall", BuildingKind.Wall),
-        ];
-        var size = Constants.TopPanelItemSize;
-        var fullWidth = size * buildings.Length + Constants.TopPanelBorderSize * (buildings.Length + 1);
-        var height = size + Constants.TopPanelBorderSize * 2;
-        var panelY = 0;
-        var panelX = (Raylib.GetScreenWidth() - fullWidth) / 2;
+        var buildingsWidth = BuildingsPanelWidth(buildings);
+        var buttonSize = Constants.BuildingButtonSize;
+        var panelSpacing = 2;
 
-        _topPanelRec = new Rectangle(panelX, panelY, fullWidth, height);
+        _buildingButtons = BuildBuildingButtons(buildings);
+        _upgradeButton = BuildUpgradeButton(selectedBuilding, balance, buildingsWidth + panelSpacing + 0 * buttonSize);
+        _demolishButton = BuildDemolishButton(selectedBuilding, buildingsWidth + panelSpacing + 1 * buttonSize);
+        _startWaveButton = BuildStartWaveButton(buildingsWidth + panelSpacing + 2 * buttonSize);
+        _balance = BuildBalance(balance);
 
-
-        for (int i = 0; i < buildings.Length; i++)
+        if (selectedBuilding is not null && selectedBuilding.CurrentLevel < selectedBuilding.UpgradeCost.Length)
         {
-            var x = panelX + (i * size) + i * Constants.TopPanelBorderSize;
-            var button = new Button
-            {
-                Bounds = new Rectangle
-                {
-                    X = x,
-                    Y = panelY,
-                    Width = size + Constants.TopPanelBorderSize * 2,
-                    Height = height,
-                },
-                Text = buildings[i].Text,
-            };
-            _buildingButtons.Add(new NewBuildingButton(button, buildings[i].Kind));
+            _upgradeCost = selectedBuilding.UpgradeCost[selectedBuilding.CurrentLevel];
         }
-
-        _demolishButton = new()
-        {
-            Bounds = new()
-            {
-                X = panelX + fullWidth + 16,
-                Y = panelY,
-                Width = height,
-                Height = height,
-            },
-            Text = "Demolish",
-            IsActive = selectedBuilding is not null && selectedBuilding.Kind != BuildingKind.TawnHall,
-        };
-
-        _startWaveButton = new()
-        {
-            Bounds = new()
-            {
-                X = 0,
-                Y = 0,
-                Width = 100,
-                Height = 50,
-            },
-            Text = "Start Wave",
-            Style = new()
-            {
-                FontSize = 16,
-            }
-        };
-
-        _balance = new()
-        {
-            Bounds = new()
-            {
-                Y = 0,
-                X = Raylib.GetScreenWidth() - 150,
-                Width = 150,
-                Height = 50
-            },
-            Money = balance,
-        };
     }
 
     public PrepareUiResult Interact()
     {
         BuildingKind? placeNewBuilding = null;
-        bool demolishRequested = false;
-        bool startWaveRequested = false;
 
         foreach (var b in _buildingButtons)
         {
-            if (b.Button.Interact())
+            if (b.Interact())
             {
                 placeNewBuilding = b.Kind;
                 break;
             }
         }
 
-        if (_demolishButton.Interact()) demolishRequested = true;
-        if (_startWaveButton.Interact()) startWaveRequested = true;
+        bool upgradeRequested = _upgradeButton.Interact();
+        bool demolishRequested = _demolishButton.Interact();
+        bool startWaveRequested = _startWaveButton.Interact();
 
         return new PrepareUiResult(
             PlaceNewBuilding: placeNewBuilding,
+            UpgradeRequested: upgradeRequested,
             DemolishRequested: demolishRequested,
             StartWaveRequested: startWaveRequested
         );
@@ -113,73 +58,130 @@ internal sealed class PrepareUi
 
     public void Present()
     {
-        Raylib.DrawRectangleRec(_topPanelRec, Constants.TopPanelBackgroundColor);
+        Raylib.DrawRectangle(
+            posX: 0,
+            posY: 0,
+            width: Raylib.GetScreenWidth(),
+            height: 80,
+            color: Color.LightGray
+        );
+        Raylib.DrawRectangle(
+            posX: 0,
+            posY: 80 - (int)Constants.BorderSize,
+            width: Raylib.GetScreenWidth(),
+            height: (int)Constants.BorderSize,
+            color: Constants.BorderColor
+        );
+
         foreach (var b in _buildingButtons)
         {
-            b.Button.Present();
+            b.Present();
         }
+        _upgradeButton.Present();
         _demolishButton.Present();
         _startWaveButton.Present();
         _balance.Present();
+
+        if (_upgradeCost is not null)
+        {
+            Raylib.DrawText(
+                text: $"Upgrade cost: {_upgradeCost}",
+                posX: Raylib.GetScreenWidth() - 390,
+                posY: Constants.BuildingButtonSize,
+                fontSize: (int)Constants.SmallFontSize,
+                color: Color.Black
+            );
+        }
+    }
+
+    private static int BuildingsPanelWidth(NewBuildingDesc[] buildings) => buildings.Length * Constants.BuildingButtonSize;
+    private static int BuildingsPanelHeight(NewBuildingDesc[] buildings) => buildings.Length * Constants.BuildingButtonSize;
+
+    private static BuildingButton[] BuildBuildingButtons(NewBuildingDesc[] buildings)
+    {
+        var buttons = new BuildingButton[buildings.Length];
+
+        for (int i = 0; i < buildings.Length; i++)
+        {
+            buttons[i] = new()
+            {
+                Kind = buildings[i].Kind,
+                Bounds = new()
+                {
+                    X = i * Constants.BuildingButtonSize,
+                    Y = 0,
+                    Width = Constants.BuildingButtonSize,
+                    Height = Constants.BuildingButtonSize,
+                },
+                IsActive = buildings[i].CanBuild,
+                Icon = buildings[i].Icon,
+                Cost = buildings[i].Cost,
+                Tooltip = buildings[i].Tooltip,
+            };
+        }
+
+        return buttons;
+    }
+
+    private static Button BuildUpgradeButton(Building? selectedBuilding, Money balance, int x)
+    {
+        return new()
+        {
+            Bounds = new()
+            {
+                X = x,
+                Y = 0,
+                Width = Constants.BuildingButtonSize,
+                Height = Constants.BuildingButtonSize,
+            },
+            Text = "Level\nUp",
+            IsActive = selectedBuilding?.CanUpgrade(balance) ?? false,
+        };
+    }
+
+    private static Button BuildDemolishButton(Building? selectedBuilding, int x)
+    {
+        return new()
+        {
+            Bounds = new()
+            {
+                X = x,
+                Y = 0,
+                Width = Constants.BuildingButtonSize,
+                Height = Constants.BuildingButtonSize,
+            },
+            Text = "Sell",
+            IsActive = selectedBuilding is not null && selectedBuilding.Kind != BuildingKind.TawnHall,
+        };
+    }
+
+    private static Button BuildStartWaveButton(int x)
+    {
+        return new()
+        {
+            Bounds = new()
+            {
+                X = x,
+                Y = 0,
+                Width = Constants.BuildingButtonSize,
+                Height = Constants.BuildingButtonSize,
+            },
+            Text = "Next\nWave",
+        };
+    }
+
+    private static Balance BuildBalance(Money money)
+    {
+        return new()
+        {
+            Bounds = new()
+            {
+                Y = 0,
+                X = Raylib.GetScreenWidth() - 200,
+                Width = 200,
+                Height = Constants.BuildingButtonSize,
+            },
+            Money = money,
+        };
     }
 }
-
-//     private void TopPanel()
-//     {
-//         var mousePosition = Raylib.GetMousePosition();
-//         var buildingCount = BuildingKind.GetValues().Length;
-//         var size = Constants.TopPanelItemSize;
-//         var fullWidth = size * buildingCount + Constants.TopPanelBorderSize * (buildingCount + 1);
-//         var height = size + Constants.TopPanelBorderSize * 2;
-//         var panelY = 0;
-//         var panelX = (Raylib.GetScreenWidth() - fullWidth) / 2;
-//         Raylib.DrawRectangle(panelX, panelY, fullWidth, height, Constants.TopPanelBackgroundColor);
-//
-//         var names = BuildingKind.GetNames();
-//         var kinds = BuildingKind.GetValues();
-//
-//         for (int i = 0; i < buildingCount; i++)
-//         {
-//             var x = panelX + (i * size) + i * Constants.TopPanelBorderSize;
-//             var button = new Button
-//             {
-//                 Bounds = new Rectangle
-//                 {
-//                     X = x,
-//                     Y = panelY,
-//                     Width = size + Constants.TopPanelBorderSize * 2,
-//                     Height = height,
-//                 },
-//                 Text = names[i],
-//             };
-//             if (button.Interact())
-//             {
-//                 _placingNewBuilding = kinds[i];
-//             }
-//         }
-//
-//         if (_selectedBuilding is BuildingSelection sel)
-//         {
-//             if (BuildingDeleteButton(new()
-//             {
-//                 X = panelX + fullWidth + 16,
-//                 Y = panelY,
-//                 Width = height,
-//                 Height = height,
-//             }))
-//             {
-//                 _map.TryRemoveBuilding(sel.Id);
-//                 _selectedBuilding = null;
-//             }
-//         }
-//     }
-//
-//     private bool BuildingDeleteButton(Rectangle bounds)
-//     {
-//         Button button = new()
-//         {
-//             Bounds = bounds,
-//         };
-//         return button.Interact();
-//     }
-//

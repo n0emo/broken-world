@@ -9,5 +9,14 @@ namespace BrokenWorld.Core.Buildings;
 //       лечения (или радиус),
 internal sealed class TowerOfEarthBuilding : Building
 {
-    public TowerOfEarthBuilding(BuildingKind kind, (int X, int Y) position) : base(kind, position) { }
+    public TowerOfEarthBuilding((int X, int Y) position) : base(
+        kind: BuildingKind.TowerOfEarth,
+        position: position,
+        size: (1, 1),
+        sprite: new()
+    )
+    { }
+
+    public override Money[] UpgradeCost => Constants.TowerOfEarthCost;
+    public override float[] MaxHpScaling => Constants.TowerOfEarthHp;
 }

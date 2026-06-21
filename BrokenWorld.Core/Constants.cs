@@ -2,6 +2,15 @@ namespace BrokenWorld.Core;
 
 internal static class Constants
 {
+    #region Window
+    public static int WindowMinWidth => 1100;
+    public static int WindowMinHeight => 500;
+    #endregion
+
+    #region Basic
+    public static Money StartingMoney => new(500);
+    #endregion
+
     #region Map
     public static int MapWidth => 80;
     public static int MapHeight => 80;
@@ -15,6 +24,22 @@ internal static class Constants
     public static int MapIslandRadius => 8;
     public static int MapHolyRadius => 4;
     public static int MapHolyOffset => 10;
+    #endregion
+
+    #region UI
+    public static float BorderSize => 2.0f;
+    public static Color BorderColor => Color.Black;
+    public static float TextSpacing => 3.0f;
+    public static float SmallFontSize => 14.0f;
+    public static float RegularFontSize => 20.0f;
+
+    public static int BuildingButtonSize => 64;
+    public static float BuildingButtonTooltipPadding => 8;
+    public static Color BuildingButtonTooltipFillColor => Color.Purple;
+    public static Color ButtonFillColor => Color.Purple;
+    public static Color ButtonInactiveColor => Color.DarkPurple;
+    public static Color ButtonHoverColor => Color.Green;
+    public static Color ButtonPressedColor => Color.DarkGreen;
     #endregion
 
     #region Grid
@@ -48,10 +73,12 @@ internal static class Constants
     #endregion
 
     #region BuildingStats
+    public static decimal BuildingSellFactor => 0.5m;
+
     public static Money[] TawnHallCost => [new(), new(1000), new(2000, 50)];
     public static float[] TawnHallHp => [100, 150, 200];
 
-    public static Money[] MageTowerCost => [new(100), new(200), new(300, 50)];
+    public static Money[] MageTowerCost => [new(100), new(200), new(300)];
     public static float[] MageTowerHp => [100, 150, 200];
     public static float[] MageTowerDamage => [1, 2, 3];
     public static float[] MageTowerProjectileSpeed => [200, 250, 300];
@@ -88,13 +115,20 @@ internal static class Constants
     public static float[] TowerOfEarthRange => [2, 3, 4];
     public static float[] TowerOfEarthAttackSpeed => [2, 1, 0.5f];
 
+    public static Money[] TowerOfDarknessCost => [new(100), new(200), new(300, 50)];
+    public static float[] TowerOfDarknessHp => [100, 150, 200];
+    public static float[] TowerOfDarknessHealing => [10, 20, 30];
+    public static float[] TowerOfDarknessSplash => [1, 2, 3];
+    public static float[] TowerOfDarknessRange => [2, 3, 4];
+    public static float[] TowerOfDarknessAttackSpeed => [2, 1, 0.5f];
+
     public static Money[] AltarOfIceCost => [new(100), new(200), new(300, 50)];
     public static float[] AltarOfIceHp => [100, 150, 200];
     public static float[] AltarOfIceRange => [3, 4, 5];
     public static float[] AltarOfIceSlownessBonus => [0.9f, 0.8f, 0.7f];
     public static float[] AltarOfIceSplashBonus => [1.1f, 1.2f, 1.3f];
 
-    public static Money[] AltarOfFireCost => [new(100), new(200), new(300, 50)];
+    public static Money[] AltarOfFireCost => [new(1000, 50), new(200), new(300, 50)];
     public static float[] AltarOfFireHp => [100, 150, 200];
     public static int[] AltarOfFireStacksBonus => [1, 2, 3];
     public static float[] AltarOfFireSplashBonus => [1.1f, 1.2f, 1.3f];
