@@ -8,7 +8,7 @@ internal static class Constants
     #endregion
 
     #region Basic
-    public static Money StartingMoney => new(500, 500);
+    public static Money StartingMoney => new(5000, 5000);
     #endregion
 
     #region Map

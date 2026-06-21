@@ -150,6 +150,11 @@ internal sealed class PreparePhase(GameState gameState) : IState
         {
             _s.Balance -= _selectedBuilding.UpgradeCost[_selectedBuilding.CurrentLevel];
             _selectedBuilding.CurrentLevel += 1;
+            if (_selectedBuilding.Kind == BuildingKind.TawnHall)
+            {
+                _s.World.Map.EnlargeIsland();
+                _s.World.Map.EnlargeIsland();
+            }
         }
 
         if (uiResult.StartWaveRequested)

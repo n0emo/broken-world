@@ -169,6 +169,57 @@ internal sealed class Map
         return minVector;
     }
 
+    public void EnlargeIsland()
+    {
+        Tile[,] newTiles = new Tile[Width, Height];
+
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                newTiles[x, y] = Tiles[x, y];
+            }
+        }
+
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                var tile = Tiles[x, y];
+                if (tile.Kind == TileKind.Grass)
+                {
+                    TryPlaceNewGrass(Tiles, newTiles, x, y - 1);
+                    TryPlaceNewGrass(Tiles, newTiles, x, y - 1);
+                    TryPlaceNewGrass(Tiles, newTiles, x, y + 1);
+                    TryPlaceNewGrass(Tiles, newTiles, x - 1, y - 1);
+                    TryPlaceNewGrass(Tiles, newTiles, x - 1, y);
+                    TryPlaceNewGrass(Tiles, newTiles, x - 1, y + 1);
+                    TryPlaceNewGrass(Tiles, newTiles, x + 1, y - 1);
+                    TryPlaceNewGrass(Tiles, newTiles, x + 1, y);
+                    TryPlaceNewGrass(Tiles, newTiles, x + 1, y + 1);
+                }
+            }
+        }
+
+        PlaceRockBottom(newTiles);
+
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                Tiles[x, y] = newTiles[x, y];
+            }
+        }
+    }
+
+    private static void TryPlaceNewGrass(Tile[,] currentTiles, Tile[,] tiles, int x, int y)
+    {
+        if (x < 0 || x > currentTiles.GetLength(0)) return;
+        if (y < 0 || y > currentTiles.GetLength(1)) return;
+        if (currentTiles[x, y].Kind == TileKind.Grass) return;
+        tiles[x, y] = TileKind.Grass.IntoTile();
+    }
+
     private void DrawTiles()
     {
         for (int col = 0; col < Width; col++)
@@ -254,6 +305,16 @@ internal sealed class Map
         PlaceCircle(tiles, (width - holyOffset, centerY), holyRadius, TileKind.HolyGrass);
         PlaceCircle(tiles, (width - holyOffset, centerY + 1), holyRadius, TileKind.HolyGrass);
 
+        PlaceRockBottom(tiles);
+
+        return tiles;
+    }
+
+    private static void PlaceRockBottom(Tile[,] tiles)
+    {
+        var width = Constants.MapWidth;
+        var height = Constants.MapHeight;
+
         for (int x = 0; x < width - 1; x++)
         {
             for (int y = 0; y < height - 1; y++)
@@ -264,8 +325,6 @@ internal sealed class Map
                 tiles[x, y + 1] = TileKind.RockBottom.IntoTile();
             }
         }
-
-        return tiles;
     }
 
     private static void PlaceCircle(Tile[,] tiles, (int X, int Y) center, int radius, TileKind kind)
