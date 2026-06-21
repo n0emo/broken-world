@@ -14,12 +14,14 @@ internal sealed class ProjectileBullet : Bullet
     private Vector2 _position;
     private readonly Vector2 _velocity;
     private readonly float _damage;
-
+    private float _timeToLive = Constants.ProjectilesTimeToLive;
 
     public override void Update(World world)
     {
+        _timeToLive -= Raylib.GetFrameTime();
         _position += _velocity * Raylib.GetFrameTime();
-        if (_position.X < 0 ||
+        if (_timeToLive < 0 ||
+            _position.X < 0 ||
             _position.X > Constants.MapWidth * Constants.TileSize ||
             _position.Y < 0 ||
             _position.Y > Constants.MapHeight * Constants.TileSize ||
@@ -28,6 +30,7 @@ internal sealed class ProjectileBullet : Bullet
         )
         {
             IsHit = true;
+            return;
         }
 
         switch (Tag)

@@ -9,6 +9,7 @@ internal static class Constants
 
     #region Basic
     public static Money StartingMoney => new(5000, 5000);
+    public static float ProjectilesTimeToLive => 3.0f;
     #endregion
 
     #region Map

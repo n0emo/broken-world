@@ -34,10 +34,14 @@ internal sealed class MageTowerBuilding : Building
 
         if (Target is null) return;
 
+
         if (AttackCooldown == 0)
         {
             AttackCooldown = AttackSpeed;
-            var direction = Vector2.Normalize(Target.Position - WorldPosition);
+            var distance = Vector2.Distance(WorldPosition, Target.Rec.Center);
+            var time = distance / ProjectileSpeed;
+            var target = Target.PredictPosition(time);
+            var direction = Vector2.Normalize(target - WorldPosition);
             var velocity = direction * ProjectileSpeed;
             var bullet = new ProjectileBullet(BulletTag.Friend, WorldPosition, velocity, Damage);
             world.SpawnBullet(bullet);
