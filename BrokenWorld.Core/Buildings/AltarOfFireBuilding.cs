@@ -16,4 +16,7 @@ internal sealed class AltarOfFireBuilding : Building
 
     public override Money[] UpgradeCost => Constants.AltarOfFireCost;
     public override float[] MaxHpScaling => Constants.AltarOfFireHp;
+
+    public int StacksBonus => Constants.AltarOfFireStacksBonus[CurrentLevel - 1];
+    public float SplashBonus => Constants.AltarOfFireSplashBonus[CurrentLevel - 1];
 }

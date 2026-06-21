@@ -6,14 +6,21 @@ namespace BrokenWorld.Core.Enemies;
 internal abstract class Enemy
 {
     protected Vector2 _position;
-    readonly protected Vector2 _size;
-    readonly protected Color _color;
-    readonly protected float _moveSpeed;
+    protected readonly Vector2 _size;
+    protected readonly Color _color;
+    private readonly float _moveSpeed;
     protected Vector2? _spawnTarget;
-    readonly protected float _maxHp;
+    protected readonly float _maxHp;
     protected float _hp;
-    readonly protected float _targetRange;
+    protected readonly float _targetRange;
     protected Building? _target;
+
+    protected float MoveSpeed
+        => _moveSpeed
+         * Effects.SlownessEffect
+         * (Effects.SisterOfBattle ? 1.0f : Constants.SisterOfBattleMoveSpeedBonus);
+
+    protected float AttackSpeedBonus => Effects.SisterOfBattle ? 1.0f : Constants.SisterOfBattleAttackSpeedBonus;
 
     public Enemy(
         Vector2 position,
@@ -33,8 +40,15 @@ internal abstract class Enemy
         _maxHp = maxHp;
         _hp = maxHp;
         _targetRange = targetRange;
+
+        Effects = new();
+        Effects.FireDamageEvent += (_, args) =>
+        {
+            Hp -= args.Damage;
+        };
     }
 
+    public EnemyEffects Effects { get; set; }
 
     public float Hp
     {
@@ -60,9 +74,29 @@ internal abstract class Enemy
         Height = _size.Y,
     };
 
+    public Vector2 PredictPosition(float time)
+    {
+        if (_target is null) return Rec.Center;
+        var velocity = Vector2.Zero;
+        if (_spawnTarget is not null)
+        {
+            velocity = Vector2.Normalize(_spawnTarget.Value - Rec.Center) * MoveSpeed;
+        }
+        else if (Target is not null)
+        {
+            var direction = Vector2.Normalize(Target.WorldPosition - Rec.Center);
+            var distance = Vector2.Distance(Target.WorldPosition, Rec.Center) - _targetRange;
+            if (distance < 0) distance = 0;
+            var willGo = MoveSpeed * time;
+            if (willGo < distance) velocity = direction * MoveSpeed;
+        }
+        return _position + velocity * time;
+    }
+
     public virtual void Update(World world)
     {
         if (!IsAlive) return;
+        Effects.Update();
         if (_spawnTarget is null) MoveTowardsTarget();
         else MoveTowardsSpawnTarget();
     }
@@ -82,7 +116,7 @@ internal abstract class Enemy
         var distance = Vector2.Distance(_position, Target.WorldPosition);
         distance -= _targetRange;
         if (distance < 0) distance = 0;
-        var speed = _moveSpeed * dt;
+        var speed = MoveSpeed * dt;
         if (distance >= speed)
         {
             _position -= angle * speed;
@@ -98,7 +132,7 @@ internal abstract class Enemy
         if (_spawnTarget is null) return;
 
         float dt = Raylib.GetFrameTime();
-        var speed = _moveSpeed * dt;
+        var speed = MoveSpeed * dt;
         var distance = Vector2.Distance(_position, _spawnTarget.Value);
         if (speed > distance) speed = distance;
         if (_spawnTarget.Value == _position)

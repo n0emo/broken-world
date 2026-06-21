@@ -15,4 +15,8 @@ internal sealed class AltarOfIceBuilding : Building
 
     public override Money[] UpgradeCost => Constants.AltarOfIceCost;
     public override float[] MaxHpScaling => Constants.AltarOfIceHp;
+    public float Range => Constants.AltarOfIceRange[CurrentLevel - 1] * Constants.TileSize;
+    public float SplashBonus => Constants.AltarOfIceSplashBonus[CurrentLevel - 1];
+    public float SlownessBonus => Constants.AltarOfIceSlownessBonus[CurrentLevel - 1];
+    public float DurationBonus => Constants.AltarOfIceDurationBonus[CurrentLevel - 1];
 }

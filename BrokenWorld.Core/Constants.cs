@@ -76,7 +76,7 @@ internal static class Constants
     public static decimal BuildingSellFactor => 0.5m;
 
     public static Money[] TawnHallCost => [new(), new(1000), new(2000, 50)];
-    public static float[] TawnHallHp => [100, 150, 200];
+    public static float[] TawnHallHp => [10000, 15000, 20000];
 
     public static Money[] MageTowerCost => [new(100), new(200), new(300)];
     public static float[] MageTowerHp => [100, 150, 200];
@@ -94,18 +94,19 @@ internal static class Constants
     public static float[] TowerOfFireDamage => [1, 2, 3];
     public static float[] TowerOfFireSplash => [1, 2, 3];
     public static float[] TowerOfFireDotDamage => [1, 2, 3];
-    public static float[] TowerOfFireDotStacks => [1, 2, 3];
+    public static int[] TowerOfFireDotStacks => [1, 2, 3];
     public static float[] TowerOfFireProjectileSpeed => [200, 250, 300];
-    public static float[] TowerOfFireRange => [2, 3, 4];
+    public static float[] TowerOfFireRange => [10, 12, 14];
     public static float[] TowerOfFireAttackSpeed => [2, 1, 0.5f];
 
     public static Money[] TowerOfIceCost => [new(100), new(200), new(300, 50)];
     public static float[] TowerOfIceHp => [100, 150, 200];
     public static float[] TowerOfIceDamage => [1, 2, 3];
     public static float[] TowerOfIceSplash => [1, 2, 3];
-    public static float[] TowerOfIceSlowness => [0.9f, 0.8f, 0.7f];
+    public static float[] TowerOfIceSlowness => [0.8f, 0.5f, 0.1f];
+    public static float[] TowerOfIceSlownessDuration => [1f, 2f, 3f];
     public static float[] TowerOfIceProjectileSpeed => [200, 250, 300];
-    public static float[] TowerOfIceRange => [2, 3, 4];
+    public static float[] TowerOfIceRange => [16, 18, 20];
     public static float[] TowerOfIceAttackSpeed => [2, 1, 0.5f];
 
     public static Money[] TowerOfEarthCost => [new(100), new(200), new(300, 50)];
@@ -124,8 +125,9 @@ internal static class Constants
 
     public static Money[] AltarOfIceCost => [new(100), new(200), new(300, 50)];
     public static float[] AltarOfIceHp => [100, 150, 200];
-    public static float[] AltarOfIceRange => [3, 4, 5];
+    public static float[] AltarOfIceRange => [4, 5, 6];
     public static float[] AltarOfIceSlownessBonus => [0.9f, 0.8f, 0.7f];
+    public static float[] AltarOfIceDurationBonus => [0.9f, 0.8f, 0.7f];
     public static float[] AltarOfIceSplashBonus => [1.1f, 1.2f, 1.3f];
 
     public static Money[] AltarOfFireCost => [new(1000, 50), new(200), new(300, 50)];
@@ -149,7 +151,7 @@ internal static class Constants
     #endregion
 
     #region EnemyStats
-    public static float[] PaladinHp => [10, 20, 30];
+    public static float[] PaladinHp => [100, 200, 300];
     public static float[] PaladinDamage => [10, 20, 30];
     public static float PaladinAttackSpeed => 1;
     public static float PaladinAttackRange => 2;
