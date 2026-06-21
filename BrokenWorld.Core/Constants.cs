@@ -115,8 +115,6 @@ internal static class Constants
     #endregion
 
     #region EnemyStats
-    public static int[] EnemyLevelWaves => [3, 6];
-
     public static float[] PaladinHp => [10, 20, 30];
     public static float[] PaladinDamage => [10, 20, 30];
     public static float PaladinAttackSpeed => 1;
@@ -157,7 +155,7 @@ internal static class Constants
     public static float HeavyPaladinAttackRange => 2;
     public static float HeavyPaladinMoveSpeed => 50;
 
-    public static float AnnihilationMachineHp => 1000;
+    public static float AnnihilationMachineHp => 50;
     public static float AnnihilationMachineAttackSpeed => 1;
     public static float AnnihilationMachineAttackRange => 2;
     public static float AnnihilationMachineMoveSpeed => 50;
@@ -170,11 +168,117 @@ internal static class Constants
     public static float SisterOfBattleMoveSpeedBonus => 1.2f;
     public static float SisterOfBattleAttackSpeedBonus => 1.2f;
 
-    public static float HeroOfHeroesHp => 10000;
+    public static float HeroOfHeroesHp => 100;
     public static float HeroOfHeroesAttackSpeed => 1;
     public static float HeroOfHeroesAttackRange => 2;
     public static float HeroOfHeroesMoveSpeed => 50;
     public static float HeroOfHeroesChargeMoveSpeed => 50;
     public static float HeroOfHeroesChargeCooldown => 15;
+    #endregion
+
+    #region Waves
+    public static float MinSpawnTime => 0.1f;
+    public static float MaxSpawnTime => 0.8f;
+
+    public static WaveDesc[] WaveDescs => [
+        // Wave 1
+        new(
+            Reward: new(
+                Magistones: 1,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 2
+        ),
+
+        // Wave 2
+        new(
+            Reward: new(
+                Magistones: 2,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 4
+        ),
+
+        // Wave 3
+        new(
+            Reward: new(
+                Magistones: 3,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 8
+        ),
+
+        // Wave 4
+        new(
+            Reward: new(
+                Magistones: 4,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 8
+        ),
+
+        // Wave 5 (BOSS)
+        new(
+            Reward: new(
+                Magistones: 5,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 8,
+            AnnihilationMachine: true
+
+        ),
+
+        // Wave 6
+        new(
+            Reward: new(
+                Magistones: 100,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 8
+        ),
+
+        // Wave 7
+        new(
+            Reward: new(
+                Magistones: 100,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 8
+        ),
+
+        // Wave 8
+        new(
+            Reward: new(
+                Magistones: 100,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 8
+        ),
+
+        // Wave 9
+        new(
+            Reward: new(
+                Magistones: 100,
+                Emblems: 50
+            ),
+            Level: 1,
+            Paladins: 8
+        ),
+
+        // Wave 9 (Final BOSS)
+        new(
+            Paladins: 8,
+            Level: 1,
+            HeroOfHeroes: true
+        ),
+    ];
     #endregion
 }

@@ -13,8 +13,8 @@ internal class GameState
     };
     public World World { get; set; } = new();
     public int WaveNumber { get; set; } = 1;
-    public int MaxWave { get; set; } = 1;
-    public int Money { get; set; } = 0;
+    public int MaxWave { get; set; } = Constants.WaveDescs.Length;
+    public Money Balance { get; set; } = new();
 
     public void MoveCamera()
     {

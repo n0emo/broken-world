@@ -19,50 +19,13 @@ internal sealed class PreparePhase(GameState gameState) : IState
     public IState Frame()
     {
 
-        var ui = new PrepareUi(_selectedBuilding);
+        var ui = new PrepareUi(_selectedBuilding, _s.Balance);
 
         var uiResult = ui.Interact();
 
         if (uiResult.StartWaveRequested)
         {
-            return new DefensePhase(_s, new EnemyWave(
-                [
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                ],
-                [
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                ],
-                [
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                ],
-                [
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                ]
-            ));
+            return new DefensePhase(_s, EnemyWave.FromDesc(Constants.WaveDescs[_s.WaveNumber - 1]));
         }
 
         if (uiResult.PlaceNewBuilding is BuildingKind kind) _placingNewBuilding = kind;

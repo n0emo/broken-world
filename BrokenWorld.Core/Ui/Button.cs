@@ -1,7 +1,7 @@
 namespace BrokenWorld.Core.Ui;
 
 // TODO: Use Input.cs
-class Button
+internal sealed class Button
 {
     public Rectangle Bounds { get; set; } = new();
     public string Text { get; set; } = string.Empty;

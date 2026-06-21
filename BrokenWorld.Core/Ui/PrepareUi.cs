@@ -10,8 +10,9 @@ internal sealed class PrepareUi
     private readonly List<NewBuildingButton> _buildingButtons = [];
     private readonly Button _demolishButton;
     private readonly Button _startWaveButton;
+    private readonly Balance _balance;
 
-    public PrepareUi(Building? selectedBuilding)
+    public PrepareUi(Building? selectedBuilding, Money balance)
     {
         (string Text, BuildingKind Kind)[] buildings = [
             ("Mage\nTower", BuildingKind.MageTower),
@@ -70,7 +71,18 @@ internal sealed class PrepareUi
             {
                 FontSize = 16,
             }
+        };
 
+        _balance = new()
+        {
+            Bounds = new()
+            {
+                Y = 0,
+                X = Raylib.GetScreenWidth() - 150,
+                Width = 150,
+                Height = 50
+            },
+            Money = balance,
         };
     }
 
@@ -108,6 +120,7 @@ internal sealed class PrepareUi
         }
         _demolishButton.Present();
         _startWaveButton.Present();
+        _balance.Present();
     }
 }
 

@@ -4,16 +4,15 @@ internal sealed class AnnihilationMachineEnemy : Enemy
 {
     public AnnihilationMachineEnemy(
         Vector2 position,
-        Vector2 spawnTarget,
-        int level
+        Vector2 spawnTarget
     ) : base(
         position: position,
         size: new Vector2(1, 1) * Constants.TileSize,
         color: Color.Gold,
-        moveSpeed: Constants.AcolyteMoveSpeed,
+        moveSpeed: Constants.AnnihilationMachineMoveSpeed,
         spawnTarget: spawnTarget,
-        maxHp: Constants.AcolyteHp[level],
-        targetRange: Constants.AcolyteAttackRange
+        maxHp: Constants.AnnihilationMachineHp,
+        targetRange: Constants.AnnihilationMachineAttackRange
     )
     {
     }
