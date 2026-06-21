@@ -3,3 +3,7 @@
 # CS9124: Parameter is captured into the state of the enclosing type and its value is also used to initialize a field, property, or event.
 dotnet_diagnostic.CS9124.severity = none
 
+
+# IDE0290: Use primary constructor
+dotnet_diagnostic.IDE0290.severity = none
+

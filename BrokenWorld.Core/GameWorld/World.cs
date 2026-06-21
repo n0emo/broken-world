@@ -66,7 +66,7 @@ internal sealed class World
     {
         foreach (var enemy in Enemies)
         {
-            enemy.Update();
+            enemy.Update(this);
             SetEnemyTarget(enemy);
         }
 

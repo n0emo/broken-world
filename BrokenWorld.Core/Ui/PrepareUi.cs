@@ -11,21 +11,22 @@ internal sealed class PrepareUi
     private readonly Button _demolishButton;
     private readonly Button _startWaveButton;
 
-    public PrepareUi(bool buildingSelected)
+    public PrepareUi(Building? selectedBuilding)
     {
-        var buildingCount = BuildingKind.GetValues().Length;
+        (string Text, BuildingKind Kind)[] buildings = [
+            ("Mage\nTower", BuildingKind.MageTower),
+            ("Wall", BuildingKind.Wall),
+        ];
         var size = Constants.TopPanelItemSize;
-        var fullWidth = size * buildingCount + Constants.TopPanelBorderSize * (buildingCount + 1);
+        var fullWidth = size * buildings.Length + Constants.TopPanelBorderSize * (buildings.Length + 1);
         var height = size + Constants.TopPanelBorderSize * 2;
         var panelY = 0;
         var panelX = (Raylib.GetScreenWidth() - fullWidth) / 2;
 
         _topPanelRec = new Rectangle(panelX, panelY, fullWidth, height);
 
-        var names = BuildingKind.GetNames();
-        var kinds = BuildingKind.GetValues();
 
-        for (int i = 0; i < buildingCount; i++)
+        for (int i = 0; i < buildings.Length; i++)
         {
             var x = panelX + (i * size) + i * Constants.TopPanelBorderSize;
             var button = new Button
@@ -37,9 +38,9 @@ internal sealed class PrepareUi
                     Width = size + Constants.TopPanelBorderSize * 2,
                     Height = height,
                 },
-                Text = names[i],
+                Text = buildings[i].Text,
             };
-            _buildingButtons.Add(new NewBuildingButton(button, kinds[i]));
+            _buildingButtons.Add(new NewBuildingButton(button, buildings[i].Kind));
         }
 
         _demolishButton = new()
@@ -52,7 +53,7 @@ internal sealed class PrepareUi
                 Height = height,
             },
             Text = "Demolish",
-            IsActive = buildingSelected,
+            IsActive = selectedBuilding is not null && selectedBuilding.Kind != BuildingKind.TawnHall,
         };
 
         _startWaveButton = new()

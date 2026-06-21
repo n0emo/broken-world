@@ -19,7 +19,7 @@ internal sealed class Map
     public Map()
     {
         Tiles = GenerateTiles();
-        TryPlaceBuilding(BuildingKind.TownHall, (Width / 2 - 1, Height / 2 - 1));
+        TryPlaceBuilding(BuildingKind.TawnHall, (Width / 2 - 1, Height / 2 - 1));
     }
 
     public Rectangle Rec => new()
@@ -37,9 +37,8 @@ internal sealed class Map
         if (!RectangleIsFree(x, y, width, height)) return false;
         Building building = kind switch
         {
-            BuildingKind.Arsenal => new ArsenalBuilding(kind, position),
-            BuildingKind.Tower => new TowerBuilding(kind, position, new TowerStats(Damage: 2, 500, 2)),
-            BuildingKind.TownHall => new TownHallBuilding(kind, position),
+            BuildingKind.MageTower => new TowerBuilding(kind, position, new TowerStats(Damage: 2, 500, 2)),
+            BuildingKind.TawnHall => new TawnHallBuilding(kind, position),
             BuildingKind.Wall => new WallBuilding(kind, position),
             _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
         };

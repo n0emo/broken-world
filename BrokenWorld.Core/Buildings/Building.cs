@@ -2,17 +2,27 @@ using BrokenWorld.Core.GameWorld;
 
 namespace BrokenWorld.Core.Buildings;
 
-internal abstract class Building(BuildingKind kind, (int X, int Y) position)
+internal abstract class Building
 {
-    static int IdCounter = 0;
-    static int NextId() => Interlocked.Increment(ref IdCounter);
+    private static int IdCounter = 0;
+
+    private static int NextId() => Interlocked.Increment(ref IdCounter);
+
+    public Building(BuildingKind kind, (int X, int Y) position)
+    {
+        Position = position;
+        Kind = kind;
+        MaxHp = kind.GetHp();
+        Hp = kind.GetHp();
+    }
+
 
     public int Id { get; init; } = NextId();
     public Sprite Sprite { get; init; }
-    public (int X, int Y) Position { get; init; } = position;
-    public BuildingKind Kind { get; init; } = kind;
+    public (int X, int Y) Position { get; init; }
+    public BuildingKind Kind { get; init; }
     public bool IsSelected { get; set; } = false;
-    public float MaxHp { get; init; } = kind.GetHp();
+    public float MaxHp { get; init; }
 
     public float Hp
     {
@@ -21,7 +31,7 @@ internal abstract class Building(BuildingKind kind, (int X, int Y) position)
         {
             field = Math.Clamp(value, 0.0f, MaxHp);
         }
-    } = kind.GetHp();
+    }
 
     public Color Color => Kind.GetColor();
     public (int Width, int Height) Size => Kind.GetSize();

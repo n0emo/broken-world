@@ -7,12 +7,10 @@ namespace BrokenWorld.Core.State;
 
 internal sealed class PreparePhase(GameState gameState) : IState
 {
-    private record struct BuildingSelection(int Id, Rectangle Bounds);
-
     private readonly GameState _s = gameState;
 
     private BuildingKind? _placingNewBuilding = null;
-    private BuildingSelection? _selectedBuilding = null;
+    private Building? _selectedBuilding = null;
 
     private Vector2 MouseWorldPosition => (Raylib.GetMousePosition() / _s.Camera.Zoom) + _s.Camera.Target - _s.Camera.Offset / _s.Camera.Zoom;
 
@@ -21,7 +19,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
     public IState Frame()
     {
 
-        var ui = new PrepareUi(_selectedBuilding.HasValue);
+        var ui = new PrepareUi(_selectedBuilding);
 
         var uiResult = ui.Interact();
 
@@ -33,20 +31,32 @@ internal sealed class PreparePhase(GameState gameState) : IState
                     EnemyKind.Paladin,
                     EnemyKind.Paladin,
                     EnemyKind.Paladin,
-                ],
-                [
                     EnemyKind.Paladin,
                     EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                    EnemyKind.Paladin,
-                ],
-                [
                     EnemyKind.Paladin,
                     EnemyKind.Paladin,
                     EnemyKind.Paladin,
                     EnemyKind.Paladin,
                 ],
                 [
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                ],
+                [
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
+                ],
+                [
+                    EnemyKind.Paladin,
+                    EnemyKind.Paladin,
                     EnemyKind.Paladin,
                     EnemyKind.Paladin,
                     EnemyKind.Paladin,
@@ -59,7 +69,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
 
         if (uiResult.DemolishRequested && _selectedBuilding is not null)
         {
-            _s.World.Map.TryRemoveBuilding(_selectedBuilding.Value.Id);
+            _s.World.Map.TryRemoveBuilding(_selectedBuilding.Id);
             _selectedBuilding = null;
         }
 
@@ -89,7 +99,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
         {
             if (_placingNewBuilding is null && _s.World.Map.TryGetBuildingOnPoint(MouseWorldPosition) is Building b)
             {
-                _selectedBuilding = new(b.Id, b.Rec);
+                _selectedBuilding = b;
             }
             else if (Raylib.CheckCollisionPointRec(MouseWorldPosition, _s.World.Map.Rec))
             {
@@ -152,8 +162,8 @@ internal sealed class PreparePhase(GameState gameState) : IState
     private void DrawBuildingSelection()
     {
         if (_selectedBuilding is null) return;
-        var b = _selectedBuilding.Value;
-        Raylib.DrawRectangleRec(b.Bounds, Constants.SelectedBuildingColor);
-        Raylib.DrawRectangleLinesEx(b.Bounds, 3, Constants.SelectedBuildingBorderColor);
+        var b = _selectedBuilding;
+        Raylib.DrawRectangleRec(b.Rec, Constants.SelectedBuildingColor);
+        Raylib.DrawRectangleLinesEx(b.Rec, 3, Constants.SelectedBuildingBorderColor);
     }
 }

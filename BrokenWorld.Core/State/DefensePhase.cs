@@ -30,7 +30,7 @@ internal sealed class DefensePhase(GameState gameState, EnemyWave wave) : IState
 
     public IState Frame()
     {
-        var townHall = _s.World.Map.Buildings.Find(b => b.Kind == Buildings.BuildingKind.TownHall);
+        var townHall = _s.World.Map.Buildings.Find(b => b.Kind == Buildings.BuildingKind.TawnHall);
         if (townHall is null || !townHall.IsIntact) return new LoseCutscene();
 
         var ui = new DefenseUi
@@ -97,7 +97,21 @@ internal sealed class DefensePhase(GameState gameState, EnemyWave wave) : IState
         var randomPosition = new Vector2((float)Math.Cos(angle) * (float)Math.Sin(angle)) * length;
         var position = spawnPoint + randomPosition;
         var spawnTarget = _s.World.Map.GetClosestGrass(position);
-        var enemy = new Enemy(position, kind.GetStats(), kind.GetAppearance(), spawnTarget);
+        // TODO: Scale level by wave
+        var level = 1;
+        Enemy enemy = kind switch
+        {
+            EnemyKind.Acolyte => new AcolyteEnemy(position, spawnTarget, level),
+            EnemyKind.AnnihilationMachine => new AnnihilationMachineEnemy(position, spawnTarget, level),
+            EnemyKind.HeavyPaladin => new HeavyPaladinEnemy(position, spawnTarget, level),
+            EnemyKind.HeroOfHeroes => new HeroOfHeroesEnemy(position, spawnTarget, level),
+            EnemyKind.HolyHound => new HolyHoundEnemy(position, spawnTarget, level),
+            EnemyKind.HolySister => new HolySisterEnemy(position, spawnTarget, level),
+            EnemyKind.Paladin => new PaladinEnemy(position, spawnTarget, level),
+            EnemyKind.PaladinRammer => new PaladinRammerEnemy(position, spawnTarget, level),
+            EnemyKind.SisterOfBattle => new SisterOfBattleEnemy(position, spawnTarget, level),
+            _ => throw new InvalidOperationException($"Unknown EnemyKind {kind}"),
+        };
         _s.World.Enemies.Add(enemy);
     }
 }

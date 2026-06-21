@@ -7,4 +7,3 @@ internal readonly record struct EnemyStats(
     float MaxHp,
     float AttackRange
 );
-

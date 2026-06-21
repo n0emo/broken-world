@@ -2,13 +2,16 @@ using BrokenWorld.Core.GameWorld;
 
 namespace BrokenWorld.Core.Bullets;
 
-internal abstract class Bullet(BulletTag tag)
+internal abstract class Bullet
 {
-    public BulletTag Tag { get; init; } = tag;
+    public Bullet(BulletTag tag)
+    {
+        Tag = tag;
+    }
 
-    public bool IsHit { get; set; }
+    public BulletTag Tag { get; init; }
+    public bool IsHit { get; set; } = false;
 
     public abstract void Update(World world);
-
     public abstract void Draw();
 }

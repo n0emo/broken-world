@@ -4,12 +4,17 @@ using BrokenWorld.Core.GameWorld;
 
 namespace BrokenWorld.Core.Buildings;
 
-internal sealed class TowerBuilding(BuildingKind kind, (int X, int Y) position, TowerStats stats) : Building(kind, position)
+internal sealed class TowerBuilding : Building
 {
-    public TowerStats Stats { get; init; } = stats;
+    public TowerStats Stats { get; init; }
 
     public Enemy? Target { get; set; } = null;
     public float AttackCooldown { get; set; } = 0.0f;
+
+    public TowerBuilding(BuildingKind kind, (int X, int Y) position, TowerStats stats) : base(kind, position)
+    {
+        Stats = stats;
+    }
 
     public override void Update(World world)
     {

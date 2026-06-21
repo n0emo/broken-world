@@ -1,95 +1,112 @@
 using BrokenWorld.Core.Buildings;
+using BrokenWorld.Core.GameWorld;
 
 namespace BrokenWorld.Core.Enemies;
 
-internal class Enemy(Vector2 position, EnemyStats stats, EnemyAppearance appearance, Vector2 spawnTarget)
+internal abstract class Enemy
 {
-    public EnemyStats Stats { get; init; } = stats;
-    public EnemyAppearance Appearance { get; init; } = appearance;
+    protected Vector2 _position;
+    readonly protected Vector2 _size;
+    readonly protected Color _color;
+    readonly protected float _moveSpeed;
+    protected Vector2? _spawnTarget;
+    readonly protected float _maxHp;
+    protected float _hp;
+    readonly protected float _targetRange;
+    protected Building? _target;
 
-    public Vector2 Position { get; set; } = position;
-    public float Hp { get; set; } = stats.MaxHp;
-    public Building? Target { get; set; } = null;
-    public float AttackCooldown { get; set; } = 0.0f;
-    public Vector2? SpawnTarget { get; set; } = spawnTarget;
+    public Enemy(
+        Vector2 position,
+        Vector2 size,
+        Color color,
+        float moveSpeed,
+        Vector2 spawnTarget,
+        float maxHp,
+        float targetRange
+    )
+    {
+        _position = position;
+        _size = size;
+        _color = color;
+        _spawnTarget = spawnTarget;
+        _moveSpeed = moveSpeed;
+        _maxHp = maxHp;
+        _hp = maxHp;
+        _targetRange = targetRange;
+    }
+
+
+    public float Hp
+    {
+        get => _hp;
+        set => _hp = Math.Clamp(value, 0, _maxHp);
+    }
+
+    public Building? Target
+    {
+        get => _target;
+        set => _target = value;
+    }
 
     public bool IsAlive => Hp > 0;
-    public bool CanAttack => AttackCooldown == 0.0f;
+
+    public Vector2 Position => _position;
+
     public Rectangle Rec => new()
     {
-        X = Position.X - Appearance.Size.Width / 2,
-        Y = Position.Y - Appearance.Size.Height / 2,
-        Width = Appearance.Size.Width,
-        Height = Appearance.Size.Height,
+        X = _position.X - _size.X / 2,
+        Y = _position.Y - _size.Y / 2,
+        Width = _size.X,
+        Height = _size.Y,
     };
 
-    public void Update()
+    public virtual void Update(World world)
     {
         if (!IsAlive) return;
-
-        float dt = Raylib.GetFrameTime();
-
-        AttackCooldown -= dt;
-        if (AttackCooldown < 0) AttackCooldown = 0;
-
-        if (SpawnTarget is null) MoveTowardsTarget();
+        if (_spawnTarget is null) MoveTowardsTarget();
         else MoveTowardsSpawnTarget();
-
-        AttackTarget();
     }
 
-    public void Draw()
+    public virtual void Draw()
     {
-        Appearance.Draw(Position);
-        Raylib.DrawCircleLinesV(Position, Stats.AttackRange, Color.Green);
+        Raylib.DrawRectangleRec(Rec, _color);
     }
 
-    private void MoveTowardsTarget()
+    protected void MoveTowardsTarget()
     {
         if (Target is null) return;
         float dt = Raylib.GetFrameTime();
+        if (_position == Target.WorldPosition) return;
 
-        var angle = Vector2.Normalize(Position - Target.WorldPosition);
-        var distance = Vector2.Distance(Position, Target.WorldPosition);
-        distance -= Stats.AttackRange;
+        var angle = Vector2.Normalize(_position - Target.WorldPosition);
+        var distance = Vector2.Distance(_position, Target.WorldPosition);
+        distance -= _targetRange;
         if (distance < 0) distance = 0;
-        var speed = stats.MoveSpeed * dt;
+        var speed = _moveSpeed * dt;
         if (distance >= speed)
         {
-            Position -= angle * speed;
+            _position -= angle * speed;
         }
         else
         {
-            // Position -= angle * distance;
+            // TODO: Position -= angle * distance;
         }
     }
 
-    private void MoveTowardsSpawnTarget()
+    protected void MoveTowardsSpawnTarget()
     {
-        if (SpawnTarget is null) return;
+        if (_spawnTarget is null) return;
 
         float dt = Raylib.GetFrameTime();
-        var speed = stats.MoveSpeed * dt;
-        var distance = Vector2.Distance(Position, SpawnTarget.Value);
+        var speed = _moveSpeed * dt;
+        var distance = Vector2.Distance(_position, _spawnTarget.Value);
         if (speed > distance) speed = distance;
-        if (SpawnTarget.Value == Position)
+        if (_spawnTarget.Value == _position)
         {
-            SpawnTarget = null;
+            _spawnTarget = null;
             return;
         }
-        var direction = Vector2.Normalize(SpawnTarget.Value - Position) * speed;
-        Position += direction;
-    }
-
-    private void AttackTarget()
-    {
-        if (Target is null) return;
-        if (!CanAttack) return;
-        if (!Raylib.CheckCollisionCircleRec(Position, Stats.AttackRange, Target.Rec)) return;
-
-        AttackCooldown = 1 / Stats.AttackSpeed;
-        Target.Hp -= Stats.Damage;
-
-        if (!Target.IsIntact) Target = null;
+        var direction = Vector2.Normalize(_spawnTarget.Value - _position) * speed;
+        _position += direction;
     }
 }
