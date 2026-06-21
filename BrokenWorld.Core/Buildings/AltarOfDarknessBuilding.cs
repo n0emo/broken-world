@@ -14,4 +14,8 @@ internal sealed class AltarOfDarknessBuilding : Building
 
     public override Money[] UpgradeCost => Constants.AltarOfDarknessCost;
     public override float[] MaxHpScaling => Constants.AltarOfDarknessHp;
+    public float Range => Constants.AltarOfDarknessRange[CurrentLevel - 1] * Constants.TileSize;
+    public float AttackSpeedBonus => Constants.AltarOfDarknessAttackSpeedBonus[CurrentLevel - 1];
+    public float RangeBonus => Constants.AltarOfDarknessRangeBonus[CurrentLevel - 1];
+    public float ProjectileSpeedBonus => Constants.AltarOfDarknessProjectileSpeedBonus[CurrentLevel - 1];
 }

@@ -23,6 +23,7 @@ internal sealed class MageTowerBuilding : Building
     public float AttackSpeed => Constants.MageTowerAttackSpeed[CurrentLevel - 1];
     public float ProjectileSpeed => Constants.MageTowerProjectileSpeed[CurrentLevel - 1];
     public float Damage => Constants.MageTowerDamage[CurrentLevel - 1];
+    public float AttackRange => Constants.MageTowerRange[CurrentLevel - 1] * Constants.TileSize;
 
     public override void Update(World world)
     {
@@ -33,6 +34,7 @@ internal sealed class MageTowerBuilding : Building
         Target = world.GetClosestEnemy(WorldPosition);
 
         if (Target is null) return;
+        if (Vector2.Distance(Target.Rec.Center, WorldPosition) > AttackRange) return;
 
 
         if (AttackCooldown == 0)

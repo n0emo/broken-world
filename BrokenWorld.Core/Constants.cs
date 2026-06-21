@@ -83,7 +83,7 @@ internal static class Constants
     public static float[] MageTowerHp => [100, 150, 200];
     public static float[] MageTowerDamage => [1000, 2000, 3000];
     public static float[] MageTowerProjectileSpeed => [200, 250, 300];
-    public static float[] MageTowerRange => [2, 3, 4];
+    public static float[] MageTowerRange => [3, 4, 5];
     public static float[] MageTowerAttackSpeed => [2, 1, 0.5f];
 
     public static Money[] CrucibleCost => [new(100), new(200), new(300, 50)];
@@ -112,17 +112,16 @@ internal static class Constants
 
     public static Money[] TowerOfEarthCost => [new(100), new(200), new(300, 50)];
     public static float[] TowerOfEarthHp => [100, 150, 200];
-    public static float[] TowerOfEarthHealing => [10, 20, 30];
-    public static float[] TowerOfEarthSplash => [1, 2, 3];
-    public static float[] TowerOfEarthRange => [2, 3, 4];
-    public static float[] TowerOfEarthAttackSpeed => [2, 1, 0.5f];
+    public static float[] TowerOfEarthHealing => [1, 20, 30];
+    public static float[] TowerOfEarthRange => [10, 20, 10];
+    public static float[] TowerOfEarthAttackSpeed => [1, 0.5f, 0.2f];
 
     public static Money[] TowerOfDarknessCost => [new(100), new(200), new(300, 50)];
+    public static float[] TowerOfDarknessDamage => [100.0f, 200.0f, 300f];
     public static float[] TowerOfDarknessHp => [100, 150, 200];
-    public static float[] TowerOfDarknessHealing => [10, 20, 30];
-    public static float[] TowerOfDarknessSplash => [1, 2, 3];
-    public static float[] TowerOfDarknessRange => [2, 3, 4];
+    public static float[] TowerOfDarknessRange => [10, 20, 30];
     public static float[] TowerOfDarknessAttackSpeed => [2, 1, 0.5f];
+    public static float[] TowerOfDarknessProjectileSpeed => [300, 500, 1000];
 
     public static Money[] AltarOfIceCost => [new(100), new(200), new(300, 50)];
     public static float[] AltarOfIceHp => [100, 150, 200];
@@ -139,13 +138,17 @@ internal static class Constants
     public static Money[] AltarOfEarthCost => [new(100), new(200), new(300, 50)];
     public static float[] AltarOfEarthHp => [100, 150, 200];
     public static float[] AltarOfEarthRange => [3, 4, 5];
-    public static float[] AltarOfEarthHealingBonus => [1.1f, 1.2f, 1.3f];
-    public static float[] AltarOfEarthSplashBonus => [1.1f, 1.2f, 1.3f];
+    public static float[] AltarOfEarthHealingBonus => [100.1f, 1.2f, 1.3f];
+    public static float[] AltarOfEarthRangeBonus => [3, 5, 5];
 
     public static Money[] AltarOfDarknessCost => [new(100), new(200), new(300, 50)];
     public static float[] AltarOfDarknessHp => [100, 150, 200];
     public static float[] AltarOfDarknessRange => [3, 4, 5];
     public static float[] AltarOfDarknessLengthBonus => [1.1f, 1.2f, 1.3f];
+    public static float[] AltarOfDarknessAttackSpeedBonus => [1.1f, 1.2f, 1.3f];
+    public static float[] AltarOfDarknessRangeBonus => [1.1f, 1.2f, 1.3f];
+    public static float[] AltarOfDarknessProjectileSpeedBonus => [1.1f, 1.2f, 1.3f];
+
 
     public static Money[] WallCost => [new(100), new(200), new(300, 50)];
     public static float[] WallHp => [100, 150, 200];
@@ -156,7 +159,7 @@ internal static class Constants
     public static float[] PaladinDamage => [10, 20, 30];
     public static float PaladinAttackSpeed => 1;
     public static float PaladinAttackRange => 2;
-    public static float PaladinMoveSpeed => 50;
+    public static float PaladinMoveSpeed => 200;
 
     public static float[] HolySisterHp => [10, 20, 30];
     public static float[] HolySisterHealing => [10, 20, 30];

@@ -14,4 +14,7 @@ internal sealed class AltarOfEarthBuilding : Building
 
     public override Money[] UpgradeCost => Constants.AltarOfEarthCost;
     public override float[] MaxHpScaling => Constants.AltarOfEarthHp;
+    public float Range => Constants.AltarOfEarthRange[CurrentLevel - 1] * Constants.TileSize;
+    public float HealingBonus => Constants.AltarOfEarthHealingBonus[CurrentLevel - 1];
+    public float RangeBonus => Constants.AltarOfEarthRangeBonus[CurrentLevel - 1];
 }
