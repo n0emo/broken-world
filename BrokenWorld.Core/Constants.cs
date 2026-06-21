@@ -8,7 +8,7 @@ internal static class Constants
     #endregion
 
     #region Basic
-    public static Money StartingMoney => new(500);
+    public static Money StartingMoney => new(500, 500);
     #endregion
 
     #region Map
@@ -80,14 +80,14 @@ internal static class Constants
 
     public static Money[] MageTowerCost => [new(100), new(200), new(300)];
     public static float[] MageTowerHp => [100, 150, 200];
-    public static float[] MageTowerDamage => [1, 2, 3];
+    public static float[] MageTowerDamage => [1000, 2000, 3000];
     public static float[] MageTowerProjectileSpeed => [200, 250, 300];
     public static float[] MageTowerRange => [2, 3, 4];
     public static float[] MageTowerAttackSpeed => [2, 1, 0.5f];
 
     public static Money[] CrucibleCost => [new(100), new(200), new(300, 50)];
     public static float[] CrucibleHp => [100, 150, 200];
-    public static float[] CrucibleIncome => [500, 1000, 1500];
+    public static Money[] CrucibleIncome => [new(500), new(1000), new(1500)];
 
     public static Money[] TowerOfFireCost => [new(100), new(200), new(300, 50)];
     public static float[] TowerOfFireHp => [100, 150, 200];

@@ -1,3 +1,4 @@
+using BrokenWorld.Core.Buildings;
 using BrokenWorld.Core.Enemies;
 using BrokenWorld.Core.GameWorld;
 using BrokenWorld.Core.Ui;
@@ -51,6 +52,16 @@ internal sealed class DefensePhase : IState
             {
                 _s.WaveNumber += 1;
                 _s.Balance += _reward;
+
+                var crucibleReward = new Money();
+                foreach (var building in _s.World.Map.Buildings)
+                {
+                    if (building.IsIntact && building is CrucibleBuilding crucible)
+                    {
+                        crucibleReward += crucible.Income;
+                    }
+                }
+                _s.Balance += crucibleReward;
 
                 if (_s.WaveNumber > _s.MaxWave)
                 {
