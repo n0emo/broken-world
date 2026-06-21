@@ -19,14 +19,38 @@ internal sealed class ProjectileBullet : Bullet
     public override void Update(World world)
     {
         _position += _velocity * Raylib.GetFrameTime();
-
-        if (Tag == BulletTag.Friend)
+        if (_position.X < 0 ||
+            _position.X > Constants.MapWidth * Constants.TileSize ||
+            _position.Y < 0 ||
+            _position.Y > Constants.MapHeight * Constants.TileSize ||
+            float.IsNaN(_position.X) ||
+            float.IsNaN(_position.Y)
+        )
         {
-            var closest = world.GetClosestEnemy(_position);
-            if (closest == null) return;
-            if (!Raylib.CheckCollisionCircleRec(_position, 3, closest.Rec)) return;
-            closest.Hp -= _damage;
             IsHit = true;
+        }
+
+        switch (Tag)
+        {
+            case BulletTag.Friend:
+                var closest = world.GetClosestEnemy(_position);
+                if (closest == null) return;
+                if (!Raylib.CheckCollisionCircleRec(_position, 3, closest.Rec)) return;
+                closest.Hp -= _damage;
+                IsHit = true;
+                break;
+
+            case BulletTag.Enemy:
+                foreach (var building in world.Map.Buildings)
+                {
+                    if (!building.IsIntact) continue;
+                    if (!Raylib.CheckCollisionCircleRec(_position, 3, building.Rec)) continue;
+                    building.Hp -= _damage;
+                    IsHit = true;
+                    break;
+                }
+                break;
+
         }
     }
 

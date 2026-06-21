@@ -9,7 +9,7 @@ internal sealed class World
     public readonly Map Map = new();
 
     public List<Enemy> Enemies { get; init; } = [];
-    private readonly List<Bullet> _bullets = [];
+    public List<Bullet> Bullets { get; init; } = [];
 
     public World()
     {
@@ -32,7 +32,7 @@ internal sealed class World
             enemy.Draw();
         }
 
-        foreach (var bullet in _bullets)
+        foreach (var bullet in Bullets)
         {
             bullet.Draw();
         }
@@ -51,7 +51,7 @@ internal sealed class World
 
     public void SpawnBullet(Bullet bullet)
     {
-        _bullets.Add(bullet);
+        Bullets.Add(bullet);
     }
 
     private void UpdateBuildings()
@@ -75,12 +75,12 @@ internal sealed class World
 
     private void UpdateBullets()
     {
-        foreach (var bullet in _bullets)
+        foreach (var bullet in Bullets)
         {
             bullet.Update(this);
         }
 
-        _bullets.RemoveAll(b => b.IsHit);
+        Bullets.RemoveAll(b => b.IsHit);
     }
 
     private void SetEnemyTarget(Enemy enemy)

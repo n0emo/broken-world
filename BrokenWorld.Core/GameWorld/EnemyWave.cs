@@ -25,6 +25,8 @@ internal record EnemyWave(
         if (desc.AnnihilationMachine) boss = EnemyKind.AnnihilationMachine;
         if (desc.HeroOfHeroes) boss = EnemyKind.HeroOfHeroes;
 
-        return new([.. enemies], boss, desc.Level, desc.Reward);
+        var enemiesToSpawn = enemies.Shuffle().ToArray();
+
+        return new(enemiesToSpawn, boss, desc.Level, desc.Reward);
     }
 }

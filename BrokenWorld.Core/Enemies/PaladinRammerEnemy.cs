@@ -1,3 +1,4 @@
+using BrokenWorld.Core.Buildings;
 using BrokenWorld.Core.GameWorld;
 
 namespace BrokenWorld.Core.Enemies;
@@ -5,6 +6,7 @@ namespace BrokenWorld.Core.Enemies;
 internal sealed class PaladinRammerEnemy : Enemy
 {
     private readonly MeleeWeapon _weapon;
+    private readonly int _level = 0;
 
     public PaladinRammerEnemy(
         Vector2 position,
@@ -16,21 +18,29 @@ internal sealed class PaladinRammerEnemy : Enemy
         color: Color.Gold,
         moveSpeed: Constants.PaladinRammerMoveSpeed,
         spawnTarget: spawnTarget,
-        maxHp: Constants.PaladinRammerHp[level],
-        targetRange: Constants.PaladinRammerAttackRange
+        maxHp: Constants.PaladinRammerHp[level - 1],
+        targetRange: Constants.PaladinRammerAttackRange * Constants.TileSize
     )
     {
+        _level = level;
         _weapon = new(
             attackRange: Constants.PaladinRammerAttackRange,
             attackSpeed: Constants.PaladinRammerAttackSpeed,
-            damage: Constants.PaladinRammerDamage[level]
+            damage: 0
         );
     }
 
     public override void Update(World world)
     {
         base.Update(world);
+        var damage = Constants.PaladinRammerDamage[_level - 1];
+        if (Target is WallBuilding) damage *= Constants.PaladinRammerWallBonus;
+        _weapon.Damage = damage;
         _weapon.Update();
-        if (_target is not null) _weapon.AttackBuilidng(_target);
+        if (_target is not null)
+        {
+            _weapon.AttackBuilidng(_target);
+            if (!_target.IsIntact) _target = null;
+        }
     }
 }

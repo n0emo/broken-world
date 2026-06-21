@@ -1,3 +1,5 @@
+using BrokenWorld.Core.GameWorld;
+
 namespace BrokenWorld.Core.Enemies;
 
 internal sealed class FireDamageArgs
@@ -16,14 +18,16 @@ internal sealed class EnemyEffects
     public int FireStacks { get; set; } = 0;
     public float FireStacksTimer { get; set; } = 0.0f;
 
-    public void Update()
+    public void Update(World world, Vector2 position)
     {
-        if (FireStacks > 0) UpdateFireStacks();
+        UpdateFireStacks();
         UpdateSlowness();
+        UpdateSisterOfBattle(world, position);
     }
 
-    public void UpdateFireStacks()
+    private void UpdateFireStacks()
     {
+        if (FireStacks == 0) return;
         FireStacksTimer -= Raylib.GetFrameTime();
         if (FireStacksTimer <= 0)
         {
@@ -39,7 +43,7 @@ internal sealed class EnemyEffects
         }
     }
 
-    public void UpdateSlowness()
+    private void UpdateSlowness()
     {
         SlownessDuration -= Raylib.GetFrameTime();
         if (SlownessDuration <= 0)
@@ -47,5 +51,19 @@ internal sealed class EnemyEffects
             SlownessDuration = 0;
             SlownessEffect = 1;
         }
+    }
+
+    private void UpdateSisterOfBattle(World world, Vector2 position)
+    {
+        var hasSisterOfBattle = false;
+        foreach (var enemy in world.Enemies)
+        {
+            if (enemy is not SisterOfBattleEnemy) continue;
+            var distance = Vector2.Distance(position, enemy.Rec.Center);
+            var radius = Constants.SisterOfBattleMoveSpeedBonus * Constants.TileSize;
+            if (distance > radius) continue;
+            hasSisterOfBattle = true;
+        }
+        SisterOfBattle = hasSisterOfBattle;
     }
 }

@@ -7,7 +7,7 @@ internal sealed class MeleeWeapon
     private Vector2 _position;
     private readonly float _attackRange;
     private readonly float _attackSpeed;
-    private readonly float _damage;
+    private float _damage;
 
     private float _attackCooldown = 0;
 
@@ -23,6 +23,12 @@ internal sealed class MeleeWeapon
     {
         get => _position;
         set => _position = value;
+    }
+
+    public float Damage
+    {
+        get => _damage;
+        set => _damage = value;
     }
 
     private bool CanAttack => _attackCooldown <= 0;

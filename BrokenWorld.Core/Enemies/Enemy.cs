@@ -18,7 +18,7 @@ internal abstract class Enemy
     protected float MoveSpeed
         => _moveSpeed
          * Effects.SlownessEffect
-         * (Effects.SisterOfBattle ? 1.0f : Constants.SisterOfBattleMoveSpeedBonus);
+         * (Effects.SisterOfBattle ? Constants.SisterOfBattleMoveSpeedBonus : 1.0f);
 
     protected float AttackSpeedBonus => Effects.SisterOfBattle ? 1.0f : Constants.SisterOfBattleAttackSpeedBonus;
 
@@ -55,6 +55,8 @@ internal abstract class Enemy
         get => _hp;
         set => _hp = Math.Clamp(value, 0, _maxHp);
     }
+
+    public float MaxHp => _maxHp;
 
     public Building? Target
     {
@@ -95,8 +97,10 @@ internal abstract class Enemy
 
     public virtual void Update(World world)
     {
+        if (!Target?.IsIntact ?? true) Target = null;
+
         if (!IsAlive) return;
-        Effects.Update();
+        Effects.Update(world, Rec.Center);
         if (_spawnTarget is null) MoveTowardsTarget();
         else MoveTowardsSpawnTarget();
     }

@@ -17,7 +17,7 @@ internal sealed class HeavyPaladinEnemy : Enemy
         moveSpeed: Constants.HeavyPaladinMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.HeavyPaladinHp[level],
-        targetRange: Constants.HeavyPaladinAttackRange
+        targetRange: Constants.HeavyPaladinAttackRange * Constants.TileSize
     )
     {
         _weapon = new(
@@ -31,6 +31,10 @@ internal sealed class HeavyPaladinEnemy : Enemy
     {
         base.Update(world);
         _weapon.Update();
-        if (_target is not null) _weapon.AttackBuilidng(_target);
+        if (_target is not null)
+        {
+            _weapon.AttackBuilidng(_target);
+            if (!_target.IsIntact) _target = null;
+        }
     }
 }

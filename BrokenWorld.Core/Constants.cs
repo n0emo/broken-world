@@ -160,8 +160,9 @@ internal static class Constants
     public static float[] HolySisterHp => [10, 20, 30];
     public static float[] HolySisterHealing => [10, 20, 30];
     public static float HolySisterAttackSpeed => 1;
-    public static float HolySisterAttackRange => 2;
+    public static float HolySisterAttackRange => 4;
     public static float HolySisterMoveSpeed => 50;
+    public static float HolySisterTargetRange => 10;
 
     public static float[] PaladinRammerHp => [10, 20, 30];
     public static float[] PaladinRammerDamage => [10, 20, 30];
@@ -175,15 +176,15 @@ internal static class Constants
     public static float HolyHoundAttackSpeed => 1;
     public static float HolyHoundAttackRange => 2;
     public static float HolyHoundMoveSpeed => 50;
-    public static float PaladinRammerWallPenalty => 0.5f;
+    public static float HolyHoundWallPenalty => 0.1f;
 
     public static float[] AcolyteHp => [10, 20, 30];
     public static float[] AcolyteDamage => [10, 20, 30];
+    public static float AcolyteTargetRange => 8;
     public static float AcolyteAttackSpeed => 1;
-    public static float AcolyteAttackRange => 2;
+    public static float AcolyteAttackRange => 10;
     public static float AcolyteMoveSpeed => 50;
-    public static float AcolyteProjectileSpeed => 2;
-    public static float AcolyteProjectileRadius => 2;
+    public static float AcolyteProjectileSpeed => 200;
 
     public static float[] HeavyPaladinHp => [10, 20, 30];
     public static float[] HeavyPaladinDamage => [10, 20, 30];
@@ -201,8 +202,9 @@ internal static class Constants
     public static float SisterOfBattleAttackSpeed => 1;
     public static float SisterOfBattleAttackRange => 2;
     public static float SisterOfBattleMoveSpeed => 50;
-    public static float SisterOfBattleMoveSpeedBonus => 1.2f;
+    public static float SisterOfBattleMoveSpeedBonus => 5f;
     public static float SisterOfBattleAttackSpeedBonus => 1.2f;
+    public static float SisterOfBattleEffectRadius => 10f;
 
     public static float HeroOfHeroesHp => 100;
     public static float HeroOfHeroesAttackSpeed => 1;
@@ -224,7 +226,8 @@ internal static class Constants
                 Emblems: 50
             ),
             Level: 1,
-            Paladins: 2
+            Acolytes: 10,
+            HolySisters: 10
         ),
 
         // Wave 2

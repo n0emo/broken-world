@@ -26,10 +26,12 @@ internal sealed class DefensePhase : IState
     }
 
     private int EnemiesLeft => _s.World.Enemies.Count + _enemiesToSpawn.Count;
+    private int BulletsLeft => _s.World.Bullets.Count;
+    private bool CanProceedToPrepare => EnemiesLeft == 0 && BulletsLeft == 0;
 
     public IState Frame()
     {
-        var townHall = _s.World.Map.Buildings.Find(b => b.Kind == Buildings.BuildingKind.TawnHall);
+        var townHall = _s.World.Map.Buildings.Find(b => b.Kind == BuildingKind.TawnHall);
         if (townHall is null || !townHall.IsIntact) return new LoseCutscene();
 
         var ui = new DefenseUi
@@ -45,7 +47,7 @@ internal sealed class DefensePhase : IState
 
         UpdateSpawn();
 
-        if (EnemiesLeft == 0)
+        if (CanProceedToPrepare)
         {
             _endTimer -= Raylib.GetFrameTime();
             if (_endTimer <= 0)
