@@ -94,6 +94,8 @@ internal sealed class DefensePhase : IState
         Raylib.ClearBackground(Raylib.GetColor(0x0c0a13ff));
 
         Raylib.BeginMode2D(_s.Camera);
+        Console.WriteLine(_s.WaveNumber);
+        Console.WriteLine(_s.World.Bullets.Count);
         _s.World.Draw();
         Raylib.EndMode2D();
 

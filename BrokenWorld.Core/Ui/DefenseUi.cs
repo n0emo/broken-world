@@ -9,6 +9,7 @@ internal sealed class DefenseUi
     private readonly Button _speedX2Button;
     private readonly Button _speedX4Button;
     private readonly Button _speedX8Button;
+    private readonly Button _speedX16Button;
 
     public DefenseUi(int waveNum, int enemiesLeft, Money balance)
     {
@@ -17,10 +18,11 @@ internal sealed class DefenseUi
 
         _balance = BuildBalance(balance);
 
-        _speedX1Button = BuildSpeedButton(3, ">>\nx1");
-        _speedX2Button = BuildSpeedButton(2, ">>\nx2");
-        _speedX4Button = BuildSpeedButton(1, ">>\nx4");
-        _speedX8Button = BuildSpeedButton(0, ">>\nx8");
+        _speedX1Button = BuildSpeedButton(4, ">>\nx1");
+        _speedX2Button = BuildSpeedButton(3, ">>\nx2");
+        _speedX4Button = BuildSpeedButton(2, ">>\nx4");
+        _speedX8Button = BuildSpeedButton(1, ">>\nx8");
+        _speedX16Button = BuildSpeedButton(0, ">>\nx16");
     }
 
 
@@ -31,6 +33,7 @@ internal sealed class DefenseUi
         if (_speedX2Button.Interact()) speed = 2;
         if (_speedX4Button.Interact()) speed = 4;
         if (_speedX8Button.Interact()) speed = 8;
+        if (_speedX16Button.Interact()) speed = 16;
         return new(ChangeGameSpeed: speed);
     }
 
@@ -59,6 +62,7 @@ internal sealed class DefenseUi
         _speedX2Button.Present();
         _speedX4Button.Present();
         _speedX8Button.Present();
+        _speedX16Button.Present();
     }
 
     private static Balance BuildBalance(Money money)
@@ -91,4 +95,3 @@ internal sealed class DefenseUi
         };
     }
 }
-
