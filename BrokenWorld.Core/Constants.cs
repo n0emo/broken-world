@@ -86,9 +86,9 @@ internal static class Constants
     public static float[] MageTowerRange => [4, 5, 6];
     public static float[] MageTowerAttackSpeed => [1, 0.8f, 0.6f];
 
-    public static Money[] CrucibleCost => [new(100), new(50), new(75, 10)];
-    public static float[] CrucibleHp => [20, 30, 40];
-    public static Money[] CrucibleIncome => [new(150), new(200), new(300, 10)];
+    public static Money[] CrucibleCost => [new(200), new(100), new(150, 20)];
+    public static float[] CrucibleHp => [30, 50, 80];
+    public static Money[] CrucibleIncome => [new(300), new(400), new(600, 20)];
 
     public static Money[] TowerOfFireCost => [new(1000), new(1500), new(1500, 50)];
     public static float[] TowerOfFireHp => [300, 400, 500];
@@ -288,7 +288,7 @@ internal static class Constants
             Level: 2,
             Paladins: 10,
             HolySisters: 8,
-            PaladinRammers: 20,
+            PaladinRammers: 15,
             Acolytes: 10
         ),
         // Wave 7
@@ -301,8 +301,8 @@ internal static class Constants
             Paladins: 8,
             HolySisters: 8,
             Acolytes: 20,
-            HeavyPaladins: 20,
-            PaladinRammers: 15
+            HeavyPaladins: 10,
+            PaladinRammers: 10
         ),
         // Wave 8
         new(
@@ -311,8 +311,8 @@ internal static class Constants
                 Emblems: 20
             ),
             Level: 2,
-            HolyHounds: 100,
-            PaladinRammers: 100
+            HolyHounds: 50,
+            PaladinRammers: 50
         ),
         // Wave 9
         new(
