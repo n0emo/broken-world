@@ -95,20 +95,20 @@ internal static class Constants
     public static float[] TowerOfFireHp => [300, 400, 500];
     public static float[] TowerOfFireDamage => [5, 10, 20];
     public static float[] TowerOfFireSplash => [2, 3, 5];
-    public static float[] TowerOfFireDotDamage => [20, 30, 40];
+    public static float[] TowerOfFireDotDamage => [30, 40, 60];
     public static int[] TowerOfFireDotStacks => [1, 2, 3];
     public static float[] TowerOfFireProjectileSpeed => [150, 250, 500];
-    public static float[] TowerOfFireRange => [5, 7, 10];
+    public static float[] TowerOfFireRange => [6, 8, 10];
     public static float[] TowerOfFireAttackSpeed => [1.5f, 1, 0.5f];
 
     public static Money[] TowerOfIceCost => [new(1000), new(1500), new(1500, 50)];
     public static float[] TowerOfIceHp => [300, 400, 500];
     public static float[] TowerOfIceDamage => [5, 10, 15];
-    public static float[] TowerOfIceSplash => [1, 2, 4];
+    public static float[] TowerOfIceSplash => [1, 1.5f, 2.5f];
     public static float[] TowerOfIceSlowness => [0.8f, 0.5f, 0.1f];
     public static float[] TowerOfIceSlownessDuration => [1f, 2f, 3f];
     public static float[] TowerOfIceProjectileSpeed => [300, 450, 600];
-    public static float[] TowerOfIceRange => [6, 8, 10];
+    public static float[] TowerOfIceRange => [5, 7, 9];
     public static float[] TowerOfIceAttackSpeed => [1.5f, 1, 0.5f];
 
     public static Money[] TowerOfEarthCost => [new(1000), new(1500), new(1500, 50)];

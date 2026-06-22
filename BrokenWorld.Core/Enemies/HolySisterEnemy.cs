@@ -31,7 +31,8 @@ internal sealed class HolySisterEnemy : Enemy
     public override void Update(World world)
     {
         base.Update(world);
-        Hp -= Raylib.GetFrameTime() * 0.03f;
+        // Hp -= Raylib.GetFrameTime() * 0.03f;
+        Hp -= Raylib.GetFrameTime() * (MaxHp / 60f);
         _attackCooldown -= Raylib.GetFrameTime();
         if (_attackCooldown < 0) _attackCooldown = 0;
 
