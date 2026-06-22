@@ -19,7 +19,7 @@ internal sealed class HolyHoundEnemy : Enemy
         moveSpeed: Constants.HolyHoundMoveSpeed,
         spawnTarget: spawnTarget,
         animationMap: Assets.Animations.EnemyHolyBeagle,
-        maxHp: Constants.HolyHoundHp[level-1],
+        maxHp: Constants.HolyHoundHp[level - 1],
         targetRange: Constants.HolyHoundAttackRange * Constants.TileSize
     )
     {

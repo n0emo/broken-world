@@ -5,6 +5,10 @@ internal sealed class DefenseUi
     private readonly int _waveNum;
     private readonly int _enemiesLeft;
     private readonly Balance _balance;
+    private readonly Button _speedX1Button;
+    private readonly Button _speedX2Button;
+    private readonly Button _speedX4Button;
+    private readonly Button _speedX8Button;
 
     public DefenseUi(int waveNum, int enemiesLeft, Money balance)
     {
@@ -12,20 +16,49 @@ internal sealed class DefenseUi
         _enemiesLeft = enemiesLeft;
 
         _balance = BuildBalance(balance);
+
+        _speedX1Button = BuildSpeedButton(3, ">>\nx1");
+        _speedX2Button = BuildSpeedButton(2, ">>\nx2");
+        _speedX4Button = BuildSpeedButton(1, ">>\nx4");
+        _speedX8Button = BuildSpeedButton(0, ">>\nx8");
     }
 
 
     public DefenseUiResult Interact()
     {
-        return new();
-
+        int? speed = null;
+        if (_speedX1Button.Interact()) speed = 1;
+        if (_speedX2Button.Interact()) speed = 2;
+        if (_speedX4Button.Interact()) speed = 4;
+        if (_speedX8Button.Interact()) speed = 8;
+        return new(ChangeGameSpeed: speed);
     }
 
     public void Present()
     {
+        Raylib.DrawRectangle(
+            posX: 0,
+            posY: 0,
+            width: Raylib.GetScreenWidth(),
+            height: 80,
+            color: Color.LightGray
+        );
+        Raylib.DrawRectangle(
+            posX: 0,
+            posY: 80 - (int)Constants.BorderSize,
+            width: Raylib.GetScreenWidth(),
+            height: (int)Constants.BorderSize,
+            color: Constants.BorderColor
+        );
+
         string text = $"Wave: {_waveNum}\nEnemies left: {_enemiesLeft}";
-        Raylib.DrawText(text, 10, 10, 32, Color.White);
+        Raylib.DrawText(text, 20, 4, 32, Color.Black);
+
         _balance.Present();
+        _speedX1Button.Present();
+        _speedX2Button.Present();
+        _speedX4Button.Present();
+        _speedX8Button.Present();
     }
 
     private static Balance BuildBalance(Money money)
@@ -40,6 +73,21 @@ internal sealed class DefenseUi
                 Height = Constants.BuildingButtonSize,
             },
             Money = money,
+        };
+    }
+
+    private static Button BuildSpeedButton(int i, string text)
+    {
+        return new()
+        {
+            Bounds = new()
+            {
+                X = Raylib.GetScreenWidth() - i * Constants.BuildingButtonSize - 250,
+                Y = 0,
+                Width = Constants.BuildingButtonSize,
+                Height = Constants.BuildingButtonSize,
+            },
+            Text = text,
         };
     }
 }

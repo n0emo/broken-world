@@ -15,6 +15,7 @@ internal class GameState
     public int WaveNumber { get; set; } = 1;
     public int MaxWave { get; set; } = Constants.WaveDescs.Length;
     public Money Balance { get; set; } = Constants.StartingMoney;
+    public int GameSpeed { get; set; } = 1;
 
     public void MoveCamera()
     {

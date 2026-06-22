@@ -40,12 +40,20 @@ internal sealed class DefensePhase : IState
             enemiesLeft: EnemiesLeft,
             balance: _s.Balance
         );
-        ui.Interact();
+        var result = ui.Interact();
+
+        if (result.ChangeGameSpeed is int speed)
+        {
+            _s.GameSpeed = speed;
+        }
 
         _s.MoveCamera();
-        _s.World.Update();
 
-        UpdateSpawn();
+        for (int i = 0; i < _s.GameSpeed; i++)
+        {
+            _s.World.Update();
+            UpdateSpawn();
+        }
 
         if (CanProceedToPrepare)
         {

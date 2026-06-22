@@ -17,14 +17,14 @@ internal sealed class SisterOfBattleEnemy : Enemy
         moveSpeed: Constants.SisterOfBattleMoveSpeed,
         spawnTarget: spawnTarget,
         animationMap: Assets.Animations.EnemySisterOfBattle,
-        maxHp: Constants.SisterOfBattleHp[level-1],
+        maxHp: Constants.SisterOfBattleHp[level - 1],
         targetRange: Constants.SisterOfBattleAttackRange * Constants.TileSize
     )
     {
         _weapon = new(
             attackRange: Constants.SisterOfBattleAttackRange * Constants.TileSize,
             attackSpeed: Constants.SisterOfBattleAttackSpeed,
-            damage: Constants.SisterOfBattleDamage[level-1]
+            damage: Constants.SisterOfBattleDamage[level - 1]
         );
     }
 

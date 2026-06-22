@@ -17,14 +17,14 @@ internal sealed class PaladinEnemy : Enemy
         moveSpeed: Constants.PaladinMoveSpeed,
         spawnTarget: spawnTarget,
         animationMap: Assets.Animations.EnemyPaladin,
-        maxHp: Constants.PaladinHp[level-1],
+        maxHp: Constants.PaladinHp[level - 1],
         targetRange: Constants.PaladinAttackRange * Constants.TileSize
     )
     {
         _weapon = new(
             attackRange: Constants.PaladinAttackRange * Constants.TileSize,
             attackSpeed: Constants.PaladinAttackSpeed,
-            damage: Constants.PaladinDamage[level-1]
+            damage: Constants.PaladinDamage[level - 1]
         );
     }
 
