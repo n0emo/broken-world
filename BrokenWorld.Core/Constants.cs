@@ -40,7 +40,7 @@ internal static class Constants
     public static Color BuildingButtonTooltipFillColor => Color.Purple;
     public static Color ButtonFillColor => Color.Purple;
     public static Color ButtonInactiveColor => Color.DarkPurple;
-    public static Color ButtonHoverColor => Color.Green;
+    public static Color ButtonHoverColor => Raylib.GetColor(0xa566d1ff);
     public static Color ButtonPressedColor => Color.DarkGreen;
     #endregion
 

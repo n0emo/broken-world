@@ -76,7 +76,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
                 new(
                     Kind: BuildingKind.Wall,
                     CanBuild: CanBuildWall,
-                    Tooltip: $"Build Wall.\n\nProtects your base. Hp: {Constants.WallHp[0]}/{Constants.WallHp[1]}/{Constants.WallHp[2]}",
+                    Tooltip: $"Build Wall.\n\nProtects your base.\n\nHp: {Constants.WallHp[0]}/{Constants.WallHp[1]}/{Constants.WallHp[2]}",
                     Cost: Constants.WallCost[0]
                 ),
                 new(
@@ -113,19 +113,19 @@ internal sealed class PreparePhase(GameState gameState) : IState
                 new(
                     Kind: BuildingKind.AltarOfFire,
                     CanBuild: CanBuildAltarOfFire,
-                    Tooltip: $"Build Altar of Fire.\n\nAllows building tower of fire\nand aplifies their's power.\n\nHp: {Constants.AltarOfFireHp[0]}/{Constants.AltarOfFireHp[1]}/{Constants.AltarOfFireHp[2]}'\nRange: infinite \nSplash bonus: {Constants.AltarOfFireSplashBonus[0]}/{Constants.AltarOfFireSplashBonus[1]}/{Constants.AltarOfFireSplashBonus[2]}\n\nRequires town hall lvl2.",
+                    Tooltip: $"Build Altar of Fire.\n\nAllows building tower of fire\nand aplifies their's power.\n\nHp: {Constants.AltarOfFireHp[0]}/{Constants.AltarOfFireHp[1]}/{Constants.AltarOfFireHp[2]}\nRange: infinite \nSplash bonus: {Constants.AltarOfFireSplashBonus[0]}/{Constants.AltarOfFireSplashBonus[1]}/{Constants.AltarOfFireSplashBonus[2]}\n\nRequires town hall lvl2.",
                     Cost: Constants.AltarOfFireCost[0]
                 ),
                 new(
                     Kind: BuildingKind.AltarOfIce,
                     CanBuild: CanBuildAltarOfIce,
-                    Tooltip: $"Build Altar of Ice.\n\nAllows building tower of ice\nand aplifies their's power\n\nHp: {Constants.AltarOfIceHp[0]}/{Constants.AltarOfIceHp[1]}/{Constants.AltarOfIceHp[2]}'\nRange: {Constants.AltarOfIceRange[0]}/{Constants.AltarOfIceRange[1]}/{Constants.AltarOfIceRange[2]}\nSlowness bonus: {Constants.AltarOfIceSlownessBonus[0]}/{Constants.AltarOfIceSlownessBonus[1]}/{Constants.AltarOfIceSlownessBonus[2]}\nDuration bonus: {Constants.AltarOfIceDurationBonus[0]}/{Constants.AltarOfIceDurationBonus[1]}/{Constants.AltarOfIceDurationBonus[2]}\nSplash bonus: {Constants.AltarOfIceSplashBonus[0]}/{Constants.AltarOfIceSplashBonus[1]}/{Constants.AltarOfIceSplashBonus[2]}\n\nRequires town hall lvl2.",
+                    Tooltip: $"Build Altar of Ice.\n\nAllows building tower of ice\nand aplifies their's power\n\nHp: {Constants.AltarOfIceHp[0]}/{Constants.AltarOfIceHp[1]}/{Constants.AltarOfIceHp[2]}\nRange: {Constants.AltarOfIceRange[0]}/{Constants.AltarOfIceRange[1]}/{Constants.AltarOfIceRange[2]}\nSlowness bonus: {Constants.AltarOfIceSlownessBonus[0]}/{Constants.AltarOfIceSlownessBonus[1]}/{Constants.AltarOfIceSlownessBonus[2]}\nDuration bonus: {Constants.AltarOfIceDurationBonus[0]}/{Constants.AltarOfIceDurationBonus[1]}/{Constants.AltarOfIceDurationBonus[2]}\nSplash bonus: {Constants.AltarOfIceSplashBonus[0]}/{Constants.AltarOfIceSplashBonus[1]}/{Constants.AltarOfIceSplashBonus[2]}\n\nRequires town hall lvl2.",
                     Cost: Constants.AltarOfIceCost[0]
                 ),
                 new(
                     Kind: BuildingKind.AltarOfDarkness,
                     CanBuild: CanBuildAltarOfDarkness,
-                    Tooltip: $"Build Altar of Darkness.\n\nAllows building tower of darkness\nand aplifies their's power\n\nHp: {Constants.AltarOfDarknessHp[0]}/{Constants.AltarOfDarknessHp[1]}/{Constants.AltarOfDarknessHp[2]}'\nRange: {Constants.AltarOfDarknessRange[0]}/{Constants.AltarOfDarknessRange[1]}/{Constants.AltarOfDarknessRange[2]}\nRange bonus: {Constants.AltarOfDarknessRangeBonus[0]}/{Constants.AltarOfDarknessRangeBonus[1]}/{Constants.AltarOfDarknessRangeBonus[2]}\nAttack speed bonus: {Constants.AltarOfDarknessAttackSpeedBonus[0]}/{Constants.AltarOfDarknessAttackSpeedBonus[1]}/{Constants.AltarOfDarknessAttackSpeedBonus[2]}\nProjectile speed bonus: {Constants.AltarOfDarknessProjectileSpeedBonus[0]}/{Constants.AltarOfDarknessProjectileSpeedBonus[1]}/{Constants.AltarOfDarknessProjectileSpeedBonus[2]}\n\nRequires town hall lvl2.",
+                    Tooltip: $"Build Altar of Darkness.\n\nAllows building tower of darkness\nand aplifies their's power\n\nHp: {Constants.AltarOfDarknessHp[0]}/{Constants.AltarOfDarknessHp[1]}/{Constants.AltarOfDarknessHp[2]}\nRange: {Constants.AltarOfDarknessRange[0]}/{Constants.AltarOfDarknessRange[1]}/{Constants.AltarOfDarknessRange[2]}\nRange bonus: {Constants.AltarOfDarknessRangeBonus[0]}/{Constants.AltarOfDarknessRangeBonus[1]}/{Constants.AltarOfDarknessRangeBonus[2]}\nAttack speed bonus: {Constants.AltarOfDarknessAttackSpeedBonus[0]}/{Constants.AltarOfDarknessAttackSpeedBonus[1]}/{Constants.AltarOfDarknessAttackSpeedBonus[2]}\nProjectile speed bonus: {Constants.AltarOfDarknessProjectileSpeedBonus[0]}/{Constants.AltarOfDarknessProjectileSpeedBonus[1]}/{Constants.AltarOfDarknessProjectileSpeedBonus[2]}\n\nRequires town hall lvl2.",
                     Cost: Constants.AltarOfDarknessCost[0]
                 ),
                 new(
