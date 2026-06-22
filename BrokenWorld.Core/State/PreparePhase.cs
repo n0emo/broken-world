@@ -138,6 +138,8 @@ internal sealed class PreparePhase(GameState gameState) : IState
 
         var uiResult = ui.Interact();
 
+        if (uiResult.RestartRequested) return new MainMenu();
+
         if (uiResult.UpgradeRequested && (_selectedBuilding?.CanUpgrade(_s.Balance) ?? false))
         {
             _s.Balance -= _selectedBuilding.UpgradeCost[_selectedBuilding.CurrentLevel];
@@ -183,7 +185,6 @@ internal sealed class PreparePhase(GameState gameState) : IState
         ui.Present();
         Raylib.EndDrawing();
 
-        if (Raylib.IsKeyPressed(KeyboardKey.Backspace)) return new PreparePhase();
         return this;
     }
 

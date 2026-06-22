@@ -1,7 +1,5 @@
-// TODO: Катсцены
 // TODO: Проверить тач интерфейс
 // TODO: Главное меню
-// TODO: Полоска здоровья босса
 // TODO: Выскакивающие цифры урона
 
 namespace BrokenWorld.Core;
@@ -15,7 +13,7 @@ public sealed class Game : IDisposable
     public Game()
     {
         Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
-        Raylib.InitWindow(1600, 900, "Hello World");
+        Raylib.InitWindow(1600, 900, "Dark Magicians Standing Towards Paladins");
         Raylib.SetWindowMinSize(Constants.WindowMinWidth, Constants.WindowMinHeight);
         Raylib.SetExitKey(KeyboardKey.Null);
         Raylib.SetAudioStreamBufferSizeDefault(2048);

@@ -2,23 +2,14 @@ namespace BrokenWorld.Core.State;
 
 internal sealed class LoseCutscene : IState
 {
-    private float _time = 1;
+    private readonly CutsceneState _s = new([
+        new(Assets.Textures.CutsceneDeath, "They broke us before dawn.\nThe Church will call this salvation."),
+        new(Assets.Textures.CutsceneDeath, "There's no one left to call it anything else."),
+    ]);
 
     public IState Frame()
     {
-        _time -= Raylib.GetFrameTime();
-        if (_time < 0) return new MainMenu();
-
-        Raylib.BeginDrawing();
-        Raylib.ClearBackground(Color.RayWhite);
-
-        var fontSize = 64;
-        var text = "You Lose!\nLose cutscene...";
-        var width = Raylib.MeasureText(text, fontSize);
-        Raylib.DrawText(text, (Raylib.GetScreenWidth() - width) / 2, (Raylib.GetScreenHeight() - fontSize) / 2, fontSize, Color.Black);
-
-        Raylib.EndDrawing();
-
+        if (_s.Frame()) return new MainMenu();
         return this;
     }
 }

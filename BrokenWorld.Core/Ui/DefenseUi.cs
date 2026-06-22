@@ -10,6 +10,7 @@ internal sealed class DefenseUi
     private readonly Button _speedX4Button;
     private readonly Button _speedX8Button;
     private readonly Button _speedX16Button;
+    private readonly Button _restartButton;
 
     public DefenseUi(int waveNum, int enemiesLeft, Money balance)
     {
@@ -23,6 +24,7 @@ internal sealed class DefenseUi
         _speedX4Button = BuildSpeedButton(2, ">>\nx4");
         _speedX8Button = BuildSpeedButton(1, ">>\nx8");
         _speedX16Button = BuildSpeedButton(0, ">>\nx16");
+        _restartButton = BuildRestartButton();
     }
 
 
@@ -34,7 +36,8 @@ internal sealed class DefenseUi
         if (_speedX4Button.Interact()) speed = 4;
         if (_speedX8Button.Interact()) speed = 8;
         if (_speedX16Button.Interact()) speed = 16;
-        return new(ChangeGameSpeed: speed);
+        bool restartRequested = _restartButton.Interact();
+        return new(ChangeGameSpeed: speed, RestartRequested: restartRequested);
     }
 
     public void Present()
@@ -63,6 +66,7 @@ internal sealed class DefenseUi
         _speedX4Button.Present();
         _speedX8Button.Present();
         _speedX16Button.Present();
+        _restartButton.Present();
     }
 
     private static Balance BuildBalance(Money money)
@@ -92,6 +96,21 @@ internal sealed class DefenseUi
                 Height = Constants.BuildingButtonSize,
             },
             Text = text,
+        };
+    }
+
+    private static Button BuildRestartButton()
+    {
+        return new()
+        {
+            Bounds = new()
+            {
+                X = 0,
+                Y = Raylib.GetScreenHeight() - 64,
+                Width = 100,
+                Height = 64,
+            },
+            Text = "Restart"
         };
     }
 }

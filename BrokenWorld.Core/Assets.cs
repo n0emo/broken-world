@@ -109,6 +109,13 @@ internal class AssetsTextures
     public Texture2D TileDirt { get; init; } = Raylib.LoadTexture("Assets/Sprites/tile-dirt.png");
     public Texture2D TileGrass { get; init; } = Raylib.LoadTexture("Assets/Sprites/tile-grass.png");
     public Texture2D TileHolyGrass { get; init; } = Raylib.LoadTexture("Assets/Sprites/tile-holy-grass.png");
+
+    public Texture2D CutsceneDeath { get; init; } = Raylib.LoadTexture("Assets/Sprites/cutscene-death.png");
+    public Texture2D CutsceneOpening1 { get; init; } = Raylib.LoadTexture("Assets/Sprites/cutscene-opening-1.png");
+    public Texture2D CutsceneOpening2 { get; init; } = Raylib.LoadTexture("Assets/Sprites/cutscene-opening-2.png");
+    public Texture2D CutsceneOpening3 { get; init; } = Raylib.LoadTexture("Assets/Sprites/cutscene-opening-3.png");
+    public Texture2D CutsceneOpening4 { get; init; } = Raylib.LoadTexture("Assets/Sprites/cutscene-opening-4.png");
+    public Texture2D CutsceneWin { get; init; } = Raylib.LoadTexture("Assets/Sprites/cutscene-win.png");
 }
 
 internal class AssetsSprites

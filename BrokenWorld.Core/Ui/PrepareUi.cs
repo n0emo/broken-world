@@ -10,6 +10,7 @@ internal sealed class PrepareUi
     private readonly Button _upgradeButton;
     private readonly Button _demolishButton;
     private readonly Button _startWaveButton;
+    private readonly Button _restartButton;
     private readonly Balance _balance;
     private readonly Money? _upgradeCost;
 
@@ -24,6 +25,7 @@ internal sealed class PrepareUi
         _demolishButton = BuildDemolishButton(selectedBuilding, buildingsWidth + panelSpacing + 1 * buttonSize);
         _startWaveButton = BuildStartWaveButton(buildingsWidth + panelSpacing + 2 * buttonSize);
         _balance = BuildBalance(balance);
+        _restartButton = BuildRestartButton();
 
         if (selectedBuilding is not null && selectedBuilding.CurrentLevel < selectedBuilding.UpgradeCost.Length)
         {
@@ -47,12 +49,14 @@ internal sealed class PrepareUi
         bool upgradeRequested = _upgradeButton.Interact();
         bool demolishRequested = _demolishButton.Interact();
         bool startWaveRequested = _startWaveButton.Interact();
+        bool restartRequested = _restartButton.Interact();
 
         return new PrepareUiResult(
             PlaceNewBuilding: placeNewBuilding,
             UpgradeRequested: upgradeRequested,
             DemolishRequested: demolishRequested,
-            StartWaveRequested: startWaveRequested
+            StartWaveRequested: startWaveRequested,
+            RestartRequested: restartRequested
         );
     }
 
@@ -81,6 +85,7 @@ internal sealed class PrepareUi
         _demolishButton.Present();
         _startWaveButton.Present();
         _balance.Present();
+        _restartButton.Present();
 
         if (_upgradeCost is not null)
         {
@@ -190,6 +195,21 @@ internal sealed class PrepareUi
                 Height = Constants.BuildingButtonSize,
             },
             Money = money,
+        };
+    }
+
+    private static Button BuildRestartButton()
+    {
+        return new()
+        {
+            Bounds = new()
+            {
+                X = 0,
+                Y = Raylib.GetScreenHeight() - 64,
+                Width = 100,
+                Height = 64,
+            },
+            Text = "Restart"
         };
     }
 }

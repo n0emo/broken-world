@@ -33,6 +33,7 @@ internal static class Constants
     public static float TextSpacing => 3.0f;
     public static float SmallFontSize => 14.0f;
     public static float RegularFontSize => 20.0f;
+    public static float BigFontSize => 32.0f;
 
     public static int BuildingButtonSize => 64;
     public static float BuildingButtonTooltipPadding => 8;
@@ -107,7 +108,7 @@ internal static class Constants
     public static float[] TowerOfIceSlowness => [0.8f, 0.5f, 0.1f];
     public static float[] TowerOfIceSlownessDuration => [1f, 2f, 3f];
     public static float[] TowerOfIceProjectileSpeed => [300, 450, 600];
-    public static float[] TowerOfIceRange => [6, 8, 10 ];
+    public static float[] TowerOfIceRange => [6, 8, 10];
     public static float[] TowerOfIceAttackSpeed => [1.5f, 1, 0.5f];
 
     public static Money[] TowerOfEarthCost => [new(1000), new(1500), new(1500, 50)];

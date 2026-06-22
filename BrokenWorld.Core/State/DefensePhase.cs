@@ -44,6 +44,8 @@ internal sealed class DefensePhase : IState
         );
         var result = ui.Interact();
 
+        if (result.RestartRequested) return new MainMenu();
+
         if (result.ChangeGameSpeed is int speed)
         {
             _s.GameSpeed = speed;
@@ -94,7 +96,6 @@ internal sealed class DefensePhase : IState
         Raylib.ClearBackground(Raylib.GetColor(0x0c0a13ff));
 
         Raylib.BeginMode2D(_s.Camera);
-        Console.WriteLine(_s.WaveNumber);
         _s.World.Draw();
         Raylib.EndMode2D();
 

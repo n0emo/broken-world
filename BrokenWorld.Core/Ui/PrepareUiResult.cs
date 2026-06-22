@@ -6,5 +6,6 @@ internal readonly record struct PrepareUiResult(
     BuildingKind? PlaceNewBuilding,
     bool UpgradeRequested,
     bool DemolishRequested,
-    bool StartWaveRequested
+    bool StartWaveRequested,
+    bool RestartRequested
 );

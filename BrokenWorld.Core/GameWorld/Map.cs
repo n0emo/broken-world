@@ -248,15 +248,16 @@ internal sealed class Map
 
     private void DrawSpawnPoints()
     {
-        DrawSingleSpawnPoint(Constants.LeftSpawnPoint, Constants.MaxSpawnRadius);
-        DrawSingleSpawnPoint(Constants.RightSpawnPoint, Constants.MaxSpawnRadius);
-        DrawSingleSpawnPoint(Constants.TopSpawnPoint, Constants.MaxSpawnRadius);
-        DrawSingleSpawnPoint(Constants.BottomSpawnPoint, Constants.MaxSpawnRadius);
+        DrawSingleSpawnPoint(Constants.LeftSpawnPoint);
+        DrawSingleSpawnPoint(Constants.RightSpawnPoint);
+        DrawSingleSpawnPoint(Constants.TopSpawnPoint);
+        DrawSingleSpawnPoint(Constants.BottomSpawnPoint);
     }
 
-    private void DrawSingleSpawnPoint(Vector2 position, float radius)
+    private void DrawSingleSpawnPoint(Vector2 position)
     {
-        Raylib.DrawCircleV(position, radius, Color.Gold);
+        var sprite = Assets.Sprites.IconEmblem with { Position = position - Vector2.One * Constants.TileSize, Scale = 2 };
+        sprite.Draw();
     }
 
     private static Tile[,] GenerateTiles()
