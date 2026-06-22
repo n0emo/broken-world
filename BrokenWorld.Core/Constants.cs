@@ -22,7 +22,7 @@ internal static class Constants
     public static Vector2 TopSpawnPoint => new Vector2(MapCenter.X + 1, MapHolyOffset + 1) * TileSize;
     public static Vector2 BottomSpawnPoint => new Vector2(MapCenter.X + 1, MapHeight - MapHolyOffset) * TileSize;
     public static float MaxSpawnRadius => TileSize * 0.7f;
-    public static int MapIslandRadius => 8;
+    public static int MapIslandRadius => 6;
     public static int MapHolyRadius => 4;
     public static int MapHolyOffset => 10;
     #endregion
@@ -79,16 +79,16 @@ internal static class Constants
     public static Money[] TownHallCost => [new(), new(1000), new(2000, 50)];
     public static float[] TownHallHp => [10, 15000, 20000];
 
-    public static Money[] MageTowerCost => [new(200), new(50), new(100)];
+    public static Money[] MageTowerCost => [new(200), new(100), new(150)];
     public static float[] MageTowerHp => [100, 150, 200];
-    public static float[] MageTowerDamage => [2, 4, 8];
+    public static float[] MageTowerDamage => [2, 3, 4];
     public static float[] MageTowerProjectileSpeed => [200, 250, 300];
     public static float[] MageTowerRange => [4, 5, 6];
-    public static float[] MageTowerAttackSpeed => [1, 0.6f, 0.3f];
+    public static float[] MageTowerAttackSpeed => [1, 0.8f, 0.6f];
 
     public static Money[] CrucibleCost => [new(100), new(50), new(75, 10)];
-    public static float[] CrucibleHp => [200, 150, 200];
-    public static Money[] CrucibleIncome => [new(200), new(400), new(400, 10)];
+    public static float[] CrucibleHp => [20, 30, 40];
+    public static Money[] CrucibleIncome => [new(150), new(200), new(300, 10)];
 
     public static Money[] TowerOfFireCost => [new(1000), new(250), new(500, 30)];
     public static float[] TowerOfFireHp => [100, 150, 200];
@@ -123,25 +123,25 @@ internal static class Constants
     public static float[] TowerOfDarknessAttackSpeed => [2, 1, 0.5f];
     public static float[] TowerOfDarknessProjectileSpeed => [300, 500, 1000];
 
-    public static Money[] AltarOfIceCost => [new(1000, 50), new(250), new(500, 30)];
+    public static Money[] AltarOfIceCost => [new(1000, 15), new(250), new(500, 30)];
     public static float[] AltarOfIceHp => [100, 150, 200];
     public static float[] AltarOfIceRange => [4, 5, 6];
     public static float[] AltarOfIceSlownessBonus => [0.9f, 0.8f, 0.7f];
     public static float[] AltarOfIceDurationBonus => [0.9f, 0.8f, 0.7f];
     public static float[] AltarOfIceSplashBonus => [1.1f, 1.2f, 1.3f];
 
-    public static Money[] AltarOfFireCost => [new(1000, 50), new(200), new(300, 50)];
+    public static Money[] AltarOfFireCost => [new(1000, 15), new(200), new(300, 50)];
     public static float[] AltarOfFireHp => [100, 150, 200];
     public static int[] AltarOfFireStacksBonus => [1, 2, 3];
     public static float[] AltarOfFireSplashBonus => [1.1f, 1.2f, 1.3f];
 
-    public static Money[] AltarOfEarthCost => [new(1000, 50), new(200), new(300, 50)];
+    public static Money[] AltarOfEarthCost => [new(1000, 15), new(200), new(300, 50)];
     public static float[] AltarOfEarthHp => [100, 150, 200];
     public static float[] AltarOfEarthRange => [4, 5, 6];
     public static float[] AltarOfEarthHealingBonus => [100.1f, 1.2f, 1.3f];
     public static float[] AltarOfEarthRangeBonus => [3, 5, 5];
 
-    public static Money[] AltarOfDarknessCost => [new(1000, 50), new(200), new(300, 50)];
+    public static Money[] AltarOfDarknessCost => [new(1000, 15), new(200), new(300, 50)];
     public static float[] AltarOfDarknessHp => [100, 150, 200];
     public static float[] AltarOfDarknessRange => [4, 5, 6];
     public static float[] AltarOfDarknessLengthBonus => [1.1f, 1.2f, 1.3f];
@@ -151,7 +151,7 @@ internal static class Constants
 
 
     public static Money[] WallCost => [new(50), new(25), new(50)];
-    public static float[] WallHp => [100, 150, 200];
+    public static float[] WallHp => [200, 300, 500];
     #endregion
 
     #region EnemyStats
@@ -171,37 +171,37 @@ internal static class Constants
     public static float HolySisterMoveSpeed => 30;
     public static float HolySisterTargetRange => 10;
 
-    public static float[] PaladinRammerHp => [10, 20, 30];
+    public static float[] PaladinRammerHp => [15, 30, 60];
     public static float[] PaladinRammerDamage => [10, 20, 30];
     public static float PaladinRammerAttackSpeed => 1;
-    public static float PaladinRammerAttackRange => 2;
-    public static float PaladinRammerMoveSpeed => 100;
-    public static float PaladinRammerWallBonus => 1.5f;
+    public static float PaladinRammerAttackRange => 1.5f;
+    public static float PaladinRammerMoveSpeed => 70;
+    public static float PaladinRammerWallBonus => 2.5f;
 
     public static float[] HolyHoundHp => [10, 20, 30];
-    public static float[] HolyHoundDamage => [10, 20, 30];
+    public static float[] HolyHoundDamage => [30, 40, 60];
     public static float HolyHoundAttackSpeed => 1;
     public static float HolyHoundAttackRange => 2;
-    public static float HolyHoundMoveSpeed => 50;
+    public static float HolyHoundMoveSpeed => 150;
     public static float HolyHoundWallPenalty => 0.1f;
 
-    public static float[] AcolyteHp => [10, 20, 30];
-    public static float[] AcolyteDamage => [10, 20, 30];
-    public static float AcolyteTargetRange => 8;
-    public static float AcolyteAttackSpeed => 1;
-    public static float AcolyteAttackRange => 10;
+    public static float[] AcolyteHp => [10, 15, 20];
+    public static float[] AcolyteDamage => [5, 10, 20];
+    public static float AcolyteTargetRange => 5;
+    public static float AcolyteAttackSpeed => 0.7f;
+    public static float AcolyteAttackRange => 12;
     public static float AcolyteMoveSpeed => 50;
     public static float AcolyteProjectileSpeed => 200;
 
-    public static float[] HeavyPaladinHp => [10, 20, 30];
+    public static float[] HeavyPaladinHp => [100, 200, 300];
     public static float[] HeavyPaladinDamage => [10, 20, 30];
     public static float HeavyPaladinAttackSpeed => 1;
     public static float HeavyPaladinAttackRange => 2;
     public static float HeavyPaladinMoveSpeed => 50;
 
     public static float AnnihilationMachineHp => 50;
-    public static float AnnihilationMachineAttackSpeed => 0.1f;
-    public static float AnnihilationMachineAttackRange => 3;
+    public static float AnnihilationMachineAttackSpeed => 3;
+    public static float AnnihilationMachineAttackRange => 2;
     public static float AnnihilationMachineMoveSpeed => 50;
 
     public static float[] SisterOfBattleHp => [10, 20, 30];
@@ -222,8 +222,8 @@ internal static class Constants
     #endregion
 
     #region Waves
-    public static float MinSpawnTime => 0.1f;
-    public static float MaxSpawnTime => 0.8f;
+    public static float MinSpawnTime => 0.05f;
+    public static float MaxSpawnTime => 0.2f;
 
     public static WaveDesc[] WaveDescs => [
         // Wave 1
@@ -233,9 +233,9 @@ internal static class Constants
                 Emblems: 0
             ),
             Level: 1,
-            // Paladins: 10
+            Paladins: 10
             // PaladinRammers: 30,
-            HolySisters: 4
+            // HolySisters: 4
         ),
         // Wave 2
         new(
@@ -244,73 +244,72 @@ internal static class Constants
                 Emblems: 0
             ),
             Level: 1,
-            Paladins: 15
+            Paladins: 20
         ),
         // Wave 3
         new(
             Reward: new(
                 Magistones: 100,
-                Emblems: 5
+                Emblems: 10
             ),
             Level: 1,
-            Paladins: 12,
-            HolySisters: 3
+            Paladins: 40,
+            HolySisters: 10
         ),
         // Wave 4
         new(
             Reward: new(
                 Magistones: 150,
-                Emblems: 5
+                Emblems: 10
             ),
             Level: 1,
-            Paladins: 15,
-            HolySisters: 6
+            Paladins: 50,
+            HolySisters: 15
         ),
         // Wave 5
         new(
             Reward: new(
                 Magistones: 200,
-                Emblems: 10
+                Emblems: 20
             ),
             Level: 2,
-            Paladins: 8,
+            Paladins: 15,
             HolySisters: 8,
-            PaladinRammers: 8
+            PaladinRammers: 25
         ),
         // Wave 6
         new(
             Reward: new(
                 Magistones: 200,
-                Emblems: 10
+                Emblems: 20
             ),
             Level: 2,
-            Paladins: 8,
+            Paladins: 10,
             HolySisters: 8,
-            PaladinRammers: 10,
-            Acolytes: 4
+            PaladinRammers: 20,
+            Acolytes: 10
         ),
         // Wave 7
         new(
             Reward: new(
                 Magistones: 250,
-                Emblems: 15
+                Emblems: 20
             ),
             Level: 2,
             Paladins: 8,
             HolySisters: 8,
-            Acolytes: 8,
-            HeavyPaladins: 8
+            Acolytes: 20,
+            HeavyPaladins: 20
         ),
         // Wave 8
         new(
             Reward: new(
                 Magistones: 250,
-                Emblems: 15
+                Emblems: 20
             ),
             Level: 2,
-            Paladins: 10,
-            Acolytes: 10,
-            HeavyPaladins: 10
+            HolyHounds: 30,
+            PaladinRammers: 30
         ),
         // Wave 9
         new(
@@ -340,7 +339,7 @@ internal static class Constants
         new(
             Reward: new(
                 Magistones: 300,
-                Emblems: 50
+                Emblems: 30
             ),
             Level: 3,
             Paladins: 8,
@@ -352,7 +351,7 @@ internal static class Constants
         new(
             Reward: new(
                 Magistones: 300,
-                Emblems: 50
+                Emblems: 30
             ),
             Level: 3,
             SistersOfBattle: 8,
@@ -362,7 +361,7 @@ internal static class Constants
         new(
             Reward: new(
                 Magistones: 300,
-                Emblems: 50
+                Emblems: 30
             ),
             Level: 3,
             Paladins: 8,
@@ -375,7 +374,7 @@ internal static class Constants
         new(
             Reward: new(
                 Magistones: 300,
-                Emblems: 50
+                Emblems: 30
             ),
             Level: 3,
             Paladins: 8,

@@ -145,7 +145,6 @@ internal sealed class PreparePhase(GameState gameState) : IState
             if (_selectedBuilding.Kind == BuildingKind.TawnHall)
             {
                 _s.World.Map.EnlargeIsland();
-                _s.World.Map.EnlargeIsland();
             }
         }
 
