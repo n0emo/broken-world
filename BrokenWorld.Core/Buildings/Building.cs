@@ -12,14 +12,14 @@ internal abstract class Building
         BuildingKind kind,
         (int X, int Y) position,
         (int Width, int Height) size,
-        Sprite sprite
+        Animation animation
     )
     {
         Id = NextId();
         Kind = kind;
         Position = position;
         Size = size;
-        Sprite = sprite;
+        Animation = animation;
         Hp = MaxHpScaling[0];
     }
 
@@ -27,7 +27,7 @@ internal abstract class Building
     public BuildingKind Kind { get; init; }
     public (int X, int Y) Position { get; init; }
     public (int Width, int Height) Size { get; init; }
-    public Sprite Sprite { get; init; }
+    public Animation Animation { get; set; }
 
     public int CurrentLevel
     {
@@ -71,8 +71,6 @@ internal abstract class Building
         }
     }
 
-    public Color Color => Kind.GetColor();
-
     public Vector2 WorldPosition => new()
     {
         X = (float)Position.X * Constants.TileSize + (float)Size.Width * Constants.TileSize / 2,
@@ -91,8 +89,14 @@ internal abstract class Building
 
     public void Draw()
     {
-        Color color = Color;
-        Raylib.DrawRectangleRec(Rec, color);
+        Raylib.DrawEllipse(
+            centerX: (int)WorldPosition.X,
+            centerY: (int)(WorldPosition.Y + Size.Height * Constants.TileSize * 0.38f),
+            radiusH: Size.Width * Constants.TileSize * 0.5f,
+            radiusV: Size.Height * Constants.TileSize * 0.2f,
+            color: Raylib.ColorAlpha(Color.Black, 0.4f)
+        );
+        Animation.Draw();
     }
 
     public void DrawHpBar()
@@ -108,5 +112,9 @@ internal abstract class Building
         Raylib.DrawRectangleRec(hpRec, Color.Green);
     }
 
-    public virtual void Update(World world) { }
+    public virtual void Update(World world)
+    {
+        Animation.Update();
+        Animation.Position = Rec.Position;
+    }
 }

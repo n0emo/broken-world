@@ -10,7 +10,7 @@ internal sealed class AltarOfFireBuilding : Building
         kind: BuildingKind.AltarOfFire,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.AltarOfFire
     )
     { }
 

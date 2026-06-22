@@ -6,7 +6,7 @@ internal sealed class CrucibleBuilding : Building
         kind: BuildingKind.Crucible,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.Crucible
     )
     { }
 

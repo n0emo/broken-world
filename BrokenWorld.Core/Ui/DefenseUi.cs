@@ -11,17 +11,7 @@ internal sealed class DefenseUi
         _waveNum = waveNum;
         _enemiesLeft = enemiesLeft;
 
-        _balance = new()
-        {
-            Bounds = new()
-            {
-                Y = 0,
-                X = Raylib.GetScreenWidth() - 150,
-                Width = 150,
-                Height = 50
-            },
-            Money = balance,
-        };
+        _balance = BuildBalance(balance);
     }
 
 
@@ -37,4 +27,20 @@ internal sealed class DefenseUi
         Raylib.DrawText(text, 10, 10, 32, Color.White);
         _balance.Present();
     }
+
+    private static Balance BuildBalance(Money money)
+    {
+        return new()
+        {
+            Bounds = new()
+            {
+                Y = 0,
+                X = Raylib.GetScreenWidth() - 130,
+                Width = 130,
+                Height = Constants.BuildingButtonSize,
+            },
+            Money = money,
+        };
+    }
 }
+

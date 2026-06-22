@@ -1,5 +1,4 @@
 using BrokenWorld.Core.Buildings;
-using BrokenWorld.Core.Enemies;
 using BrokenWorld.Core.GameWorld;
 using BrokenWorld.Core.Ui;
 
@@ -68,77 +67,66 @@ internal sealed class PreparePhase(GameState gameState) : IState
                     Kind: BuildingKind.Crucible,
                     CanBuild: CanBuildCrucible,
                     Tooltip: "Build Crucible.\n\nIncreases magistones income.",
-                    Icon: new(),
                     Cost: Constants.CrucibleCost[0]
                 ),
                 new(
                     Kind: BuildingKind.Wall,
                     CanBuild: CanBuildWall,
                     Tooltip: "Build Wall.\n\nProtects your base.",
-                    Icon: new(),
                     Cost: Constants.WallCost[0]
                 ),
                 new(
                     Kind: BuildingKind.MageTower,
                     CanBuild: CanBuildMageTower,
                     Tooltip: "Build Mage Tower.\n\nShoots magic projectiles.",
-                    Icon: new(),
                     Cost: Constants.MageTowerCost[0]
                 ),
                 new(
                     Kind: BuildingKind.TowerOfFire,
                     CanBuild: CanBuildTowerOfFire,
                     Tooltip: "Build Tower of Fire.\n\nShoots fire missiles\nsetting enemies on fire.\n\nRequires Altar of Fire",
-                    Icon: new(),
                     Cost: Constants.TowerOfFireCost[0]
                 ),
                 new(
                     Kind: BuildingKind.TowerOfIce,
                     CanBuild: CanBuildTowerOfIce,
                     Tooltip: "Build Tower of Ice.\n\nShoots ice missiles\nslowing enemies down.\n\nRequires Altar of Ice",
-                    Icon: new(),
                     Cost: Constants.TowerOfIceCost[0]
                 ),
                 new(
                     Kind: BuildingKind.TowerOfDarkness,
                     CanBuild: CanBuildTowerOfDarkness,
                     Tooltip: "Build Tower of Darkness.\n\nShoots dark lasers\nwhich pierce through.\n\nRequires Altar of Darkness",
-                    Icon: new(),
                     Cost: Constants.TowerOfDarknessCost[0]
                 ),
                 new(
                     Kind: BuildingKind.TowerOfEarth,
                     CanBuild: CanBuildTowerOfEarth,
                     Tooltip: "Build Tower of Earth.\n\nHeals other buildings.\n\nRequires Altar of Earth",
-                    Icon: new(),
                     Cost: Constants.TowerOfEarthCost[0]
                 ),
                 new(
                     Kind: BuildingKind.AltarOfFire,
                     CanBuild: CanBuildAltarOfFire,
                     Tooltip: "Build Altar of Fire.\n\nAllows building tower of fire\nand aplifies their's power",
-                    Icon: new(),
                     Cost: Constants.AltarOfFireCost[0]
                 ),
                 new(
                     Kind: BuildingKind.AltarOfIce,
                     CanBuild: CanBuildAltarOfIce,
                     Tooltip: "Build Altar of Ice.\n\nAllows building tower of ice\nand aplifies their's power",
-                    Icon: new(),
                     Cost: Constants.AltarOfIceCost[0]
                 ),
                 new(
                     Kind: BuildingKind.AltarOfDarkness,
                     CanBuild: CanBuildAltarOfDarkness,
                     Tooltip: "Build Altar of Darkness.\n\nAllows building tower of darkness\nand aplifies their's power",
-                    Icon: new(),
                     Cost: Constants.AltarOfDarknessCost[0]
                 ),
                 new(
                     Kind: BuildingKind.AltarOfEarth,
                     CanBuild: CanBuildAltarOfEarth,
                     Tooltip: "Build Altar of Earth.\n\nAllows building tower of earth\nand aplifies their's power",
-                    Icon: new(),
                     Cost: Constants.AltarOfEarthCost[0]
                 ),
             ]
@@ -178,7 +166,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
         UpdateBuildingSelection();
 
         Raylib.BeginDrawing();
-        Raylib.ClearBackground(Color.DarkBlue);
+        Raylib.ClearBackground(Raylib.GetColor(0x0c0a13ff));
 
         Raylib.BeginMode2D(_s.Camera);
         _s.World.Draw();
@@ -228,7 +216,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
 
         var size = new Vector2(kind.GetSize().Width * Constants.TileSize, kind.GetSize().Height * Constants.TileSize);
         var pos = MouseWorldPosition - size * 0.5f;
-        Raylib.DrawRectangleV(pos, size, kind.GetColor());
+        var sprite = kind.GetSprite() with { Position = pos };
 
         int tileX = ((int)pos.X + Constants.TileSize / 2) / Constants.TileSize;
         int tileY = ((int)pos.Y + Constants.TileSize / 2) / Constants.TileSize;
@@ -249,6 +237,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
                 Raylib.DrawRectangleLinesEx(rec, 2.0f, color);
             }
         }
+        sprite.Draw();
 
         if (Input.MouseLeftPressed)
         {

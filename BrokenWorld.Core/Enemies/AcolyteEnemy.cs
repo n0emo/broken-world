@@ -20,7 +20,9 @@ internal sealed class AcolyteEnemy : Enemy
         moveSpeed: Constants.AcolyteMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.AcolyteHp[level],
-        targetRange: Constants.AcolyteTargetRange * Constants.TileSize
+        targetRange: Constants.AcolyteTargetRange * Constants.TileSize,
+        animationMap: Assets.Animations.EnemyAcolyte
+
     )
     {
         _level = level;
@@ -48,7 +50,8 @@ internal sealed class AcolyteEnemy : Enemy
                     tag: BulletTag.Enemy,
                     position: Rec.Center,
                     velocity: velocity,
-                    damage: Damage
+                    damage: Damage,
+                    Assets.Sprites.AcolyteProjectile
                 );
                 world.SpawnBullet(bullet);
                 _attackCooldown = Constants.AcolyteAttackSpeed;

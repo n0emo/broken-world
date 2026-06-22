@@ -17,7 +17,8 @@ internal sealed class HeavyPaladinEnemy : Enemy
         moveSpeed: Constants.HeavyPaladinMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.HeavyPaladinHp[level],
-        targetRange: Constants.HeavyPaladinAttackRange * Constants.TileSize
+        targetRange: Constants.HeavyPaladinAttackRange * Constants.TileSize,
+        animationMap: Assets.Animations.EnemyHeavyPaladin
     )
     {
         _weapon = new(

@@ -77,7 +77,7 @@ internal sealed class DefensePhase : IState
         }
 
         Raylib.BeginDrawing();
-        Raylib.ClearBackground(Color.DarkBlue);
+        Raylib.ClearBackground(Raylib.GetColor(0x0c0a13ff));
 
         Raylib.BeginMode2D(_s.Camera);
         _s.World.Draw();

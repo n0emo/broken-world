@@ -17,7 +17,8 @@ internal sealed class SisterOfBattleEnemy : Enemy
         moveSpeed: Constants.SisterOfBattleMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.SisterOfBattleHp[level],
-        targetRange: Constants.SisterOfBattleAttackRange * Constants.TileSize
+        targetRange: Constants.SisterOfBattleAttackRange * Constants.TileSize,
+        animationMap: Assets.Animations.EnemySisterOfBattle
     )
     {
         _weapon = new(

@@ -7,15 +7,32 @@ internal sealed class Balance
 
     public void Present()
     {
-        Raylib.DrawRectangleRec(Bounds, Color.RayWhite);
+        var magistone = Assets.Sprites.IconMagistone with
+        {
+            Position = new Vector2(
+                x: Bounds.X + 5,
+                y: 5
+            ),
+            Scale = 0.8f,
+        };
+        var emblem = Assets.Sprites.IconEmblem with
+        {
+            Position = new Vector2(
+                x: Bounds.X + 5,
+                y: 30
+            ),
+            Scale = 0.8f,
+        };
+
+        Raylib.DrawRectangleRec(Bounds, Color.LightGray);
         Raylib.DrawRectangleLinesEx(Bounds, 2, Color.Black);
 
         var font = Raylib.GetFontDefault();
-        var text = $"Magistones: {Money.Magistones}\nEmblems: {Money.Emblems}";
+        var text = $"{Money.Magistones}\n{Money.Emblems}";
         var fontSize = Constants.RegularFontSize;
         var spacing = 1.0f;
         var size = Raylib.MeasureTextEx(font, text, fontSize, spacing);
-        var position = Bounds.Center - size * 0.5f;
+        var position = new Vector2(Bounds.X + 40, Bounds.Y + (Bounds.Height - size.Y) * 0.5f);
 
         Raylib.DrawTextEx(
             font: font,
@@ -25,5 +42,8 @@ internal sealed class Balance
             spacing: spacing,
             tint: Color.Black
         );
+
+        magistone.Draw();
+        emblem.Draw();
     }
 }

@@ -15,6 +15,7 @@ internal sealed class Map
     public int Height { get; init; } = Constants.MapHeight;
     public Tile[,] Tiles { get; init; }
     public List<Building> Buildings { get; init; } = [];
+    public Sprite Backgorund { get; init; } = Assets.Sprites.Background with { Scale = 4 };
 
     public Map()
     {
@@ -101,6 +102,7 @@ internal sealed class Map
 
     public void Draw()
     {
+        Backgorund.Draw();
         DrawTiles();
         DrawBuildings();
         DrawSpawnPoints();
@@ -210,6 +212,8 @@ internal sealed class Map
                 Tiles[x, y] = newTiles[x, y];
             }
         }
+
+        SetTileSpritePositions(Tiles);
     }
 
     private static void TryPlaceNewGrass(Tile[,] currentTiles, Tile[,] tiles, int x, int y)
@@ -226,11 +230,7 @@ internal sealed class Map
         {
             for (int row = 0; row < Height; row++)
             {
-                int x = col * Constants.TileSize;
-                int y = row * Constants.TileSize;
-                int size = Constants.TileSize;
-
-                Raylib.DrawRectangle(x, y, size, size, Tiles[col, row].Color);
+                Tiles[col, row].Sprite.Draw();
             }
         }
     }
@@ -275,14 +275,14 @@ internal sealed class Map
 
         for (int x = 0; x < width; x++)
         {
-            tiles[x, centerY] = TileKind.Bridge.IntoTile();
-            tiles[x, centerY + 1] = TileKind.Bridge.IntoTile();
+            tiles[x, centerY] = TileKind.BridgeHorizontal.IntoTile();
+            tiles[x, centerY + 1] = TileKind.BridgeHorizontal.IntoTile();
         }
 
         for (int y = 0; y < height; y++)
         {
-            tiles[centerX, y] = TileKind.Bridge.IntoTile();
-            tiles[centerX + 1, y] = TileKind.Bridge.IntoTile();
+            tiles[centerX, y] = TileKind.BridgeVertical.IntoTile();
+            tiles[centerX + 1, y] = TileKind.BridgeVertical.IntoTile();
         }
 
         var radius = Constants.MapIslandRadius;
@@ -306,6 +306,8 @@ internal sealed class Map
         PlaceCircle(tiles, (width - holyOffset, centerY + 1), holyRadius, TileKind.HolyGrass);
 
         PlaceRockBottom(tiles);
+
+        SetTileSpritePositions(tiles);
 
         return tiles;
     }
@@ -342,6 +344,22 @@ internal sealed class Map
 
                 if (circleX * circleX + circleY * circleY > radius * radius) continue;
                 tiles[x, y] = kind.IntoTile();
+            }
+        }
+    }
+
+    private static void SetTileSpritePositions(Tile[,] tiles)
+    {
+        var width = Constants.MapWidth;
+        var height = Constants.MapHeight;
+
+        for (int x = 0; x < width - 1; x++)
+        {
+            for (int y = 0; y < height - 1; y++)
+            {
+                var s = tiles[x, y].Sprite;
+                s = s with { Position = new Vector2(x * Constants.TileSize, y * Constants.TileSize) };
+                tiles[x, y].Sprite = s;
             }
         }
     }

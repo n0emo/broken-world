@@ -21,12 +21,21 @@ internal enum BuildingKind
 
 internal static partial class BuildingKindExtensions
 {
-    public static Color GetColor(this BuildingKind kind) => kind switch
+    public static Sprite GetSprite(this BuildingKind kind) => kind switch
     {
-        BuildingKind.TawnHall => Raylib.GetColor(0xe3c268ff),
-        BuildingKind.MageTower => Raylib.GetColor(0x7155d9ff),
-        BuildingKind.Wall => Raylib.GetColor(0x404040ff),
-        _ => Color.Maroon,
+        BuildingKind.TawnHall => Assets.Sprites.TownHall,
+        BuildingKind.MageTower => Assets.Sprites.MageTower1,
+        BuildingKind.Crucible => Assets.Sprites.Crucible1,
+        BuildingKind.TowerOfFire => Assets.Sprites.TowerOfFire1,
+        BuildingKind.TowerOfIce => Assets.Sprites.TowerOfIce1,
+        BuildingKind.TowerOfDarkness => Assets.Sprites.TowerOfDarkness1,
+        BuildingKind.TowerOfEarth => Assets.Sprites.TowerOfEarth1,
+        BuildingKind.AltarOfFire => Assets.Sprites.AltarOfFire,
+        BuildingKind.AltarOfIce => Assets.Sprites.AltarOfIce,
+        BuildingKind.AltarOfDarkness => Assets.Sprites.AltarOfDarkness,
+        BuildingKind.AltarOfEarth => Assets.Sprites.AltarOfEarth,
+        BuildingKind.Wall => Assets.Sprites.Wall,
+        _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
     };
 
     public static (int Width, int Height) GetSize(this BuildingKind kind) => kind switch

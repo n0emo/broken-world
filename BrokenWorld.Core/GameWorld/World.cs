@@ -41,6 +41,10 @@ internal sealed class World
         {
             b.DrawHpBar();
         }
+        foreach (var enemy in Enemies)
+        {
+            enemy.DrawHpBar();
+        }
     }
 
     public Enemy? GetClosestEnemy(Vector2 position)

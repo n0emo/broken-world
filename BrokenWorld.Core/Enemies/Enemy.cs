@@ -14,6 +14,8 @@ internal abstract class Enemy
     protected float _hp;
     protected readonly float _targetRange;
     protected Building? _target;
+    protected Direction _direction;
+    protected Animation[] _animationMap;
 
     protected float MoveSpeed
         => _moveSpeed
@@ -29,7 +31,8 @@ internal abstract class Enemy
         float moveSpeed,
         Vector2 spawnTarget,
         float maxHp,
-        float targetRange
+        float targetRange,
+        Animation[] animationMap
     )
     {
         _position = position;
@@ -40,6 +43,8 @@ internal abstract class Enemy
         _maxHp = maxHp;
         _hp = maxHp;
         _targetRange = targetRange;
+        _direction = Direction.Right;
+        _animationMap = animationMap;
 
         Effects = new();
         Effects.FireDamageEvent += (_, args) =>
@@ -76,6 +81,8 @@ internal abstract class Enemy
         Height = _size.Y,
     };
 
+    public Animation CurrentAnimation => _animationMap[(int)_direction];
+
     public Vector2 PredictPosition(float time)
     {
         if (_target is null) return Rec.Center;
@@ -97,6 +104,11 @@ internal abstract class Enemy
 
     public virtual void Update(World world)
     {
+        UpdateDirection();
+
+        CurrentAnimation.Position = Rec.Position;
+        CurrentAnimation.Update();
+
         if (!Target?.IsIntact ?? true) Target = null;
 
         if (!IsAlive) return;
@@ -107,7 +119,20 @@ internal abstract class Enemy
 
     public virtual void Draw()
     {
-        Raylib.DrawRectangleRec(Rec, _color);
+        CurrentAnimation.Draw();
+    }
+
+    public void DrawHpBar()
+    {
+        if (Hp == MaxHp) return;
+        var width = (float)Math.Sqrt(MaxHp * Constants.EnemyHpBarFactor);
+        var height = Constants.EnemyHpBarHeight;
+        var x = Rec.X + Rec.Width / 2 - width / 2;
+        var y = Rec.Y + Rec.Height + 5;
+        var hpRec = new Rectangle { X = x, Y = y, Width = width, Height = height };
+        Raylib.DrawRectangleRec(hpRec, Color.Red);
+        hpRec.Width = width * (Hp / MaxHp);
+        Raylib.DrawRectangleRec(hpRec, Color.Yellow);
     }
 
     protected void MoveTowardsTarget()
@@ -146,5 +171,20 @@ internal abstract class Enemy
         }
         var direction = Vector2.Normalize(_spawnTarget.Value - _position) * speed;
         _position += direction;
+    }
+
+    protected void UpdateDirection()
+    {
+        if (Target is null) return;
+        var dx = Target.WorldPosition.X - Rec.Center.X;
+        var dy = Target.WorldPosition.Y - Rec.Center.Y;
+        var angle = MathF.Atan2(dy, dx) * 180 / Math.PI;
+        _direction = angle switch
+        {
+            >= -45 and <= 45 => Direction.Right,
+            >= 45 and <= 135 => Direction.Up,
+            >= -135 and <= -45 => Direction.Down,
+            _ => Direction.Left,
+        };
     }
 }

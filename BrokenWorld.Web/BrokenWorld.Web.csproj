@@ -30,7 +30,7 @@
     <WasmExtraFilesToDeploy Include="$(MSBuildProjectDirectory)/index.html" />
     <WasmExtraFilesToDeploy Include="$(MSBuildProjectDirectory)/main.js" />
     <NativeFileReference Include="$(MSBuildProjectDirectory)/../Lib/web/raylib.a" />
-    <WasmFilesToIncludeInFileSystem Include="../Assets/**/*.*" TargetPath="Resources/%(RecursiveDir)/%(Filename)%(Extension)" />
+    <WasmFilesToIncludeInFileSystem Include="$(MSBuildProjectDirectory)/../Assets/**/*.*" TargetPath="Assets/%(RecursiveDir)/%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>

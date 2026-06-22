@@ -8,7 +8,7 @@ internal sealed class AltarOfDarknessBuilding : Building
         kind: BuildingKind.AltarOfDarkness,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.AltarOfDarkness
     )
     { }
 

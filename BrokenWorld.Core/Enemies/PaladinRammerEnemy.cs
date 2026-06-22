@@ -19,7 +19,8 @@ internal sealed class PaladinRammerEnemy : Enemy
         moveSpeed: Constants.PaladinRammerMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.PaladinRammerHp[level - 1],
-        targetRange: Constants.PaladinRammerAttackRange * Constants.TileSize
+        targetRange: Constants.PaladinRammerAttackRange * Constants.TileSize,
+        animationMap: Assets.Animations.EnemyRammer
     )
     {
         _level = level;

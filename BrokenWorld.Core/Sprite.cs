@@ -16,17 +16,28 @@ internal struct Sprite
 
     public static Sprite LoadImage(string path)
     {
+        return LoadImage(path, Color.White);
+    }
+
+    public static Sprite LoadImage(string path, Color tint)
+    {
         var texture = Raylib.LoadTexture(path);
+        return FromTexture(texture, tint);
+    }
+
+    public static Sprite FromTexture(Texture2D texture, Color tint)
+    {
         return new()
         {
             Texture = texture,
+            Tint = tint,
             Source = new()
             {
                 X = 0,
                 Y = 0,
                 Width = texture.Width,
                 Height = texture.Height,
-            }
+            },
         };
     }
 

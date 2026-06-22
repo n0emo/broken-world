@@ -8,7 +8,7 @@ internal sealed class AltarOfEarthBuilding : Building
         kind: BuildingKind.AltarOfEarth,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.AltarOfEarth
     )
     { }
 

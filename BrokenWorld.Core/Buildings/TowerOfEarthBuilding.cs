@@ -1,4 +1,3 @@
-using BrokenWorld.Core.Bullets;
 using BrokenWorld.Core.GameWorld;
 
 namespace BrokenWorld.Core.Buildings;
@@ -16,7 +15,7 @@ internal sealed class TowerOfEarthBuilding : Building
         kind: BuildingKind.TowerOfEarth,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.TowerOfEarth
     )
     { }
 
@@ -24,11 +23,14 @@ internal sealed class TowerOfEarthBuilding : Building
     public override float[] MaxHpScaling => Constants.TowerOfEarthHp;
     public float AttackCooldown { get; set; } = 0.0f;
 
-    public float Range => Constants.TowerOfEarthRange[CurrentLevel-1]*Constants.TileSize;
-    public float Healing => Constants.TowerOfEarthHealing[CurrentLevel-1];
-    public float AttackSpeed => Constants.TowerOfEarthAttackSpeed[CurrentLevel-1];
+    public float Range => Constants.TowerOfEarthRange[CurrentLevel - 1] * Constants.TileSize;
+    public float Healing => Constants.TowerOfEarthHealing[CurrentLevel - 1];
+    public float AttackSpeed => Constants.TowerOfEarthAttackSpeed[CurrentLevel - 1];
+
     public override void Update(World world)
     {
+        base.Update(world);
+
         var (rangeBonus, healingBonus) = GetAltarBonus(world);
         if (!IsIntact) return;
         AttackCooldown -= Raylib.GetFrameTime();

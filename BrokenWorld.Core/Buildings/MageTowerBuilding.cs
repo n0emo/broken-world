@@ -10,7 +10,7 @@ internal sealed class MageTowerBuilding : Building
         kind: BuildingKind.MageTower,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.MageTower
     )
     { }
 
@@ -27,6 +27,8 @@ internal sealed class MageTowerBuilding : Building
 
     public override void Update(World world)
     {
+        base.Update(world);
+
         if (!IsIntact) return;
         AttackCooldown -= Raylib.GetFrameTime();
         if (AttackCooldown < 0) AttackCooldown = 0;
@@ -45,7 +47,7 @@ internal sealed class MageTowerBuilding : Building
             var target = Target.PredictPosition(time);
             var direction = Vector2.Normalize(target - WorldPosition);
             var velocity = direction * ProjectileSpeed;
-            var bullet = new ProjectileBullet(BulletTag.Friend, WorldPosition, velocity, Damage);
+            var bullet = new ProjectileBullet(BulletTag.Friend, WorldPosition, velocity, Damage, Assets.Sprites.MageTowerProjectile);
             world.SpawnBullet(bullet);
         }
     }

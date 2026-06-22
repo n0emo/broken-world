@@ -14,7 +14,7 @@ internal sealed class TowerOfIceBuilding : Building
         kind: BuildingKind.TowerOfIce,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.TowerOfIce
     )
     { }
 
@@ -34,6 +34,8 @@ internal sealed class TowerOfIceBuilding : Building
 
     public override void Update(World world)
     {
+        base.Update(world);
+
         if (!IsIntact) return;
         AttackCooldown -= Raylib.GetFrameTime();
         if (AttackCooldown < 0) AttackCooldown = 0;

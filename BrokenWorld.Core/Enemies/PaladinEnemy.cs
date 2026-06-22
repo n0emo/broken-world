@@ -17,7 +17,8 @@ internal sealed class PaladinEnemy : Enemy
         moveSpeed: Constants.PaladinMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.PaladinHp[level],
-        targetRange: Constants.PaladinAttackRange * Constants.TileSize
+        targetRange: Constants.PaladinAttackRange * Constants.TileSize,
+        animationMap: Assets.Animations.EnemyPaladin
     )
     {
         _weapon = new(

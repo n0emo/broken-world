@@ -16,7 +16,8 @@ internal sealed class AnnihilationMachineEnemy : Enemy
         moveSpeed: Constants.AnnihilationMachineMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.AnnihilationMachineHp,
-        targetRange: Constants.AnnihilationMachineAttackRange * Constants.TileSize
+        targetRange: Constants.AnnihilationMachineAttackRange * Constants.TileSize,
+        animationMap: Assets.Animations.EnemyAnnihilationMachine
     )
     {
         _weapon = new(

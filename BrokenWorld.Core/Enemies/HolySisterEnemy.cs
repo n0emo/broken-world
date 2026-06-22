@@ -19,7 +19,8 @@ internal sealed class HolySisterEnemy : Enemy
         moveSpeed: Constants.HolySisterMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.HolySisterHp[level],
-        targetRange: Constants.HolySisterTargetRange * Constants.TileSize
+        targetRange: Constants.HolySisterTargetRange * Constants.TileSize,
+        animationMap: Assets.Animations.EnemyHolySister
     )
     {
         _level = level;

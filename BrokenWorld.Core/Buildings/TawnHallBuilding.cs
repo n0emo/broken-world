@@ -6,7 +6,7 @@ internal sealed class TawnHallBuilding : Building
         kind: BuildingKind.TawnHall,
         position: position,
         size: (4, 4),
-        sprite: new()
+        animation: Assets.Animations.TownHall
     )
     { }
 

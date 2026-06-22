@@ -4,7 +4,7 @@ namespace BrokenWorld.Core.Ui;
 
 internal sealed class PrepareUi
 {
-    public record NewBuildingDesc(BuildingKind Kind, bool CanBuild, string Tooltip, Sprite Icon, Money Cost);
+    public record NewBuildingDesc(BuildingKind Kind, bool CanBuild, string Tooltip, Money Cost);
 
     private readonly BuildingButton[] _buildingButtons = [];
     private readonly Button _upgradeButton;
@@ -103,18 +103,26 @@ internal sealed class PrepareUi
 
         for (int i = 0; i < buildings.Length; i++)
         {
+            var position = new Vector2(
+                x: i * Constants.BuildingButtonSize,
+                y: 0
+            );
+            var sprite = buildings[i].Kind.GetSprite();
+            var scale = Constants.TileSize / sprite.Source.Width * 1.5f;
+
+
             buttons[i] = new()
             {
                 Kind = buildings[i].Kind,
                 Bounds = new()
                 {
-                    X = i * Constants.BuildingButtonSize,
-                    Y = 0,
+                    X = position.X,
+                    Y = position.Y,
                     Width = Constants.BuildingButtonSize,
                     Height = Constants.BuildingButtonSize,
                 },
                 IsActive = buildings[i].CanBuild,
-                Icon = buildings[i].Icon,
+                Icon = sprite with { Position = position, Scale = scale },
                 Cost = buildings[i].Cost,
                 Tooltip = buildings[i].Tooltip,
             };
@@ -177,8 +185,8 @@ internal sealed class PrepareUi
             Bounds = new()
             {
                 Y = 0,
-                X = Raylib.GetScreenWidth() - 200,
-                Width = 200,
+                X = Raylib.GetScreenWidth() - 130,
+                Width = 130,
                 Height = Constants.BuildingButtonSize,
             },
             Money = money,

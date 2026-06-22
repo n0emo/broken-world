@@ -53,8 +53,8 @@ internal static class Constants
     public static Color BuildingColor => Raylib.GetColor(0x695c46ff);
     public static Color SelectedBuildingColor => Raylib.GetColor(0xff000055);
     public static Color SelectedBuildingBorderColor => Raylib.GetColor(0x00ff55cc);
-    public static float BuildingHpBarFactor => 5f;
-    public static float BuildingHpBarHeight => 5.0f;
+    public static float BuildingHpBarFactor => 2f;
+    public static float BuildingHpBarHeight => 4.0f;
     #endregion
 
     #region Camera
@@ -155,6 +155,9 @@ internal static class Constants
     #endregion
 
     #region EnemyStats
+    public static float EnemyHpBarFactor => 4f;
+    public static float EnemyHpBarHeight => 2.0f;
+
     public static float[] PaladinHp => [100, 200, 300];
     public static float[] PaladinDamage => [10, 20, 30];
     public static float PaladinAttackSpeed => 1;

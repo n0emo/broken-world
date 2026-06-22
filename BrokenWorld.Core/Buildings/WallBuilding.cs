@@ -8,7 +8,7 @@ internal sealed class WallBuilding : Building
         kind: BuildingKind.Wall,
         position: position,
         size: (1, 1),
-        sprite: new()
+        animation: Assets.Animations.Wall
     )
     { }
 

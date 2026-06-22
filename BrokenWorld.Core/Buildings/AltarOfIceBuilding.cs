@@ -9,7 +9,7 @@ internal sealed class AltarOfIceBuilding : Building
         kind: BuildingKind.AltarOfIce,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.AltarOfIce
     )
     { }
 

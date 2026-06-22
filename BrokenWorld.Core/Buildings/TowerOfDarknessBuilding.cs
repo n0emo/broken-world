@@ -13,7 +13,7 @@ internal sealed class TowerOfDarknessBuilding : Building
         kind: BuildingKind.TowerOfDarkness,
         position: position,
         size: (2, 2),
-        sprite: new()
+        animation: Assets.Animations.TowerOfDarkness
     )
     { }
 
@@ -27,8 +27,11 @@ internal sealed class TowerOfDarknessBuilding : Building
     public float AttackRange => Constants.TowerOfDarknessRange[CurrentLevel - 1] * Constants.TileSize;
     public float ProjectileSpeed => Constants.TowerOfDarknessProjectileSpeed[CurrentLevel - 1];
     public float Damage => Constants.TowerOfDarknessDamage[CurrentLevel - 1];
+
     public override void Update(World world)
     {
+        base.Update(world);
+
         var (attackSpeedBonus, rangeBonus, projectileSpeedBonus) = GetAltarBonus(world);
         if (!IsIntact) return;
         AttackCooldown -= Raylib.GetFrameTime();
@@ -49,7 +52,7 @@ internal sealed class TowerOfDarknessBuilding : Building
             AttackCooldown = AttackSpeed / attackSpeedBonus;
             var direction = Vector2.Normalize(target - WorldPosition);
             var velocity = direction * projectileSpeed;
-            var bullet = new ProjectileBullet(BulletTag.Friend, WorldPosition, velocity, Damage);
+            var bullet = new ProjectileBullet(BulletTag.Friend, WorldPosition, velocity, Damage, Assets.Sprites.TowerOfDarknessProjectile);
             world.SpawnBullet(bullet);
         }
     }

@@ -16,7 +16,8 @@ internal sealed class HeroOfHeroesEnemy : Enemy
         moveSpeed: Constants.AcolyteMoveSpeed,
         spawnTarget: spawnTarget,
         maxHp: Constants.HeroOfHeroesHp,
-        targetRange: Constants.HeroOfHeroesAttackRange * Constants.TileSize
+        targetRange: Constants.HeroOfHeroesAttackRange * Constants.TileSize,
+        animationMap: Assets.Animations.EnemyHeroOfHeroes
     )
     {
         _weapon = new(

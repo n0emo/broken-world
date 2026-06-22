@@ -8,19 +8,21 @@ internal enum TileKind
     HolyGrass,
     Grass,
     RockBottom,
-    Bridge,
+    BridgeVertical,
+    BridgeHorizontal,
     Sky,
 }
 
 internal static partial class TileKindExtensions
 {
-    public static Color GetColor(this TileKind kind) => kind switch
+    public static Sprite GetSprite(this TileKind kind) => kind switch
     {
-        TileKind.HolyGrass => Color.Lime,
-        TileKind.Grass => Color.DarkGreen,
-        TileKind.RockBottom => Color.DarkBrown,
-        TileKind.Bridge => Color.Brown,
-        TileKind.Sky => Color.DarkBlue,
+        TileKind.HolyGrass => Assets.Sprites.HolyGrass,
+        TileKind.Grass => Assets.Sprites.Grass,
+        TileKind.RockBottom => Assets.Sprites.RockBottom,
+        TileKind.BridgeVertical => Assets.Sprites.BridgeVertical,
+        TileKind.BridgeHorizontal => Assets.Sprites.BridgeHorizontal,
+        TileKind.Sky => Assets.Sprites.Sky,
         _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
     };
 
@@ -32,10 +34,8 @@ internal static partial class TileKindExtensions
 
     public static Tile IntoTile(this TileKind kind) => new(
         Kind: kind,
-        Color: kind.GetColor(),
         CanBuild: kind.GetCanBuild(),
-        BaseSprite: null,
-        PropSprite: null,
+        Sprite: kind.GetSprite(),
         Occupied: false
     );
 }
