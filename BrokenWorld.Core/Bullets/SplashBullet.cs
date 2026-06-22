@@ -15,6 +15,7 @@ internal sealed class SplashBullet : Bullet
     private bool _pendingBlast = true;
     private float _previousDistance = float.MaxValue;
     private float _despawnTimer = 1.0f;
+    private Sprite _sprite;
 
     public SplashBullet(
         BulletTag tag,
@@ -24,7 +25,8 @@ internal sealed class SplashBullet : Bullet
         float velocity,
         float damage,
         Debuff debuff,
-        Color color
+        Color color,
+        Sprite sprite
     ) : base(tag)
     {
         _position = position;
@@ -34,7 +36,10 @@ internal sealed class SplashBullet : Bullet
         _damage = damage;
         _debuff = debuff;
         _color = color;
+        _sprite = sprite;
     }
+
+    private float Radius = Constants.TileSize / 4;
 
     public override void Update(World world)
     {
@@ -45,12 +50,13 @@ internal sealed class SplashBullet : Bullet
     public override void Draw()
     {
         var color = Raylib.ColorAlpha(_color, _despawnTimer);
-        if (_position != _target) Raylib.DrawCircleV(_position, 5, color);
+        if (_position != _target) _sprite.Draw();
         else Raylib.DrawCircleV(_position, _radius * _despawnTimer, color);
     }
 
     private void UpdateFlying()
     {
+        _sprite = _sprite with { Position = _position - Vector2.One * Radius };
         var velocity = Vector2.Normalize(_target - _position) * _velocity * Raylib.GetFrameTime();
         _position += velocity;
         var distance = Vector2.Distance(_position, _target);

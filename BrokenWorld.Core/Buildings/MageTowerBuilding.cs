@@ -41,6 +41,7 @@ internal sealed class MageTowerBuilding : Building
 
         if (AttackCooldown == 0)
         {
+            Raylib.PlaySound(Assets.Sounds.MageTowerHit);
             AttackCooldown = AttackSpeed;
             var distance = Vector2.Distance(WorldPosition, Target.Rec.Center);
             var time = distance / ProjectileSpeed;

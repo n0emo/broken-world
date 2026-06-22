@@ -39,12 +39,15 @@ internal sealed class MeleeWeapon
         if (_attackCooldown < 0) _attackCooldown = 0;
     }
 
-    public void AttackBuilidng(Building b)
+    public bool AttackBuilidng(Building b)
     {
-        if (!CanAttack) return;
-        if (!Raylib.CheckCollisionCircleRec(_position, _attackRange, b.Rec)) return;
+        if (!CanAttack) return false;
+        if (!Raylib.CheckCollisionCircleRec(_position, _attackRange, b.Rec)) return false;
+        Raylib.SetSoundVolume(Assets.Sounds.SwordMeleeHit, 0.5f);
+        Raylib.PlaySound(Assets.Sounds.SwordMeleeHit);
 
         _attackCooldown = _attackSpeed;
         b.Hp -= _damage;
+        return true;
     }
 }

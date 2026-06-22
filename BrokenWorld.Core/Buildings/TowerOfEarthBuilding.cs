@@ -26,7 +26,9 @@ internal sealed class TowerOfEarthBuilding : Building
 
         var (rangeBonus, healingBonus) = GetAltarBonus(world);
         if (!IsIntact) return;
+
         AttackCooldown -= Raylib.GetFrameTime();
+
         if (AttackCooldown < 0) AttackCooldown = 0;
         if (AttackCooldown == 0)
         {

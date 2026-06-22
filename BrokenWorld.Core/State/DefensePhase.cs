@@ -18,6 +18,8 @@ internal sealed class DefensePhase : IState
 
     public DefensePhase(GameState gameState, EnemyWave wave)
     {
+        Raylib.PlaySound(Assets.Sounds.BattleStart);
+
         _s = gameState;
         _enemiesToSpawn = new(wave.Enemies);
         _bossToSpawn = wave.Boss;
@@ -47,6 +49,8 @@ internal sealed class DefensePhase : IState
             _s.GameSpeed = speed;
         }
 
+        _s.BattleLayerFadeIn();
+        _s.UpdateMusic();
         _s.MoveCamera();
 
         for (int i = 0; i < _s.GameSpeed; i++)
@@ -79,6 +83,8 @@ internal sealed class DefensePhase : IState
                 }
                 else
                 {
+                    Raylib.PlaySound(Assets.Sounds.BuildingRepairPlacement);
+                    Raylib.PlaySound(Assets.Sounds.BattleEnd);
                     return new PreparePhase(_s);
                 }
             }

@@ -41,7 +41,10 @@ internal sealed class PaladinRammerEnemy : Enemy
         _weapon.Update();
         if (_target is not null)
         {
-            _weapon.AttackBuilidng(_target);
+            if (_weapon.AttackBuilidng(_target))
+            {
+                Raylib.PlaySound(Assets.Sounds.BuildingBreakTaran);
+            }
             if (!_target.IsIntact) _target = null;
         }
     }

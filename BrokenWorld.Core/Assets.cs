@@ -10,6 +10,12 @@ internal class Assets
 
     private static Lazy<AssetsAnimations> LazyAnimations { get; } = new();
     public static AssetsAnimations Animations => LazyAnimations.Value;
+
+    private static Lazy<AssetsMusic> LazyMusic { get; } = new();
+    public static AssetsMusic Music => LazyMusic.Value;
+
+    private static Lazy<AssetsSounds> LazySounds { get; } = new();
+    public static AssetsSounds Sounds => LazySounds.Value;
 }
 
 internal class AssetsTextures
@@ -111,6 +117,8 @@ internal class AssetsSprites
     public Sprite AcolyteProjectile = Sprite.FromTexture(Assets.Textures.MagicProjectile, Color.Gold);
     public Sprite MageTowerProjectile = Sprite.FromTexture(Assets.Textures.MagicProjectile, Color.DarkGray);
     public Sprite TowerOfDarknessProjectile = Sprite.FromTexture(Assets.Textures.MagicProjectile, Color.DarkPurple);
+    public Sprite TowerOfFireProjectile = Sprite.FromTexture(Assets.Textures.MagicProjectile, Color.Orange);
+    public Sprite TowerOfIceProjectile = Sprite.FromTexture(Assets.Textures.MagicProjectile, Color.SkyBlue);
     public Sprite IconMagistone = Sprite.FromTexture(Assets.Textures.IconMagicStone, Color.White);
     public Sprite IconEmblem = Sprite.FromTexture(Assets.Textures.IconChurch, Color.White);
 
@@ -292,3 +300,25 @@ internal class AssetsAnimations
         new([Assets.Sprites.EnemySisterOfBattleRight1, Assets.Sprites.EnemySisterOfBattleRight2], 1)
     ];
 }
+
+internal class AssetsMusic
+{
+    public Music MainTheme = Raylib.LoadMusicStream("Assets/Music/main-theme.ogg");
+    public Music CombatLayer = Raylib.LoadMusicStream("Assets/Music/combat-layer.ogg");
+    public Music Cutscene = Raylib.LoadMusicStream("Assets/Music/cutscene.ogg");
+}
+
+internal class AssetsSounds
+{
+    public Sound BattleEnd = Raylib.LoadSound("Assets/SFX/battle-end.ogg");
+    public Sound BattleStart = Raylib.LoadSound("Assets/SFX/battle-start.ogg");
+    public Sound BuildingBreakTaran = Raylib.LoadSound("Assets/SFX/building-break-taran.ogg");
+    public Sound BuildingRepairPlacement = Raylib.LoadSound("Assets/SFX/building-repair-placement.ogg");
+    public Sound BuildingSell = Raylib.LoadSound("Assets/SFX/building-sell.ogg");
+    public Sound DarknessTowerHit = Raylib.LoadSound("Assets/SFX/darkness-tower-hit.ogg");
+    public Sound FireTowerHit = Raylib.LoadSound("Assets/SFX/fire-tower-hit.ogg");
+    public Sound IceTowerHit = Raylib.LoadSound("Assets/SFX/ice-tower-hit.ogg");
+    public Sound MageTowerHit = Raylib.LoadSound("Assets/SFX/mage-tower-hit.ogg");
+    public Sound SwordMeleeHit = Raylib.LoadSound("Assets/SFX/sword-melee-hit.ogg");
+}
+

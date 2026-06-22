@@ -43,6 +43,8 @@ internal sealed class TowerOfFireBuilding : Building
 
         if (AttackCooldown == 0)
         {
+            Raylib.PlaySound(Assets.Sounds.FireTowerHit);
+
             (var bonusStacks, var bonusSplash) = GetAltarBonus(world);
             AttackCooldown = AttackSpeed;
 
@@ -58,7 +60,8 @@ internal sealed class TowerOfFireBuilding : Building
                 velocity: ProjectileSpeed,
                 damage: Damage,
                 debuff: new FireDebuff(Stacks + bonusStacks, Damage),
-                color: Color.Orange
+                color: Color.Orange,
+                sprite: Assets.Sprites.TowerOfFireProjectile
             );
             world.SpawnBullet(bullet);
         }

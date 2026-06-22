@@ -38,9 +38,10 @@ internal sealed class TowerOfDarknessBuilding : Building
         if (Target is null) return;
         if (Vector2.Distance(Target.Rec.Center, WorldPosition) > AttackRange * rangeBonus) return;
 
-
         if (AttackCooldown == 0)
         {
+            Raylib.PlaySound(Assets.Sounds.DarknessTowerHit);
+
             var projectileSpeed = ProjectileSpeed * projectileSpeedBonus;
             var distance = Vector2.Distance(WorldPosition, Target.Rec.Center);
             var time = distance / projectileSpeed;

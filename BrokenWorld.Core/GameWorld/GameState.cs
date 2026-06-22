@@ -2,6 +2,16 @@ namespace BrokenWorld.Core.GameWorld;
 
 internal class GameState
 {
+    public GameState()
+    {
+        MainTheme = Assets.Music.MainTheme;
+        CombatLayer = Assets.Music.CombatLayer;
+        Raylib.SeekMusicStream(MainTheme, 0);
+        Raylib.PlayMusicStream(MainTheme);
+        Raylib.SeekMusicStream(CombatLayer, 0);
+        Raylib.PlayMusicStream(CombatLayer);
+    }
+
     public Camera2D Camera { get; set; } = new()
     {
         Zoom = 1,
@@ -16,6 +26,10 @@ internal class GameState
     public int MaxWave { get; set; } = Constants.WaveDescs.Length;
     public Money Balance { get; set; } = Constants.StartingMoney;
     public int GameSpeed { get; set; } = 1;
+
+    public Music MainTheme { get; set; }
+    public Music CombatLayer { get; set; }
+    public float CombatLayerVolume { get; set; } = 0;
 
     public void MoveCamera()
     {
@@ -52,5 +66,25 @@ internal class GameState
         }
 
         Camera = camera;
+    }
+
+    public void UpdateMusic()
+    {
+        Raylib.SetMusicVolume(CombatLayer, CombatLayerVolume * 0.8f);
+        Raylib.SetMusicVolume(MainTheme, 0.8f);
+        Raylib.UpdateMusicStream(MainTheme);
+        Raylib.UpdateMusicStream(CombatLayer);
+    }
+
+    public void BattleLayerFadeIn()
+    {
+        CombatLayerVolume += Raylib.GetFrameTime();
+        if (CombatLayerVolume > 1) CombatLayerVolume = 1;
+    }
+
+    public void BattleLayerFadeOut()
+    {
+        CombatLayerVolume -= Raylib.GetFrameTime();
+        if (CombatLayerVolume < 0) CombatLayerVolume = 0;
     }
 }

@@ -160,11 +160,14 @@ internal sealed class PreparePhase(GameState gameState) : IState
         {
             if (_s.World.Map.TryRemoveBuilding(_selectedBuilding.Id))
             {
+                Raylib.PlaySound(Assets.Sounds.BuildingSell);
                 _s.Balance += _selectedBuilding.CumulativeCost * Constants.BuildingSellFactor;
             }
             _selectedBuilding = null;
         }
 
+        _s.BattleLayerFadeOut();
+        _s.UpdateMusic();
         _s.MoveCamera();
         _s.World.Update();
         UpdateBuildingSelection();
@@ -248,6 +251,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
             var result = _s.World.Map.TryPlaceBuilding(kind, (tileX, tileY));
             if (result is not null)
             {
+                Raylib.PlaySound(Assets.Sounds.BuildingRepairPlacement);
                 var cost = result.CumulativeCost;
                 _s.Balance -= cost;
                 if (!Money.CanAfford(_s.Balance, cost) || !Raylib.IsKeyDown(KeyboardKey.LeftShift))

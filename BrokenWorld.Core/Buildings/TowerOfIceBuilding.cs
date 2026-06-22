@@ -43,6 +43,8 @@ internal sealed class TowerOfIceBuilding : Building
 
         if (AttackCooldown == 0)
         {
+            Raylib.PlaySound(Assets.Sounds.IceTowerHit);
+
             (var bonusSplash, var bonusSlowness, var bonusDuration) = GetAltarBonus(world);
             AttackCooldown = AttackSpeed;
 
@@ -58,7 +60,8 @@ internal sealed class TowerOfIceBuilding : Building
                 velocity: ProjectileSpeed,
                 damage: Damage,
                 debuff: new IceDebuff(Duration * bonusDuration, Slowness * bonusSlowness),
-                color: Color.Blue
+                color: Color.Blue,
+                sprite: Assets.Sprites.TowerOfIceProjectile
             );
             world.SpawnBullet(bullet);
         }
