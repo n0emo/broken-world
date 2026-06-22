@@ -66,12 +66,12 @@ internal sealed class PrepareUi
             posX: 0,
             posY: 0,
             width: Raylib.GetScreenWidth(),
-            height: 80,
+            height: 90,
             color: Color.LightGray
         );
         Raylib.DrawRectangle(
             posX: 0,
-            posY: 80 - (int)Constants.BorderSize,
+            posY: 90 - (int)Constants.BorderSize,
             width: Raylib.GetScreenWidth(),
             height: (int)Constants.BorderSize,
             color: Constants.BorderColor
@@ -91,9 +91,9 @@ internal sealed class PrepareUi
         {
             Raylib.DrawText(
                 text: $"Upgrade cost: {_upgradeCost}",
-                posX: Raylib.GetScreenWidth() - 390,
+                posX: Raylib.GetScreenWidth() - 220,
                 posY: Constants.BuildingButtonSize,
-                fontSize: (int)Constants.SmallFontSize,
+                fontSize: (int)Constants.RegularFontSize,
                 color: Color.Black
             );
         }
@@ -109,12 +109,11 @@ internal sealed class PrepareUi
         for (int i = 0; i < buildings.Length; i++)
         {
             var position = new Vector2(
-                x: i * Constants.BuildingButtonSize,
-                y: 0
+                x: i * Constants.BuildingButtonSize + 10,
+                y: 10
             );
             var sprite = buildings[i].Kind.GetSprite();
             var scale = Constants.TileSize / sprite.Source.Width * 1.5f;
-
 
             buttons[i] = new()
             {
@@ -142,8 +141,8 @@ internal sealed class PrepareUi
         {
             Bounds = new()
             {
-                X = x,
-                Y = 0,
+                X = x + 10,
+                Y = 10,
                 Width = Constants.BuildingButtonSize,
                 Height = Constants.BuildingButtonSize,
             },
@@ -158,8 +157,8 @@ internal sealed class PrepareUi
         {
             Bounds = new()
             {
-                X = x,
-                Y = 0,
+                X = x + 10,
+                Y = 10,
                 Width = Constants.BuildingButtonSize,
                 Height = Constants.BuildingButtonSize,
             },
@@ -174,8 +173,8 @@ internal sealed class PrepareUi
         {
             Bounds = new()
             {
-                X = x,
-                Y = 0,
+                X = x + 10,
+                Y = 10,
                 Width = Constants.BuildingButtonSize,
                 Height = Constants.BuildingButtonSize,
             },

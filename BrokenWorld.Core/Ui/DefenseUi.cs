@@ -46,12 +46,12 @@ internal sealed class DefenseUi
             posX: 0,
             posY: 0,
             width: Raylib.GetScreenWidth(),
-            height: 80,
+            height: 90,
             color: Color.LightGray
         );
         Raylib.DrawRectangle(
             posX: 0,
-            posY: 80 - (int)Constants.BorderSize,
+            posY: 90 - (int)Constants.BorderSize,
             width: Raylib.GetScreenWidth(),
             height: (int)Constants.BorderSize,
             color: Constants.BorderColor
@@ -91,7 +91,7 @@ internal sealed class DefenseUi
             Bounds = new()
             {
                 X = Raylib.GetScreenWidth() - i * Constants.BuildingButtonSize - 250,
-                Y = 0,
+                Y = 10,
                 Width = Constants.BuildingButtonSize,
                 Height = Constants.BuildingButtonSize,
             },
