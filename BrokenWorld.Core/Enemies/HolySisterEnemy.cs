@@ -18,9 +18,9 @@ internal sealed class HolySisterEnemy : Enemy
         color: Color.DarkGray,
         moveSpeed: Constants.HolySisterMoveSpeed,
         spawnTarget: spawnTarget,
-        maxHp: Constants.HolySisterHp[level],
-        targetRange: Constants.HolySisterTargetRange * Constants.TileSize,
-        animationMap: Assets.Animations.EnemyHolySister
+        animationMap: Assets.Animations.EnemyHolySister,
+        maxHp: Constants.HolySisterHp[level - 1],
+        targetRange: Constants.HolySisterTargetRange * Constants.TileSize
     )
     {
         _level = level;
@@ -31,6 +31,7 @@ internal sealed class HolySisterEnemy : Enemy
     public override void Update(World world)
     {
         base.Update(world);
+        Hp -= Raylib.GetFrameTime() * 0.2f;
         _attackCooldown -= Raylib.GetFrameTime();
         if (_attackCooldown < 0) _attackCooldown = 0;
 
@@ -40,14 +41,15 @@ internal sealed class HolySisterEnemy : Enemy
             var closestDistance = float.MaxValue;
             foreach (var enemy in world.Enemies)
             {
+                if (enemy is HolySisterEnemy) continue;
                 if (enemy.Hp == enemy.MaxHp) continue;
                 float distance = Vector2.Distance(enemy.Rec.Center, Rec.Center);
                 if (distance > Constants.HolySisterAttackRange) continue;
                 if (distance > closestDistance) continue;
+
                 closestDistance = distance;
                 closest = enemy;
             }
-
             if (closest is not null)
             {
                 closest.Hp += Healing;

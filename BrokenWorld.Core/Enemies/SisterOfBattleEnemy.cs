@@ -16,15 +16,15 @@ internal sealed class SisterOfBattleEnemy : Enemy
         color: Color.Maroon,
         moveSpeed: Constants.SisterOfBattleMoveSpeed,
         spawnTarget: spawnTarget,
-        maxHp: Constants.SisterOfBattleHp[level],
-        targetRange: Constants.SisterOfBattleAttackRange * Constants.TileSize,
-        animationMap: Assets.Animations.EnemySisterOfBattle
+        animationMap: Assets.Animations.EnemySisterOfBattle,
+        maxHp: Constants.SisterOfBattleHp[level-1],
+        targetRange: Constants.SisterOfBattleAttackRange * Constants.TileSize
     )
     {
         _weapon = new(
             attackRange: Constants.SisterOfBattleAttackRange * Constants.TileSize,
             attackSpeed: Constants.SisterOfBattleAttackSpeed,
-            damage: Constants.SisterOfBattleDamage[level]
+            damage: Constants.SisterOfBattleDamage[level-1]
         );
     }
 

@@ -19,10 +19,9 @@ internal sealed class AcolyteEnemy : Enemy
         color: Color.Gold,
         moveSpeed: Constants.AcolyteMoveSpeed,
         spawnTarget: spawnTarget,
-        maxHp: Constants.AcolyteHp[level],
-        targetRange: Constants.AcolyteTargetRange * Constants.TileSize,
-        animationMap: Assets.Animations.EnemyAcolyte
-
+        animationMap: Assets.Animations.EnemyAcolyte,
+        maxHp: Constants.AcolyteHp[level - 1],
+        targetRange: Constants.AcolyteTargetRange * Constants.TileSize
     )
     {
         _level = level;

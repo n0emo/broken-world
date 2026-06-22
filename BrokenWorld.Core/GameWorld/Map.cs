@@ -38,7 +38,7 @@ internal sealed class Map
         if (!RectangleIsFree(x, y, width, height)) return null;
         Building building = kind switch
         {
-            BuildingKind.TawnHall => new TawnHallBuilding(position),
+            BuildingKind.TawnHall => new TownHallBuilding(position),
             BuildingKind.MageTower => new MageTowerBuilding(position),
             BuildingKind.Wall => new WallBuilding(position),
             BuildingKind.Crucible => new CrucibleBuilding(position),

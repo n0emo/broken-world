@@ -25,9 +25,9 @@ internal sealed class PaladinRammerEnemy : Enemy
     {
         _level = level;
         _weapon = new(
-            attackRange: Constants.PaladinRammerAttackRange,
+            attackRange: Constants.PaladinRammerAttackRange * Constants.TileSize,
             attackSpeed: Constants.PaladinRammerAttackSpeed,
-            damage: 0
+            damage: Constants.PaladinRammerDamage[_level - 1]
         );
     }
 
@@ -37,6 +37,7 @@ internal sealed class PaladinRammerEnemy : Enemy
         var damage = Constants.PaladinRammerDamage[_level - 1];
         if (Target is WallBuilding) damage *= Constants.PaladinRammerWallBonus;
         _weapon.Damage = damage;
+        _weapon.Position = Position;
         _weapon.Update();
         if (_target is not null)
         {

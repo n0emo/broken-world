@@ -1,8 +1,8 @@
 namespace BrokenWorld.Core.Buildings;
 
-internal sealed class TawnHallBuilding : Building
+internal sealed class TownHallBuilding : Building
 {
-    public TawnHallBuilding((int X, int Y) position) : base(
+    public TownHallBuilding((int X, int Y) position) : base(
         kind: BuildingKind.TawnHall,
         position: position,
         size: (4, 4),
@@ -10,6 +10,6 @@ internal sealed class TawnHallBuilding : Building
     )
     { }
 
-    public override Money[] UpgradeCost => Constants.TawnHallCost;
-    public override float[] MaxHpScaling => Constants.TawnHallHp;
+    public override Money[] UpgradeCost => Constants.TownHallCost;
+    public override float[] MaxHpScaling => Constants.TownHallHp;
 }

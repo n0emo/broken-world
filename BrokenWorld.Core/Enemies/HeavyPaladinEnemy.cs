@@ -16,15 +16,15 @@ internal sealed class HeavyPaladinEnemy : Enemy
         color: Color.Gold,
         moveSpeed: Constants.HeavyPaladinMoveSpeed,
         spawnTarget: spawnTarget,
-        maxHp: Constants.HeavyPaladinHp[level],
-        targetRange: Constants.HeavyPaladinAttackRange * Constants.TileSize,
-        animationMap: Assets.Animations.EnemyHeavyPaladin
+        animationMap: Assets.Animations.EnemyHeavyPaladin,
+        maxHp: Constants.HeavyPaladinHp[level - 1],
+        targetRange: Constants.HeavyPaladinAttackRange * Constants.TileSize
     )
     {
         _weapon = new(
             attackRange: Constants.HeavyPaladinAttackRange,
             attackSpeed: Constants.HeavyPaladinAttackSpeed,
-            damage: Constants.HeavyPaladinDamage[level]
+            damage: Constants.HeavyPaladinDamage[level - 1]
         );
     }
 

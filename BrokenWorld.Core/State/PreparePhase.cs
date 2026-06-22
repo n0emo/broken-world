@@ -96,7 +96,7 @@ internal sealed class PreparePhase(GameState gameState) : IState
                 new(
                     Kind: BuildingKind.TowerOfDarkness,
                     CanBuild: CanBuildTowerOfDarkness,
-                    Tooltip: "Build Tower of Darkness.\n\nShoots dark lasers\nwhich pierce through.\n\nRequires Altar of Darkness",
+                    Tooltip: "Build Tower of Darkness.\n\nShoots dark missiles\nover a long distance.\n\nRequires Altar of Darkness",
                     Cost: Constants.TowerOfDarknessCost[0]
                 ),
                 new(

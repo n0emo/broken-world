@@ -44,7 +44,7 @@ internal sealed class MeleeWeapon
         if (!CanAttack) return;
         if (!Raylib.CheckCollisionCircleRec(_position, _attackRange, b.Rec)) return;
 
-        _attackCooldown = 1 / _attackSpeed;
+        _attackCooldown = _attackSpeed;
         b.Hp -= _damage;
     }
 }

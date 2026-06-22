@@ -18,9 +18,9 @@ internal sealed class HolyHoundEnemy : Enemy
         color: Color.Gold,
         moveSpeed: Constants.HolyHoundMoveSpeed,
         spawnTarget: spawnTarget,
-        maxHp: Constants.HolyHoundHp[level],
-        targetRange: Constants.HolyHoundAttackRange * Constants.TileSize,
-        animationMap: Assets.Animations.EnemyHolyBeagle
+        animationMap: Assets.Animations.EnemyHolyBeagle,
+        maxHp: Constants.HolyHoundHp[level-1],
+        targetRange: Constants.HolyHoundAttackRange * Constants.TileSize
     )
     {
         _level = level;

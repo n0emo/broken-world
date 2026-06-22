@@ -16,15 +16,15 @@ internal sealed class PaladinEnemy : Enemy
         color: Color.Gold,
         moveSpeed: Constants.PaladinMoveSpeed,
         spawnTarget: spawnTarget,
-        maxHp: Constants.PaladinHp[level],
-        targetRange: Constants.PaladinAttackRange * Constants.TileSize,
-        animationMap: Assets.Animations.EnemyPaladin
+        animationMap: Assets.Animations.EnemyPaladin,
+        maxHp: Constants.PaladinHp[level-1],
+        targetRange: Constants.PaladinAttackRange * Constants.TileSize
     )
     {
         _weapon = new(
             attackRange: Constants.PaladinAttackRange * Constants.TileSize,
             attackSpeed: Constants.PaladinAttackSpeed,
-            damage: Constants.PaladinDamage[level]
+            damage: Constants.PaladinDamage[level-1]
         );
     }
 
