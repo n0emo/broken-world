@@ -4,10 +4,6 @@ using BrokenWorld.Core.GameWorld;
 
 namespace BrokenWorld.Core.Buildings;
 
-// TODO: Башня с уменьшенным уроном от прямого попадания и  дот уроном по цели
-//       (накладывает настакивающийся эффект горения который складывается до 3
-//       раз)
-// TODO: Прокачка: увеличение дот урона от горения
 internal sealed class TowerOfIceBuilding : Building
 {
     public TowerOfIceBuilding((int X, int Y) position) : base(

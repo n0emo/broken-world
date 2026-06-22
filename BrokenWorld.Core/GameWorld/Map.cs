@@ -15,12 +15,15 @@ internal sealed class Map
     public int Height { get; init; } = Constants.MapHeight;
     public Tile[,] Tiles { get; init; }
     public List<Building> Buildings { get; init; } = [];
+    public TownHallBuilding TownHall { get; set; }
     public Sprite Backgorund { get; init; } = Assets.Sprites.Background with { Scale = 4 };
 
     public Map()
     {
         Tiles = GenerateTiles();
-        TryPlaceBuilding(BuildingKind.TawnHall, (Width / 2 - 1, Height / 2 - 1));
+        var b = TryPlaceBuilding(BuildingKind.TawnHall, (Width / 2 - 1, Height / 2 - 1));
+        TownHall = (TownHallBuilding)b!;
+
     }
 
     public Rectangle Rec => new()

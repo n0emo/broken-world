@@ -150,10 +150,6 @@ internal abstract class Enemy
         {
             _position -= angle * speed;
         }
-        else
-        {
-            // TODO: Position -= angle * distance;
-        }
     }
 
     protected void MoveTowardsSpawnTarget()

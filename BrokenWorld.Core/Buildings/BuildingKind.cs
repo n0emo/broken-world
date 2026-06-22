@@ -54,10 +54,4 @@ internal static partial class BuildingKindExtensions
         BuildingKind.Wall => (1, 1),
         _ => throw new ArgumentOutOfRangeException(paramName: nameof(kind)),
     };
-
-    public static float GetHp(this BuildingKind kind) => kind switch
-    {
-        // TODO: buildings HP
-        _ => 100.0f,
-    };
 }

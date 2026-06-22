@@ -41,16 +41,20 @@ internal sealed class PreparePhase(GameState gameState) : IState
         && _s.World.Map.Buildings.Any(b => b.Kind == BuildingKind.AltarOfEarth);
 
     private bool CanBuildAltarOfFire
-        => Money.CanAfford(_s.Balance, Constants.AltarOfFireCost[0]);
+        => Money.CanAfford(_s.Balance, Constants.AltarOfFireCost[0])
+        && _s.World.Map.TownHall.CurrentLevel > 1;
 
     private bool CanBuildAltarOfIce
-        => Money.CanAfford(_s.Balance, Constants.AltarOfIceCost[0]);
+        => Money.CanAfford(_s.Balance, Constants.AltarOfIceCost[0])
+        && _s.World.Map.TownHall.CurrentLevel > 1;
 
     private bool CanBuildAltarOfDarkness
-        => Money.CanAfford(_s.Balance, Constants.AltarOfDarknessCost[0]);
+        => Money.CanAfford(_s.Balance, Constants.AltarOfDarknessCost[0])
+        && _s.World.Map.TownHall.CurrentLevel > 1;
 
     private bool CanBuildAltarOfEarth
-        => Money.CanAfford(_s.Balance, Constants.AltarOfEarthCost[0]);
+        => Money.CanAfford(_s.Balance, Constants.AltarOfEarthCost[0])
+        && _s.World.Map.TownHall.CurrentLevel > 1;
 
     public IState Frame()
     {
