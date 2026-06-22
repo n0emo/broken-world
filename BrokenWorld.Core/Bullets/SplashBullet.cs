@@ -15,6 +15,7 @@ internal sealed class SplashBullet : Bullet
     private bool _pendingBlast = true;
     private float _previousDistance = float.MaxValue;
     private float _despawnTimer = 1.0f;
+    private float _timeToLive = Constants.ProjectilesTimeToLive;
     private Sprite _sprite;
 
     public SplashBullet(
@@ -43,6 +44,12 @@ internal sealed class SplashBullet : Bullet
 
     public override void Update(World world)
     {
+        _timeToLive -= Raylib.GetFrameTime();
+        if (_timeToLive < 0)
+        {
+            IsHit = true;
+            return;
+        }
         if (_position != _target) UpdateFlying();
         else UpdateSplash(world);
     }
